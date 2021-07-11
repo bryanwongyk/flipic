@@ -1,0 +1,14 @@
+# Dependency directories
+node_modules/
+
+# Output directory for project builds
+dist
+# Public directory
+public
+
+#Scripts folder
+scripts
+
+!/.*
+/build/
+/test-config/
