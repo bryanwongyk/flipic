@@ -5,7 +5,7 @@ export default {
     topic: "What is your favourite food?",
     questions: [
         {
-            question: "What is your go-to American food?",
+            question: "What is your go-to food?",
             choices: [
                 ({
                     text: 'Burgers',

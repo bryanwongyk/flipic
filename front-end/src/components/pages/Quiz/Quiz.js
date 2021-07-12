@@ -2,6 +2,8 @@ import StyledDeck from '../../Deck/StyledDeck';
 import data from '../../../data/mockQuizData';
 import styled from 'styled-components';
 import theme from '../../Theme/theme';
+import React, { useState } from "react";
+import ProgressBar from '../../ProgressBar/ProgressBar';
 
 
 const StyledSurveyHeader = styled.h3`
@@ -21,13 +23,14 @@ const StyledQuestion = styled.p`
 `;
 
 const Quiz = () => {
+	const [progress, updateProgress] = useState(0);
+
 	return (
 		<>
 			<StyledSurveyHeader>{data.topic}</StyledSurveyHeader>
 			<StyledQuestion>{data.questions[0].question}</StyledQuestion>
-			<StyledDeck data= {data}/>
-
-
+			<StyledDeck data={data} updateProgress={updateProgress}/>
+			<ProgressBar progress={progress}/>
 		</>
 	);
 };

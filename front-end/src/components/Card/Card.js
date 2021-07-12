@@ -10,10 +10,10 @@ const StyledCard = styled.div`
 `
 
 const StyledHalfCard = styled.div`
-    background-color: ${props => (props.pos == -1) ? theme.color.accent : theme.color.primary};
+    background-color: ${props => (props.pos === -1) ? theme.color.accent : theme.color.primary};
     height: 96%;
-    border-radius: ${props => (props.pos == -1) ? '10px 0px 0px 10px' : '0px 10px 10px 0px'};
-    margin: ${props => (props.pos == -1) ? '5px 2.5px 5px 5px' : '5px 5px 5px 2.5px'};
+    border-radius: ${props => (props.pos === -1) ? '10px 0px 0px 10px' : '0px 10px 10px 0px'};
+    margin: ${props => (props.pos === -1) ? '5px 2.5px 5px 5px' : '5px 5px 5px 2.5px'};
 `
 
 const Card = (props) => {

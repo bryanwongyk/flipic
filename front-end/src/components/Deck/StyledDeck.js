@@ -2,10 +2,10 @@ import styled from "styled-components";
 import Deck from "./Deck";
 import theme from "../Theme/theme";
 
-const StyledDeck = ({data}) => {
+const StyledDeck = ({data, updateProgress}) => {
   return (
     <DeckWrapper>
-      <Deck data={data}/>
+      <Deck data={data} updateProgress={updateProgress}/>
     </DeckWrapper>
   );
 };

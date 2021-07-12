@@ -12,7 +12,7 @@ const trans = (r, s) =>
     r / 10
   }deg) rotateZ(${r}deg) scale(${s})`;
 
-const Deck = ({data}) => {
+const Deck = ({data, updateProgress}) => {
   const [gone] = useState(() => new Set()); // The set flags all the cards that are picked
 
   const [props, set] = useSprings(data.num_choices, (i) => ({
@@ -56,9 +56,11 @@ const Deck = ({data}) => {
         const x = isGone ? (200 + window.innerWidth) * dir : down ? mx : 0; // When a card is gone it flys out left or right, otherwise goes back to zero
         const scale = down ? 1.1 : 1; // Active cards lift up a bit 
         let rot; // How much the card tilts, flicking it harder makes it rotate faster
-        let bgColor; // change card overlay color
-        let lWidth;
-        let rWidth;
+        let bgColor; // change card background color
+        let lWidth; // change the width of the left half card
+        let rWidth; // change the width of the right half card
+        
+        // animate swiping based on the gesture 
         if (x > 0) {
           bgColor = theme.color.primary
           rot = mx / 100 + (isGone ? dir * 10 * velocity : 0); 
@@ -76,7 +78,10 @@ const Deck = ({data}) => {
           rot = 0
           lWidth = '50%';
           rWidth = '50%';
-        }
+        };
+        
+        updateProgress(gone.size / data.num_choices);
+
         return {
           x,
           rot,
