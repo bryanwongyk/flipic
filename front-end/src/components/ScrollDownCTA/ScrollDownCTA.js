@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import theme from '../Theme/theme';
+import bp from '../Theme/breakpoints';
 
 const ScrollDownAnimation = keyframes`
 	from {
@@ -18,12 +19,26 @@ const ScrollDownAnimation = keyframes`
 	}
 `;
 
-const ScrollDownOuter = styled.div`
-	height: 100%;
+const ScrollBorder = styled.div`
+	display: none;
+	height: 42px;
+	width: 24px;
+	border-radius: 14px;
+	transform: none;
+	border: 2px solid ${theme.color.text.primary};
+	top: 170px;
+
+	@media ${bp.sm} {
+		display: block;
+	}
+`;
+
+const ScrollWheelWrapper = styled.div`
+	height: 75%;
 	animation: ${ScrollDownAnimation} 1.5s ease-out infinite;
 `;
 
-const ScrollDownInner = styled.div`
+const ScrollWheel = styled.div`
 	height: 5px;
 	width: 2px;
 	display: block;
@@ -31,17 +46,18 @@ const ScrollDownInner = styled.div`
 	background: white;
 	position: relative;
 
-	height: 4px;
-	width: 4px;
-	border: 2px solid ${theme.color.text.primary};
+	height: 10px;
+	border: 0.5px solid ${theme.color.text.primary};
 	border-radius: 8px;
 `;
 
 const ScrollDownCTA = () => {
 	return (
-		<ScrollDownOuter>
-			<ScrollDownInner />
-		</ScrollDownOuter>
+		<ScrollBorder>
+			<ScrollWheelWrapper>
+				<ScrollWheel />
+			</ScrollWheelWrapper>
+		</ScrollBorder>
 	);
 };
 
