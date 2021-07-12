@@ -2,10 +2,10 @@ import styled from "styled-components";
 import Deck from "./Deck";
 import theme from "../Theme/theme";
 
-const StyledDeck = () => {
+const StyledDeck = ({data}) => {
   return (
     <DeckWrapper>
-      <Deck />
+      <Deck data={data}/>
     </DeckWrapper>
   );
 };
@@ -13,12 +13,12 @@ const StyledDeck = () => {
 const DeckWrapper = styled.div`
   background: ${theme.color.background.primary};
   position: fixed;
-  overflow: hidden;
   width: 100%;
   height: 100%;
 
   & > div {
     position: absolute;
+    top: -20vh;
     width: 100vw;
     height: 100vh;
     will-change: transform;
@@ -26,16 +26,13 @@ const DeckWrapper = styled.div`
     align-items: center;
     justify-content: center;
     touch-action: none;
+    overflow: auto
   }
 
   & > div > div {
-    background-color: white;
-    background-size: auto 85%;
-    background-repeat: no-repeat;
-    background-position: center center;
-    width: 45vh;
+    width: 60vw; 
     max-width: 300px;
-    height: 85vh;
+    height: 50vh;
     max-height: 570px;
     will-change: transform;
     border-radius: 10px;
