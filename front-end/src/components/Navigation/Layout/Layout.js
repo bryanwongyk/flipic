@@ -1,6 +1,6 @@
 import NavHeader from '../NavHeader/NavHeader';
 import styled from 'styled-components';
-import Footer from '../Footer/Footer'
+import Footer from '../Footer/Footer';
 import theme from '../../Theme/theme';
 
 const StyledLayout = styled.div`
@@ -9,7 +9,7 @@ const StyledLayout = styled.div`
 `;
 
 const StyledMain = styled.main`
-    background: ${theme.color.background.primary};
+	background: ${theme.color.background.primary};
 `;
 
 const Layout = ({ children }) => {
@@ -18,7 +18,7 @@ const Layout = ({ children }) => {
 			<StyledLayout>
 				<NavHeader />
 				<StyledMain>{children}</StyledMain>
-                <Footer />
+				<Footer />
 			</StyledLayout>
 		</>
 	);
