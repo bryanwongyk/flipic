@@ -6,6 +6,7 @@ const StyledLi = styled.li`
 	list-style: none;
 	width: 100%;
 	background-color: ${theme.color.background.secondary};
+	transition: all 0.2s ease;
 
 	&:hover {
 		background-color: lightgrey;

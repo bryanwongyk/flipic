@@ -38,9 +38,10 @@ const NavHeader = () => {
 			<Menu />
 			<Hamburger toggleMobileMenu={toggleMobileMenu} />
 			{mobileMenuShown ? (
-				<Backdrop clickHandler={toggleMobileMenu}>
+				<div>
+					<Backdrop clickHandler={toggleMobileMenu} />
 					<MobileMenu toggleMobileMenu={toggleMobileMenu} />
-				</Backdrop>
+				</div>
 			) : null}
 		</NavHeaderDiv>
 	);
