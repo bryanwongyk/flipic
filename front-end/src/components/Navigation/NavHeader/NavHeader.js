@@ -9,7 +9,6 @@ import styled from 'styled-components';
 import theme from '../../Theme/theme';
 
 const NavHeaderDiv = styled.div`
-	width: 100vw;
 	height: ${theme.height.navBarMobile};
 	background: ${theme.color.background.primary};
 	z-index: 100;

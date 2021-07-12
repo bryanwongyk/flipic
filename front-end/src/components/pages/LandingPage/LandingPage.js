@@ -12,7 +12,7 @@ import bp from '../../Theme/breakpoints';
 
 const PageWrapper = styled.div`
 	padding: 0 48px 64px 48px;
-	max-width: 1280px;
+	max-width: 1560px;
 	margin: 0 auto;
 `;
 
@@ -155,7 +155,9 @@ const HowSection = styled.section`
 	}
 `;
 
-const HowDiv = styled.div``;
+const HowDiv = styled.div`
+	width: 100%;
+`;
 
 const HowList = styled.ol`
 	list-style-type: none;
@@ -169,7 +171,7 @@ const HowList = styled.ol`
 		display: grid;
 		grid-template-rows: repeat(2, 1fr);
 		grid-template-columns: repeat(2, 1fr);
-		grid-gap: 24px;
+		grid-gap: 48px;
 	}
 `;
 
