@@ -1,6 +1,32 @@
+@font-face {
+  font-family: "sofia-pro";
+  src: local("sofia-pro"),
+    url(./fonts/Sofia/Sofia\ Pro\ Bold\ Az.otf) format("opentype");
+  /* other formats include: 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
+}
+
 * {
 	margin: 0;
 	box-sizing: border-box;
+}
+
+h1 {
+  font-weight: bold;
+  color: #fff;
+  font-size: 72px;
+}
+
+h2 {
+  font-weight: bold;
+  color: #fff;
+  font-size: 48px;
+}
+
+h3 {
+  font-weight: bold;
+  color: #07234e;
+  font-size: 36px;
 }
 
 body {

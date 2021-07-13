@@ -1,3 +1,4 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
@@ -11,5 +12,5 @@ const app = (
 			<App />
 		</Auth0ProviderWithHistory>
 	</Router>
+
 );
-ReactDOM.render(<React.StrictMode>{app}</React.StrictMode>, document.getElementById('root'));
