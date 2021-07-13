@@ -97,7 +97,7 @@ const Options = styled.div`
 
 const ItemsContainer = styled.div`
 	overflow-y: scroll;
-	height: 60%;
+	height: 50%;
 `;
 
 const QuizURLSection = styled.div`
@@ -105,6 +105,12 @@ const QuizURLSection = styled.div`
 `;
 
 const QuizTitleSection = styled.div`
+	display: flex;
+	align-items: flex-end;
+	margin-bottom: 20px;
+`;
+
+const QuizPrivacySelector = styled.div`
 	display: flex;
 	align-items: flex-end;
 	margin-bottom: 20px;
@@ -127,6 +133,37 @@ const TextInput = styled.input`
 	margin-top: 20px;
 	margin-left: 20px;
 	font-size: 18px;
+`;
+
+const SelectWrapper = styled.div`
+	border-radius: 36px;
+	width: 60%;
+	display: inline-block;
+	overflow: hidden;
+	background: #ffffff;
+	border: 0px solid #ffffff;
+	margin-left: 20px;
+`;
+
+const Select = styled.select`
+	border-radius: 20px;
+	width: 100%;
+	height: 30px;
+	background: white;
+	color: black;
+	padding-left: 5px;
+	font-size: 14px;
+	border: solid #fff;
+	border-width: 0px;
+
+	option {
+		color: black;
+		background: white;
+		display: block;
+		white-space: pre;
+		min-height: 20px;
+		padding: 0px 2px 1px;
+	}
 `;
 
 const ItemInput = styled.input`
@@ -207,6 +244,7 @@ const CreatorDashboard = () => {
 	const classes = useStyles();
 	const [inputList, setInputList] = useState([{ item: '', emoji: '\u{1F601}', emojiUni: '' }]);
 	const [quizName, setQuizName] = useState('');
+	const [quizPrivacy, setQuizPrivacy] = useState('Private');
 	const [quizURL, setQuizURL] = useState('');
 	const [numItems, setNumItems] = useState(0);
 	const [currentEmojiSelectionField, setCurrentEmojiSelectionField] = useState(0);
@@ -244,6 +282,12 @@ const CreatorDashboard = () => {
 		setQuizName(quizName.slice(0, 0) + title);
 	};
 
+	const handlePrivacySet = e => {
+		const privacySetting = e.target.value;
+		console.log(privacySetting);
+		setQuizPrivacy(quizPrivacy.slice(0, 0) + privacySetting);
+	};
+
 	const handleAddItemField = () => {
 		setNumItems(numItems + 1);
 		setInputList([...inputList, { item: '', emoji: '\u{1F601}', emojiUni: '' }]);
@@ -255,7 +299,8 @@ const CreatorDashboard = () => {
 
 	const handleOnCreate = () => {
 		console.log(quizName);
-		console.log([quizName].concat(inputList));
+		console.log(quizPrivacy);
+		console.log([quizName].concat([quizPrivacy]).concat(inputList));
 	};
 
 	return (
@@ -288,6 +333,15 @@ const CreatorDashboard = () => {
 						<FormLabel>Question:</FormLabel>
 						<TextInput type="text" name="quizName" onChange={e => handleQuizNameChange(e)} />
 					</QuizTitleSection>
+					<QuizPrivacySelector>
+						<FormLabel>Results Privacy:</FormLabel>
+						<SelectWrapper>
+							<Select onChange={e => handlePrivacySet(e)}>
+								<option value="Public">Public</option>
+								<option value="Private">Private</option>
+							</Select>
+						</SelectWrapper>
+					</QuizPrivacySelector>
 					<div className="question-section"></div>
 					<Options>
 						<QuizItemHeader>Item</QuizItemHeader>
@@ -339,7 +393,6 @@ const CreatorDashboard = () => {
 							);
 						})}
 					</ItemsContainer>
-
 					<AddItemButton
 						onClick={() => {
 							handleAddItemField();
@@ -347,7 +400,6 @@ const CreatorDashboard = () => {
 					>
 						Add Item
 					</AddItemButton>
-
 					<FormOptionsSection>
 						<QuizTitleSection>
 							<FormLabel>Quiz URL:</FormLabel>
