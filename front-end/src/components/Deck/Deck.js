@@ -3,7 +3,6 @@ import { useSprings } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
 import theme from '../Theme/theme';
 import Card from '../Card/Card';
-import matchUp from '../../data/mockMatchUp';
 
 const to = i => ({
 	x: 0,
@@ -31,12 +30,9 @@ const from = i => ({
 
 const trans = (r, s) => `perspective(1500px) rotateX(30deg) rotateY(${r / 10}deg) rotateZ(${r}deg) scale(${s})`;
 
-
-const Deck = ({ num_choices, quizId, updateProgress }) => {
+const Deck = ({ num_choices, frontPair, backPair, quizId, updateProgress, setFront, setBack }) => {
 	const [gone] = useState(() => new Set()); // The set flags all the cards that are picked
 
-  const [frontPair, setFront] = useState(matchUp[0]);
-  const [backPair, setBack] = useState(matchUp[1]);
 	const [frontIndex, updateFrontIndex] = useState(num_choices - 1);
 	const [backIndex, updateBackIndex] = useState(num_choices - 2);
 
@@ -66,6 +62,18 @@ const Deck = ({ num_choices, quizId, updateProgress }) => {
 				console.error('Error:', error);
 			});
 	};
+
+  const getMatchUp = () => {
+    fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz-matchup/60ec04f3284909517f15152b')
+          .then(response => response.json())
+          .then(data => {
+        // console.log(data);
+            setBack(data)
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+  }
 
 	// Create a gesture, we're interested in down-state, delta (current-pos - click-pos), direction and velocity
 	const bind = useDrag(({ args: [index], down, movement: [mx], direction: [xDir], velocity }) => {
@@ -135,16 +143,7 @@ const Deck = ({ num_choices, quizId, updateProgress }) => {
 				updateFrontIndex(frontIndex - 1);
 				updateBackIndex(backIndex - 1);
         setFront(backPair);
-        // useEffect(() => {
-	// 	fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz-matchup/60ec04f3284909517f15152b')
-	//       .then(response => response.json())
-	//       .then(data => {
-	// 		console.log(data);
-	//       })
-	//       .catch((error) => {
-	//         console.error('Error:', error);
-	//       });
-	// }, []);
+        getMatchUp();
 			}
 
 			return {

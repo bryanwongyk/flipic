@@ -21,7 +21,7 @@ const StyledQuestion = styled.p`
 	color: ${theme.color.background.secondary};
 `;
 
-const Quiz = ({ quizInfo }) => {
+const Quiz = ({ quizInfo, frontPair, backPair, setFront, setBack }) => {
 	const [progress, updateProgress] = useState(0);
 
 	return (
@@ -31,12 +31,11 @@ const Quiz = ({ quizInfo }) => {
 			<StyledDeck 
 				num_choices={quizInfo.data.num_choices} 
 				quizId={quizInfo.data._id}
-				// frontPair={frontPair}
-				// backPair={backPair}
+				frontPair={frontPair}
+				backPair={backPair}
 				updateProgress={updateProgress}
-				// setFront={setFront} 
-				// setBack={setBack} 
-				/>
+				setFront={setFront} 
+				setBack={setBack} />
 			<ProgressBar progress={progress} />
 		</>
 	);
