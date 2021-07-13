@@ -2,7 +2,8 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('_helpers/db');
-const User = db.User;
+const Quiz = db.Quiz;
+const Item = db.Item;
 
 module.exports = {
     authenticate,
@@ -10,11 +11,14 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    getMatchup,
+    recordVote,
+    getResults
 };
 
 async function authenticate({ username, password }) {
-    const user = await User.findOne({ username });
+    const user = await Quiz.findOne({ username });
     if (user && bcrypt.compareSync(password, user.hash)) {
         const token = jwt.sign({ sub: user.id }, config.secret, { expiresIn: '7d' });
         return {
@@ -24,29 +28,36 @@ async function authenticate({ username, password }) {
     }
 }
 
-async function getAll() {
-    return await User.find();
+async function getAll(userId) {
+    return await Quiz.find({userId:userId});
 }
 
 async function getById(id) {
-    return await User.findById(id);
+    return await Quiz.findById(id);
 }
 
-async function create(userParam) {
-    // validate
-    if (await User.findOne({ username: userParam.username })) {
-        throw 'Username "' + userParam.username + '" is already taken';
+async function create(quizParam, userId) {
+    // put items into list
+    itemlist = []
+    for (let i = 0; i < quizParam.items.length; i++) {
+        var item = {
+            "name" : quizParam.items[i]["name"],
+            numSuccess : 0,
+            icon: quizParam.items[i]["icon"]
+        }
+        itemlist.push(item) 
+    }
+    console.log(itemlist)
+    // create quiz object
+    var quiz = {
+        name: quizParam["name"],
+        hash: "711112333",
+        items : itemlist,
+        userId : userId
     }
 
-    const user = new User(userParam);
-
-    // hash password
-    if (userParam.password) {
-        user.hash = bcrypt.hashSync(userParam.password, 10);
-    }
-
-    // save user
-    await user.save();
+    var quizObject = new Quiz(quiz);
+    await quizObject.save();
 }
 
 async function update(id, userParam) {
@@ -70,5 +81,44 @@ async function update(id, userParam) {
 }
 
 async function _delete(id) {
-    await User.findByIdAndRemove(id);
+    await Quiz.findByIdAndRemove(id);
+}
+
+async function getMatchup(quizId){
+    var quiz  =  await Quiz.findById(quizId)
+    var matchup = []
+    for(var i=0;i<2;i++){
+        var rndIdx = Math.floor(Math.random() * quiz.items.length);
+        matchup.push(quiz.items[rndIdx])
+    }
+    return matchup
+}
+
+async function recordVote(quizId, itemId){
+    var found = false
+    var quiz  = await Quiz.findById(quizId)
+
+    quiz.items.forEach((item) =>{
+        if(item.id === itemId){
+            found = true
+            item.numSuccess += 1
+        }
+    })
+    
+    if( found){
+        await quiz.save()
+    }else{
+        throw "Item not found!"
+    }
+
+    
+}
+
+async function getResults(quizId){
+    var quiz  = await Quiz.findById(quizId)
+    return quiz.items.sort(function(a,b){
+        if(a.numSuccess < b.numSuccess)return 1
+        if(a.numSuccess > b.numSuccess)return -1
+        return 0
+    });
 }
