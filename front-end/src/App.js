@@ -4,13 +4,15 @@ import Quiz from './components/pages/Quiz/Quiz';
 import CreatorDashboard from './components/pages/CreatorDashboard/CreatorDashboard';
 import Layout from './components/Navigation/Layout/Layout';
 import { useAuth0 } from '@auth0/auth0-react';
+import LoadingPage from './components/pages/LoadingPage/LoadingPage';
 
 function App() {
-	const { user, isAuthenticated } = useAuth0();
+	const { isLoading } = useAuth0();
 
-	if (isAuthenticated) {
-		console.log(user);
+	if (isLoading) {
+		return <LoadingPage />;
 	}
+
 	const routes = (
 		<Switch>
 			<Route path="/" exact component={LandingPage} />
