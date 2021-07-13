@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import PrimaryButton from '../../../Button/Primary/PrimaryButton.js';
 import styled from 'styled-components';
 import bp from '../../../Theme/breakpoints';
+import AuthenticationButton from '../../../Auth/AuthenticationButton/AuthenticationButton';
 
 const MenuNav = styled.nav`
 	font-weight: bold;
@@ -26,7 +26,7 @@ const Menu = () => {
 		<MenuNav>
 			<StyledLink to="/">Home</StyledLink>
 			<StyledLink to="/demo">Demo</StyledLink>
-			<PrimaryButton>Get Started</PrimaryButton>
+			<AuthenticationButton>Get Started</AuthenticationButton>
 		</MenuNav>
 	);
 };

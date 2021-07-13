@@ -3,8 +3,14 @@ import LandingPage from './components/pages/LandingPage/LandingPage';
 import Quiz from './components/pages/Quiz/Quiz';
 import CreatorDashboard from './components/pages/CreatorDashboard/CreatorDashboard';
 import Layout from './components/Navigation/Layout/Layout';
+import { useAuth0 } from '@auth0/auth0-react';
 
 function App() {
+	const { user, isAuthenticated } = useAuth0();
+
+	if (isAuthenticated) {
+		console.log(user);
+	}
 	const routes = (
 		<Switch>
 			<Route path="/" exact component={LandingPage} />
