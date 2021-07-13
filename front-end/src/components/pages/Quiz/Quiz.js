@@ -29,7 +29,7 @@ const Quiz = ({ quizInfo, frontPair, backPair, setFront, setBack }) => {
 			<StyledSurveyHeader>{quizInfo.data.name}</StyledSurveyHeader>
 			{/* <StyledQuestion>{data.questions[0].question}</StyledQuestion> */}
 			<StyledDeck 
-				num_choices={quizInfo.data.num_choices} 
+				num_choices={5} 
 				quizId={quizInfo.data._id}
 				frontPair={frontPair}
 				backPair={backPair}

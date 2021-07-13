@@ -32,7 +32,7 @@ const Card = (props) => {
             </animated.div>
         );
     }else if (props.i == props.backIndex) {
-        console.log(props.i);
+        // console.log(props.i);
         // console.log(props.backPair);
         return (
             <animated.div key={props.i} style={{ x, y }}>
