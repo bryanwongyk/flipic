@@ -2,9 +2,9 @@ import StyledDeck from '../../Deck/StyledDeck';
 import data from '../../../data/mockQuizData';
 import styled from 'styled-components';
 import theme from '../../Theme/theme';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import ProgressBar from '../../ProgressBar/ProgressBar';
-
+import TutorialOverlay from '../../TutorialOverlay/TutorialOverlay';
 
 const StyledSurveyHeader = styled.h3`
 	padding: 0.5em 1em 0em 1em;
@@ -22,26 +22,28 @@ const StyledQuestion = styled.p`
 	color: ${theme.color.background.secondary};
 `;
 
-const Quiz = () => {
+const Quiz = ({ isDemo }) => {
 	const [progress, updateProgress] = useState(0);
+	const [tutorialShown, updateTutorialShown] = useState(true);
 
 	useEffect(() => {
 		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz/60ec04f3284909517f15152b')
-          .then(response => response.json())
-          .then(data => {
-            console.log('Success:', data);
-          })
-          .catch((error) => {
-            console.error('Error:', error);
-          });
+			.then(response => response.json())
+			.then(data => {
+				console.log('Success:', data);
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
 	}, []);
 
 	return (
 		<>
+			{tutorialShown ? <TutorialOverlay /> : null}
 			<StyledSurveyHeader>{data.topic}</StyledSurveyHeader>
 			<StyledQuestion>{data.questions[0].question}</StyledQuestion>
-			<StyledDeck data={data} updateProgress={updateProgress}/>
-			<ProgressBar progress={progress}/>
+			<StyledDeck data={data} updateProgress={updateProgress} />
+			<ProgressBar progress={progress} />
 		</>
 	);
 };
