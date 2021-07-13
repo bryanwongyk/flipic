@@ -1,5 +1,4 @@
 import StyledDeck from '../../Deck/StyledDeck';
-import data from '../../../data/mockQuizData';
 import styled from 'styled-components';
 import theme from '../../Theme/theme';
 import React, { useEffect, useState } from 'react';
@@ -36,7 +35,7 @@ const InformationBtnWrapper = styled.div`
 	z-index: 5;
 `;
 
-const Quiz = ({ isDemo }) => {
+const Quiz = ({ quizInfo, frontPair, backPair, setFront, setBack, isDemo }) => {
 	const [progress, updateProgress] = useState(0);
 	const [tutorialShown, updateTutorialShown] = useState(false);
 
@@ -48,26 +47,22 @@ const Quiz = ({ isDemo }) => {
 		updateTutorialShown(true);
 	};
 
-	useEffect(() => {
-		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz/60ec04f3284909517f15152b')
-			.then(response => response.json())
-			.then(data => {
-				console.log('Success:', data);
-			})
-			.catch(error => {
-				console.error('Error:', error);
-			});
-	}, []);
-
 	return (
 		<>
 			{tutorialShown ? <TutorialOverlay handleClose={handleCloseTutorial} /> : null}
 			<InformationBtnWrapper>
 				<InformationButton onClick={handleOpenTutorial} />
 			</InformationBtnWrapper>
-			<StyledSurveyHeader>{data.topic}</StyledSurveyHeader>
-			<StyledQuestion>{data.questions[0].question}</StyledQuestion>
-			<StyledDeck data={data} updateProgress={updateProgress} />
+			<StyledSurveyHeader>{quizInfo.data.name}</StyledSurveyHeader>
+			{/* <StyledQuestion>{data.questions[0].question}</StyledQuestion> */}
+			<StyledDeck 
+				num_choices={5} 
+				quizId={quizInfo.data._id}
+				frontPair={frontPair}
+				backPair={backPair}
+				updateProgress={updateProgress}
+				setFront={setFront} 
+				setBack={setBack} />
 			<ProgressBar progress={progress} />
 		</>
 	);

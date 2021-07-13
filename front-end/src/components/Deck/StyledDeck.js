@@ -2,12 +2,19 @@ import styled from 'styled-components';
 import Deck from './Deck';
 import theme from '../Theme/theme';
 
-const StyledDeck = ({ data, updateProgress }) => {
-	return (
-		<DeckWrapper>
-			<Deck data={data} updateProgress={updateProgress} />
-		</DeckWrapper>
-	);
+const StyledDeck = ({num_choices, updateProgress, frontPair, backPair, quizId, setFront, setBack}) => {
+  return (
+    <DeckWrapper>
+      <Deck 
+	  	quizId={quizId}
+	  	num_choices={num_choices} 
+		frontPair={frontPair}
+		backPair={backPair}
+		updateProgress={updateProgress}
+		setFront={setFront} 
+		setBack={setBack}/>
+    </DeckWrapper>
+  );
 };
 
 const DeckWrapper = styled.div`
@@ -16,18 +23,18 @@ const DeckWrapper = styled.div`
 	width: 100%;
 	height: 100%;
 
-	& > div {
-		position: absolute;
-		top: -20vh;
-		width: 100vw;
-		height: 100vh;
-		will-change: transform;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		touch-action: none;
-		overflow: auto;
-	}
+  & > div {
+    position: absolute;
+    top: -10vh;
+    width: 100vw;
+    height: 100vh;
+    will-change: transform;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+    overflow: auto
+  }
 
 	& > div > div {
 		width: 60vw;
