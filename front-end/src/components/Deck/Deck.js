@@ -20,8 +20,8 @@ const Deck = ({data, updateProgress}) => {
     from: from(i),
   })); 
 
-  const sendChoice = (payload) =>{
-    fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz-vote', {
+  const sendChoice = (payload) => {
+    fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz-vote', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -72,8 +72,8 @@ const Deck = ({data, updateProgress}) => {
           lWidth = '0%';
           rWidth = '100%';
           payload = {
-            "quizId": "000",
-            "itemId": "right"
+            "quizId": "60ec04f3284909517f15152b",
+            "itemId": "60ec04f3284909517f15152c"
           }
           if (isGone) sendChoice(payload);
         } else if (x < 0) {
@@ -82,8 +82,8 @@ const Deck = ({data, updateProgress}) => {
           lWidth = '100%';
           rWidth = '0%';
           payload = {
-            "quizId": "000",
-            "itemId": "left"
+            "quizId": "60ec04f3284909517f15152b",
+            "itemId": "60ec04f3284909517f15152d"
           }
           if (isGone) sendChoice(payload);
         } else {
