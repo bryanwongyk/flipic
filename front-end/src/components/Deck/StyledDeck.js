@@ -2,10 +2,18 @@ import styled from "styled-components";
 import Deck from "./Deck";
 import theme from "../Theme/theme";
 
-const StyledDeck = ({data, updateProgress}) => {
+const StyledDeck = ({num_choices, updateProgress, quizId }) => {
   return (
     <DeckWrapper>
-      <Deck data={data} updateProgress={updateProgress}/>
+      <Deck 
+	  	quizId={quizId}
+	  	num_choices={num_choices} 
+		// frontPair={frontPair}
+		// backPair={backPair}
+		updateProgress={updateProgress}
+		// setFront={setFront} 
+		// setBack={setBack}
+		/>
     </DeckWrapper>
   );
 };
