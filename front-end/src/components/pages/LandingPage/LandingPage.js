@@ -10,6 +10,7 @@ import Survey from '../../../assets/svgs/survey.svg';
 import ViewResults from '../../../assets/svgs/view-results.svg';
 import bp from '../../Theme/breakpoints';
 import Footer from '../../Navigation/Footer/Footer';
+import SignupButton from '../../Auth/SignupButton/SignupButton';
 
 const PageWrapper = styled.div`
 	padding: 0 48px 64px 48px;
@@ -238,7 +239,7 @@ const ActionImg = styled.img`
 	}
 `;
 
-const CTAButton = styled(PrimaryButton)`
+const CTAButton = styled(SignupButton)`
 	font-size: 1rem;
 	padding-left: 16px;
 	padding-right: 16px;
@@ -275,9 +276,9 @@ const LandingPage = () => {
 								<AboutPara>
 									With Flipic, you can easily create <b>professional, fun and insightful surveys.</b>
 									<br /> <br />
-									The tool automatically groups survey options into cards, which users can swipe to make
-									their decisions. This means that users only need to choose between two options at a
-									time, leading to Flipics being <b>easier and more enjoyable to answer.</b>
+									The tool automatically groups survey options into cards, which users can swipe to
+									make their decisions. This means that users only need to choose between two options
+									at a time, leading to Flipics being <b>easier and more enjoyable to answer.</b>
 									<br /> <br />
 									Our algorithms do all the hard work for you to rank the results. You can{' '}
 									<b>focus on doing what matters.</b>
@@ -297,7 +298,8 @@ const LandingPage = () => {
 								<HowTextWrapper>
 									<HowHeading>1. Create</HowHeading>
 									<p>
-										No prior knowledge is needed, just log-in and follow the instructions to get started
+										No prior knowledge is needed, just log-in and follow the instructions to get
+										started
 									</p>
 								</HowTextWrapper>
 							</HowItem>
@@ -333,9 +335,7 @@ const LandingPage = () => {
 				</HowSection>
 				<GlassmorphicWrapper>
 					<CTASectionHeader>Have a decision to make?</CTASectionHeader>
-					<CTAButton style={{ fontSize: '1.5rem', paddingLeft: '16px', paddingRight: '16px' }}>
-						Get Started
-					</CTAButton>
+					<CTAButton style={{ fontSize: '1.5rem', paddingLeft: '16px', paddingRight: '16px' }} />
 				</GlassmorphicWrapper>
 			</PageWrapper>
 			<Footer />
