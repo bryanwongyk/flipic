@@ -2,7 +2,7 @@ import StyledDeck from '../../Deck/StyledDeck';
 import data from '../../../data/mockQuizData';
 import styled from 'styled-components';
 import theme from '../../Theme/theme';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProgressBar from '../../ProgressBar/ProgressBar';
 
 
@@ -24,6 +24,17 @@ const StyledQuestion = styled.p`
 
 const Quiz = () => {
 	const [progress, updateProgress] = useState(0);
+
+	useEffect(() => {
+		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz/60ec04f3284909517f15152b')
+          .then(response => response.json())
+          .then(data => {
+            console.log('Success:', data);
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+	}, []);
 
 	return (
 		<>
