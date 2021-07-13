@@ -244,7 +244,7 @@ const CreatorDashboard = () => {
 	const classes = useStyles();
 	const [inputList, setInputList] = useState([{ item: '', emoji: '\u{1F601}', emojiUni: '' }]);
 	const [quizName, setQuizName] = useState('');
-	const [quizPrivacy, setQuizPrivacy] = useState('Private');
+	const [quizPrivacy, setQuizPrivacy] = useState('');
 	const [quizURL, setQuizURL] = useState('');
 	const [numItems, setNumItems] = useState(0);
 	const [currentEmojiSelectionField, setCurrentEmojiSelectionField] = useState(0);
