@@ -18,6 +18,8 @@ const Auth0ProviderWithHistory = ({ children }) => {
 			clientId={clientId}
 			redirectUri={window.location.origin}
 			onRedirectCallback={onRedirectCallback}
+			audience="https://dev-bwkc1q2n.us.auth0.com/api/v2/"
+			scope="read:current_user update:current_user_metadata"
 		>
 			{children}
 		</Auth0Provider>
