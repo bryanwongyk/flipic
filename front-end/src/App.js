@@ -8,8 +8,8 @@ import useUserMetadata from './hooks/useUserMetadata';
 
 function App() {
 	const { user, isAuthenticated } = useAuth0();
-	const userMetadata = useUserMetadata();
-	console.log(userMetadata);
+	const { accessToken } = useUserMetadata();
+	console.log(accessToken);
 
 	if (isAuthenticated) {
 		console.log(user);

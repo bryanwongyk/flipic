@@ -4,6 +4,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 const useUserMetadata = () => {
 	const { user, getAccessTokenSilently } = useAuth0();
 	const [userMetadata, setUserMetadata] = useState(null);
+	const [accessToken, setAccessToken] = useState(null);
 
 	useEffect(() => {
 		const getUserMetadata = async () => {
@@ -14,7 +15,7 @@ const useUserMetadata = () => {
 					audience: `https://${domain}/api/v2/`,
 					scope: 'read:current_user',
 				});
-				console.log(accessToken);
+				setAccessToken(accessToken);
 
 				const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user.sub}`;
 
@@ -34,7 +35,7 @@ const useUserMetadata = () => {
 
 		getUserMetadata();
 	}, []);
-	return userMetadata;
+	return { userMetadata, accessToken };
 };
 
 export default useUserMetadata;
