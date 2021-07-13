@@ -15,34 +15,36 @@ const EmojiPicker = styled.div`
 `;
 
 const QuizForm = styled.div`
-  display: block;
+  width: 90%;
   background-color: #5abe93;
-  width: 40%;
   height: 600px;
   padding: 20px;
   border: solid #fff;
   border-width: 2px;
   border-radius: 15px;
-  margin: 20px;
+  margin-bottom: 40px;
+  margin-left: 20px;
   text-align: left;
+  display: block;
   @media ${bp.sm} {
-    width: 90%;
+    width: 40%;
   }
 `;
 
 const MyProfile = styled.div`
+  width: 90%;
   display: block;
   background-color: #b2d9b7;
-  width: 40%;
   height: 600px;
   padding: 20px;
   text-align: left;
   border: solid #fff;
   border-width: 2px;
   border-radius: 15px;
-  margin: 20px;
+  margin-bottom: 40px;
+  margin-left: 20px;
   @media ${bp.sm} {
-    width: 90%;
+    width: 40%;
   }
 `;
 
@@ -69,14 +71,15 @@ const UserDashboard = styled.div`
 `;
 
 const UserDashboardContent = styled.div`
-  display: flex;
+  display: block;
   margin: 20px;
-  justify-content: center;
   align-items: center;
+  flex-direction: column;
   @media ${bp.sm} {
-    display: inline-flex;
+    display: flex;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: row;
+    margin: 20px;
   }
 `;
 
