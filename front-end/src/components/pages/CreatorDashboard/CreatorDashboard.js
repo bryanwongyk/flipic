@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
@@ -182,26 +182,33 @@ const useStyles = makeStyles((theme) => ({
 
 const CreatorDashboard = () => {
   const classes = useStyles();
-  const [inputList, setInputList] = useState([{ item: "", emoji: "" }]);
+  const [inputList, setInputList] = useState([
+    { item: "", emoji: "\u{1F601}" },
+  ]);
   const [quizName, setQuizName] = useState("");
   const [quizURL, setQuizURL] = useState("");
-  const [numQuestions, setNumQuestions] = useState(0);
-  const [chosenEmoji, setChosenEmoji] = useState(null);
+  const [numItems, setNumItems] = useState(0);
+  const [currentEmojiSelectionField, setCurrentEmojiSelectionField] =
+    useState(0);
   const [emojiSelectorClicked, setEmojiSelectorClicked] = useState(null);
 
   const onEmojiClick = (event, emojiObject) => {
-    setChosenEmoji(emojiObject.emoji);
+    const list = [...inputList];
+    console.log(emojiObject.emoji);
+    list[currentEmojiSelectionField].emoji = emojiObject.emoji;
+    setInputList(list);
     setEmojiSelectorClicked(false);
   };
 
-  const handleEmojiInputClick = () => {
+  const handleEmojiInputClick = (i) => {
     setEmojiSelectorClicked(true);
+    setCurrentEmojiSelectionField(i);
   };
 
   const handleInputChange = (e, index) => {
     const { item, value } = e.target;
     const list = [...inputList];
-    list[index][item] = value;
+    list[index].item = value;
     setInputList(list);
   };
 
@@ -213,18 +220,23 @@ const CreatorDashboard = () => {
     }
   };
 
+  const handleQuizNameChange = (e) => {
+    const title = e.target.value;
+    setQuizName(quizName.slice(0, 0) + title);
+  };
+
   const handleAddItemField = () => {
-    setNumQuestions(numQuestions + 1);
-    setInputList([...inputList, { item: "" }]);
+    setNumItems(numItems + 1);
+    setInputList([...inputList, { item: "", emoji: "\u{1F601}" }]);
   };
 
   const handleAddQuestionField = () => {
-    setNumQuestions(numQuestions + 1);
-    setInputList([...inputList, { item: "" }]);
+    return null;
   };
 
   const handleOnCreate = () => {
-    console.log(inputList);
+    console.log(quizName);
+    console.log([quizName].concat(inputList));
   };
 
   return (
@@ -234,34 +246,32 @@ const CreatorDashboard = () => {
         <UserDashboardContent>
           <MyProfile>
             <h3>My Profile</h3>
-            <form action="" class="form-horizontal">
-              <QuizTitleSection>
-                <FormLabel>Email:</FormLabel>
-                <TextInput
-                  type="text"
-                  name="title"
-                  onchange={(text) => setQuizName(text)}
-                />
-              </QuizTitleSection>
+            <QuizTitleSection>
+              <FormLabel>Email:</FormLabel>
+              <TextInput
+                type="text"
+                name="title"
+                onchange={(text) => setQuizName(text)}
+              />
+            </QuizTitleSection>
 
-              <QuizTitleSection>
-                <FormLabel>Account Created:</FormLabel>
-                <TextInput
-                  type="text"
-                  name="title"
-                  onchange={(text) => setQuizName(text)}
-                />
-              </QuizTitleSection>
+            <QuizTitleSection>
+              <FormLabel>Account Created:</FormLabel>
+              <TextInput
+                type="text"
+                name="title"
+                onchange={(text) => setQuizName(text)}
+              />
+            </QuizTitleSection>
 
-              <QuizTitleSection>
-                <FormLabel>Field 3:</FormLabel>
-                <TextInput
-                  type="text"
-                  name="title"
-                  onchange={(text) => setQuizName(text)}
-                />
-              </QuizTitleSection>
-            </form>
+            <QuizTitleSection>
+              <FormLabel>Field 3:</FormLabel>
+              <TextInput
+                type="text"
+                name="title"
+                onchange={(text) => setQuizName(text)}
+              />
+            </QuizTitleSection>
 
             <h3>My Quizzes</h3>
           </MyProfile>
@@ -272,8 +282,8 @@ const CreatorDashboard = () => {
               <FormLabel>Question:</FormLabel>
               <TextInput
                 type="text"
-                name="title"
-                onchange={(text) => setQuizName(text)}
+                name="quizName"
+                onChange={(e) => handleQuizNameChange(e)}
               />
             </QuizTitleSection>
             <div className="question-section"></div>
@@ -281,13 +291,12 @@ const CreatorDashboard = () => {
               <QuizItemHeader>Item</QuizItemHeader>
               <QuizEmojiHeader>Emoji</QuizEmojiHeader>
             </Options>
+            {emojiSelectorClicked && (
+              <EmojiPicker>
+                <Picker onEmojiClick={onEmojiClick} />
+              </EmojiPicker>
+            )}
             <ItemsContainer>
-              {emojiSelectorClicked && (
-                <EmojiPicker>
-                  <Picker onEmojiClick={onEmojiClick} />
-                </EmojiPicker>
-              )}
-
               {inputList.map((x, i) => {
                 return (
                   <Options>
@@ -296,17 +305,15 @@ const CreatorDashboard = () => {
                       name="item"
                       onChange={(e) => handleInputChange(e, i)}
                     />
-
                     <EmojiInput
                       type="itemText"
                       name="item"
-                      defaultValue={"\u{1F601}"}
+                      value={inputList[i].emoji}
+                      onChange={() => null}
                       onClick={() => {
-                        handleEmojiInputClick();
+                        handleEmojiInputClick(i);
                       }}
-                      onChange={(e) => handleInputChange(e, i)}
                     />
-
                     {inputList.length !== 1 ? (
                       <IconButton
                         disableRipple
@@ -329,25 +336,18 @@ const CreatorDashboard = () => {
                       >
                         <ClearIcon />
                       </IconButton>
-                    )}
+                    )}{" "}
                   </Options>
                 );
               })}
             </ItemsContainer>
+
             <AddItemButton
               onClick={() => {
                 handleAddItemField();
               }}
             >
               Add Item
-            </AddItemButton>
-
-            <AddItemButton
-              onClick={() => {
-                handleAddQuestionField();
-              }}
-            >
-              Add Question
             </AddItemButton>
 
             <FormOptionsSection>
