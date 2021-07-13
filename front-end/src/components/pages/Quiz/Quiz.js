@@ -38,7 +38,7 @@ const InformationBtnWrapper = styled.div`
 
 const Quiz = ({ isDemo }) => {
 	const [progress, updateProgress] = useState(0);
-	const [tutorialShown, updateTutorialShown] = useState(true);
+	const [tutorialShown, updateTutorialShown] = useState(false);
 
 	const handleCloseTutorial = () => {
 		updateTutorialShown(false);
