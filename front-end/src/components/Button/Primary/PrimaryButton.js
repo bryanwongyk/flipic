@@ -17,10 +17,12 @@ const StyledButton = styled.button`
 	}
 `;
 
-const PrimaryButton = ({ children, style }) => {
+const PrimaryButton = ({ children, style, onClick }) => {
 	return (
 		<>
-			<StyledButton style={style}>{children}</StyledButton>
+			<StyledButton style={style} onClick={onClick}>
+				{children}
+			</StyledButton>
 		</>
 	);
 };
