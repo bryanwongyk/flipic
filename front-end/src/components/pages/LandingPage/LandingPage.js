@@ -9,6 +9,7 @@ import Share from '../../../assets/svgs/share.svg';
 import Survey from '../../../assets/svgs/survey.svg';
 import ViewResults from '../../../assets/svgs/view-results.svg';
 import bp from '../../Theme/breakpoints';
+import Footer from '../../Navigation/Footer/Footer';
 
 const PageWrapper = styled.div`
 	padding: 0 48px 64px 48px;
@@ -249,93 +250,96 @@ const CTAButton = styled(PrimaryButton)`
 
 const LandingPage = () => {
 	return (
-		<PageWrapper>
-			<HeroSection>
-				<div>
-					<HeroHeader>Introducing Flipic</HeroHeader>
-					<HeroSubHeader>
-						A fun approach to collecting data <br />
-						for data-driven decision-making
-					</HeroSubHeader>
-					<ScrollCTADiv>
-						<ScrollDownCta />
-						<ScrollCTAPara>scroll down</ScrollCTAPara>
-					</ScrollCTADiv>
-				</div>
-				<HeroImg src={CardStack} alt="Stack of cards" />
-			</HeroSection>
-			<AboutSection>
+		<>
+			<PageWrapper>
+				<HeroSection>
+					<div>
+						<HeroHeader>Introducing Flipic</HeroHeader>
+						<HeroSubHeader>
+							A fun approach to collecting data <br />
+							for data-driven decision-making
+						</HeroSubHeader>
+						<ScrollCTADiv>
+							<ScrollDownCta />
+							<ScrollCTAPara>scroll down</ScrollCTAPara>
+						</ScrollCTADiv>
+					</div>
+					<HeroImg src={CardStack} alt="Stack of cards" />
+				</HeroSection>
+				<AboutSection>
+					<GlassmorphicWrapper>
+						<AboutWrapper>
+							<AboutImg src={About} alt="About" />
+							<AboutTextWrapper>
+								<AboutSectionHeader>Decision-making for everyone.</AboutSectionHeader>
+								<AboutPara>
+									With Flipic, you can easily create <b>professional, fun and insightful surveys.</b>
+									<br /> <br />
+									The tool automatically groups survey options into cards, which users can swipe to make
+									their decisions. This means that users only need to choose between two options at a
+									time, leading to Flipics being <b>easier and more enjoyable to answer.</b>
+									<br /> <br />
+									Our algorithms do all the hard work for you to rank the results. You can{' '}
+									<b>focus on doing what matters.</b>
+								</AboutPara>
+							</AboutTextWrapper>
+						</AboutWrapper>
+					</GlassmorphicWrapper>
+				</AboutSection>
+				<HowSection>
+					<HowSectionHeader>How to use Flipic</HowSectionHeader>
+					<HowDiv>
+						<HowList>
+							<HowItem>
+								<HowImgWrapper>
+									<CreateImg src={Create} />
+								</HowImgWrapper>
+								<HowTextWrapper>
+									<HowHeading>1. Create</HowHeading>
+									<p>
+										No prior knowledge is needed, just log-in and follow the instructions to get started
+									</p>
+								</HowTextWrapper>
+							</HowItem>
+							<HowItem>
+								<HowImgWrapper>
+									<ShareImg src={Share} />
+								</HowImgWrapper>
+								<HowTextWrapper>
+									<HowHeading>2. Share</HowHeading>
+									<p>Instantly share your survey with your audience</p>
+								</HowTextWrapper>
+							</HowItem>
+							<HowItem>
+								<HowImgWrapper>
+									<SurveyImg src={Survey} />
+								</HowImgWrapper>
+								<HowTextWrapper>
+									<HowHeading>3. Survey</HowHeading>
+									<p>Gather meaningful data</p>
+								</HowTextWrapper>
+							</HowItem>
+							<HowItem>
+								<HowImgWrapper>
+									<ActionImg src={ViewResults} />
+								</HowImgWrapper>
+								<HowTextWrapper>
+									<HowHeading>4. Take action</HowHeading>
+									<p>View and analyse your results so you can inform your next decision</p>
+								</HowTextWrapper>
+							</HowItem>
+						</HowList>
+					</HowDiv>
+				</HowSection>
 				<GlassmorphicWrapper>
-					<AboutWrapper>
-						<AboutImg src={About} alt="About" />
-						<AboutTextWrapper>
-							<AboutSectionHeader>Decision-making for everyone.</AboutSectionHeader>
-							<AboutPara>
-								With Flipic, you can easily create <b>professional, fun and insightful surveys.</b>
-								<br /> <br />
-								The tool automatically groups survey options into cards, which users can swipe to make
-								their decisions. This means that users only need to choose between two options at a
-								time, leading to Flipics being <b>easier and more enjoyable to answer.</b>
-								<br /> <br />
-								Our algorithms do all the hard work for you to rank the results. You can{' '}
-								<b>focus on doing what matters.</b>
-							</AboutPara>
-						</AboutTextWrapper>
-					</AboutWrapper>
+					<CTASectionHeader>Have a decision to make?</CTASectionHeader>
+					<CTAButton style={{ fontSize: '1.5rem', paddingLeft: '16px', paddingRight: '16px' }}>
+						Get Started
+					</CTAButton>
 				</GlassmorphicWrapper>
-			</AboutSection>
-			<HowSection>
-				<HowSectionHeader>How to use Flipic</HowSectionHeader>
-				<HowDiv>
-					<HowList>
-						<HowItem>
-							<HowImgWrapper>
-								<CreateImg src={Create} />
-							</HowImgWrapper>
-							<HowTextWrapper>
-								<HowHeading>1. Create</HowHeading>
-								<p>
-									No prior knowledge is needed, just log-in and follow the instructions to get started
-								</p>
-							</HowTextWrapper>
-						</HowItem>
-						<HowItem>
-							<HowImgWrapper>
-								<ShareImg src={Share} />
-							</HowImgWrapper>
-							<HowTextWrapper>
-								<HowHeading>2. Share</HowHeading>
-								<p>Instantly share your survey with your audience</p>
-							</HowTextWrapper>
-						</HowItem>
-						<HowItem>
-							<HowImgWrapper>
-								<SurveyImg src={Survey} />
-							</HowImgWrapper>
-							<HowTextWrapper>
-								<HowHeading>3. Survey</HowHeading>
-								<p>Gather meaningful data</p>
-							</HowTextWrapper>
-						</HowItem>
-						<HowItem>
-							<HowImgWrapper>
-								<ActionImg src={ViewResults} />
-							</HowImgWrapper>
-							<HowTextWrapper>
-								<HowHeading>4. Take action</HowHeading>
-								<p>View and analyse your results so you can inform your next decision</p>
-							</HowTextWrapper>
-						</HowItem>
-					</HowList>
-				</HowDiv>
-			</HowSection>
-			<GlassmorphicWrapper>
-				<CTASectionHeader>Have a decision to make?</CTASectionHeader>
-				<CTAButton style={{ fontSize: '1.5rem', paddingLeft: '16px', paddingRight: '16px' }}>
-					Get Started
-				</CTAButton>
-			</GlassmorphicWrapper>
-		</PageWrapper>
+			</PageWrapper>
+			<Footer />
+		</>
 	);
 };
 

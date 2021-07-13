@@ -7,7 +7,7 @@ import ProgressBar from '../../ProgressBar/ProgressBar';
 
 
 const StyledSurveyHeader = styled.h3`
-	padding: 0.0em 1em;
+	padding: 0.5em 1em 0em 1em;
 	text-align: center;
 	color: ${theme.color.background.secondary};
 	font-size: 2.5em;

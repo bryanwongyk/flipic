@@ -21,12 +21,16 @@ const Deck = ({data, updateProgress}) => {
   })); 
 
   const sendChoice = (payload) =>{
-    fetch('https://testflipick.free.beeceptor.com', {
+    fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz-vote', {
             method: 'POST',
             headers: {
-              'Content-Type': 'text',
+              'Content-Type': 'application/json',
             },
-            body: payload,
+            body: JSON.stringify(payload),
+          })
+          .then(response => response.json())
+          .then(payload => {
+            console.log('Success:', payload);
           })
           .catch((error) => {
             console.error('Error:', error);
@@ -59,6 +63,7 @@ const Deck = ({data, updateProgress}) => {
         let bgColor; // change card background color
         let lWidth; // change the width of the left half card
         let rWidth; // change the width of the right half card
+        let payload;
         
         // animate swiping based on the gesture 
         if (x > 0) {
@@ -66,13 +71,21 @@ const Deck = ({data, updateProgress}) => {
           rot = mx / 100 + (isGone ? dir * 10 * velocity : 0); 
           lWidth = '0%';
           rWidth = '100%';
-          // if (isGone) sendChoice('right');
+          payload = {
+            "quizId": "000",
+            "itemId": "right"
+          }
+          if (isGone) sendChoice(payload);
         } else if (x < 0) {
           bgColor = theme.color.accent
           rot = mx / 100 + (isGone ? dir * 10 * velocity : 0); 
           lWidth = '100%';
           rWidth = '0%';
-          // if (isGone) sendChoice('left');
+          payload = {
+            "quizId": "000",
+            "itemId": "left"
+          }
+          if (isGone) sendChoice(payload);
         } else {
           bgColor = theme.color.background.secondary
           rot = 0
