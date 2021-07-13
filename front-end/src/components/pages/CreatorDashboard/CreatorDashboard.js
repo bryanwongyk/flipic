@@ -7,6 +7,7 @@ import SendIcon from "@material-ui/icons/Send";
 import ClearIcon from "@material-ui/icons/Clear";
 import styled from "styled-components";
 import Picker from "emoji-picker-react";
+import bp from "../../Theme/breakpoints";
 
 const EmojiPicker = styled.div`
   z-index: 10;
@@ -24,6 +25,9 @@ const QuizForm = styled.div`
   border-radius: 15px;
   margin: 20px;
   text-align: left;
+  @media ${bp.sm} {
+    width: 90%;
+  }
 `;
 
 const MyProfile = styled.div`
@@ -37,6 +41,9 @@ const MyProfile = styled.div`
   border-width: 2px;
   border-radius: 15px;
   margin: 20px;
+  @media ${bp.sm} {
+    width: 90%;
+  }
 `;
 
 const FormLabel = styled.div`
@@ -66,6 +73,11 @@ const UserDashboardContent = styled.div`
   margin: 20px;
   justify-content: center;
   align-items: center;
+  @media ${bp.sm} {
+    display: inline-flex;
+    justify-content: center;
+    flex-direction: column;
+  }
 `;
 
 const Options = styled.div`
@@ -183,7 +195,7 @@ const useStyles = makeStyles((theme) => ({
 const CreatorDashboard = () => {
   const classes = useStyles();
   const [inputList, setInputList] = useState([
-    { item: "", emoji: "\u{1F601}" },
+    { item: "", emoji: "\u{1F601}", emojiUni: "" },
   ]);
   const [quizName, setQuizName] = useState("");
   const [quizURL, setQuizURL] = useState("");
@@ -196,6 +208,7 @@ const CreatorDashboard = () => {
     const list = [...inputList];
     console.log(emojiObject.emoji);
     list[currentEmojiSelectionField].emoji = emojiObject.emoji;
+    list[currentEmojiSelectionField].emojiUni = emojiObject.unified;
     setInputList(list);
     setEmojiSelectorClicked(false);
   };
@@ -214,10 +227,8 @@ const CreatorDashboard = () => {
 
   const handleRemoveClick = (index) => {
     const list = [...inputList];
-    if (list.length !== 1) {
-      list.splice(index, 1);
-      setInputList(list);
-    }
+    list.splice(index, 1);
+    setInputList(list);
   };
 
   const handleQuizNameChange = (e) => {
@@ -227,7 +238,10 @@ const CreatorDashboard = () => {
 
   const handleAddItemField = () => {
     setNumItems(numItems + 1);
-    setInputList([...inputList, { item: "", emoji: "\u{1F601}" }]);
+    setInputList([
+      ...inputList,
+      { item: "", emoji: "\u{1F601}", emojiUni: "" },
+    ]);
   };
 
   const handleAddQuestionField = () => {
