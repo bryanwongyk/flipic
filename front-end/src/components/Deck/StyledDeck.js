@@ -26,7 +26,7 @@ const DeckWrapper = styled.div`
 
   & > div {
     position: absolute;
-    top: -10vh;
+    top: -18vh;
     width: 100vw;
     height: 100vh;
     will-change: transform;
@@ -34,7 +34,7 @@ const DeckWrapper = styled.div`
     align-items: center;
     justify-content: center;
     touch-action: none;
-    overflow: auto
+    overflow: auto;
   }
 
 	& > div > div {

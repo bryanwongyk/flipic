@@ -2,7 +2,7 @@ import StyledDeck from '../../Deck/StyledDeck';
 import styled from 'styled-components';
 import theme from '../../Theme/theme';
 import React, { useState } from 'react';
-import ProgressBar from '../../ProgressBar/ProgressBar';
+import ProgressBar from '../../Bar/ProgressBar';
 import TutorialOverlay from '../../TutorialOverlay/TutorialOverlay';
 import InformationButton from '../../Button/InformationButton/InformationButton';
 import bp from '../../Theme/breakpoints';

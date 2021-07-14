@@ -4,7 +4,9 @@ import Loader from '../../Loader/Loader';
 import styled from 'styled-components';
 import theme from '../../Theme/theme';
 import GetStartedOverlay from '../../getStartedOverlay/GetStartedOverlay';
+import QuizResult from './QuizResult';
 // import mockQuizData from '../../../data/mockQuizData';
+// import result from '../../../data/mockQuizResult';
 
 const StyledPara = styled.p`
 	margin-top: 24px;
@@ -22,10 +24,13 @@ const StyledLoader = styled.div`
 	align-items: center;
 `;
 
+const quizResultWrapper = styled.div`
+	display: flex;
+`;
+
 const QuizContoller = (props) => {
 	const quizId = props.quizId.match.params.quizId;
 	const [quizInfo, getQuizInfo] = useState(null);
-
 	useEffect(() => {
 		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz/' + quizId)
 	      .then(response => response.json())
@@ -84,10 +89,11 @@ const QuizContoller = (props) => {
 	      });
 	}, [quizDone]);
 
+	const [showResult, setShowResult] = useState(false);
 
 
 	if (!quizDone) {
-		if (quizInfo !== null && frontPair !== null && backPair !== null ) {
+		if (quizInfo !== null && frontPair !== null && backPair !== null) {
 			return (
 				<>
 					<Quiz 
@@ -110,22 +116,27 @@ const QuizContoller = (props) => {
 					</StyledLoader>
 				</>
 			);
+			// console.log(result.data)
+			// return (
+			// 	<p>quiz done</p>
+			// );
 		};
 	}else{
-		if (quizResult === null){
+		setTimeout(() => setShowResult(true),1500);
+		if (quizResult === null || !showResult){
 			return (
 				<>
 					<StyledLoader>
 						<Loader />
-						<StyledPara>Loading Quiz Results...</StyledPara>
+						<StyledPara>Thank you for taking the quiz!</StyledPara>
+						<StyledPara>Loading quiz results...</StyledPara>
 					</StyledLoader>
 				</>
 			);
 		} else {
-			console.log(quizResult.data);
-			return (
-				<p>quiz done</p>
-			);
+			if (quizResult.data !== null) {
+				return <QuizResult result={quizResult}/>
+			}
 		}
 	}
 	
