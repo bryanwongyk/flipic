@@ -23,6 +23,11 @@ const LogoImg = styled.img`
 	width: 120px;
 `;
 
+const MobileMenuWrapper = styled.div`
+	position: fixed;
+	z-index: 2000;
+`;
+
 const NavHeader = () => {
 	const [mobileMenuShown, setMobileMenuShown] = useState(false);
 
@@ -38,10 +43,10 @@ const NavHeader = () => {
 			<Menu />
 			<Hamburger toggleMobileMenu={toggleMobileMenu} />
 			{mobileMenuShown ? (
-				<div>
+				<MobileMenuWrapper>
 					<Backdrop clickHandler={toggleMobileMenu} />
 					<MobileMenu toggleMobileMenu={toggleMobileMenu} />
-				</div>
+				</MobileMenuWrapper>
 			) : null}
 		</NavHeaderDiv>
 	);
