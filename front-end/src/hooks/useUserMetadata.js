@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
-const useUserMetadata = () => {
+const useUserMetadata = setIsBusyGettingAccessToken => {
 	const { user, getAccessTokenSilently } = useAuth0();
 	const [userMetadata, setUserMetadata] = useState(null);
 	const [accessToken, setAccessToken] = useState(null);
@@ -26,8 +26,9 @@ const useUserMetadata = () => {
 				});
 
 				const { user_metadata } = await metadataResponse.json();
-
+				console.log('GETTING USER METADATA');
 				setUserMetadata(user_metadata);
+				setIsBusyGettingAccessToken(false);
 			} catch (e) {
 				console.log(e.message);
 			}
@@ -35,7 +36,7 @@ const useUserMetadata = () => {
 
 		getUserMetadata();
 	}, []);
-	return { userMetadata, accessToken };
+	return { userMetadata, accessToken, user };
 };
 
 export default useUserMetadata;
