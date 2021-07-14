@@ -3,6 +3,8 @@ import Quiz from './Quiz';
 import Loader from '../../Loader/Loader';
 import styled from 'styled-components';
 import theme from '../../Theme/theme';
+import GetStartedOverlay from '../../getStartedOverlay/GetStartedOverlay';
+// import mockQuizData from '../../../data/mockQuizData';
 
 const StyledPara = styled.p`
 	margin-top: 24px;
@@ -41,7 +43,7 @@ const QuizInfo = (props) => {
 		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz-matchup/' + quizId)
 	      .then(response => response.json())
 	      .then(data => {
-			console.log(data);
+			// console.log(data);
 			setFront(data);
 	      })
 	      .catch((error) => {
@@ -53,7 +55,7 @@ const QuizInfo = (props) => {
 		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz-matchup/' + quizId)
 	      .then(response => response.json())
 	      .then(data => {
-			console.log(data);
+			// console.log(data);
 			setBack(data);
 	      })
 	      .catch((error) => {
@@ -61,28 +63,37 @@ const QuizInfo = (props) => {
 	      });
 	}, []);
 
-	const [welcomed, setWelcomed] = useState(true);
+	const [welcomed, setWelcomed] = useState(false);
+	const handleWelcomed = () => {
+		setWelcomed(true);
+	}
 
-	if (welcomed) {
-		if (quizInfo !== null && frontPair !== null && backPair !== null) {
-			console.log(quizInfo);
-			return <Quiz 
-				quizInfo={quizInfo} 
-				frontPair={frontPair} 
-				backPair={backPair} 
-				setFront={setFront} 
-				setBack={setBack} />;
-		}else{
-			return (
+	// console.log(welcomed)
+
+	
+	if (quizInfo !== null && frontPair !== null && backPair !== null) {
+		return (
+			<>
+				<Quiz 
+					quizInfo={quizInfo} 
+					frontPair={frontPair} 
+					backPair={backPair} 
+					setFront={setFront} 
+					setBack={setBack} 
+				/>
+				{welcomed ? null : <GetStartedOverlay handleWelcomed={handleWelcomed} author={'quizMakerhasaverylongname'}/>}
+			</>
+		);
+	} else {
+		return (
+			<>
 				<StyledLoader>
 					<Loader />
 					<StyledPara>Loading...</StyledPara>
 				</StyledLoader>
-			);
-		}
-	}else{
-		<div>welcome</div>
-	}
+			</>
+		);
+	};
 };
 
 export default QuizInfo;

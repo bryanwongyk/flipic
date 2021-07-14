@@ -14,7 +14,7 @@ const Card = (props) => {
     const y = props.y
 
     if (props.i === props.frontIndex) {
-        console.log(props.i);
+        // console.log(props.i);
         // console.log(props.frontPair);
         return (
             <animated.div key={props.i} style={{ x, y }}>
