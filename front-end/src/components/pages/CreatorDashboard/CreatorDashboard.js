@@ -10,6 +10,7 @@ import bp from '../../Theme/breakpoints';
 import theme from '../../Theme/theme';
 import Footer from '../../Navigation/Footer/Footer';
 import useUserMetadata from '../../../hooks/useUserMetadata';
+import LoadingPage from '../LoadingPage/LoadingPage';
 
 const EmojiPicker = styled.div`
 	z-index: 10;
@@ -242,8 +243,11 @@ const MyQuizBoxes = styled.div`
 `;
 
 const CreatorDashboard = () => {
-	const { accessToken } = useUserMetadata();
-	const { UserMetadata } = useUserMetadata();
+	const [busyGettingAccessToken, setIsBusyGettingAccessToken] = useState(true);
+
+	const { accessToken } = useUserMetadata(setIsBusyGettingAccessToken);
+	// const { UserMetadata } = useUserMetadata();
+
 	const [inputList, setInputList] = useState([{ item: '', emoji: '\u{1F601}' }]);
 	const [quizName, setQuizName] = useState('');
 	const [quizPrivacy, setQuizPrivacy] = useState('Public');
@@ -268,13 +272,11 @@ const CreatorDashboard = () => {
 				console.error('Error:', error);
 			});
 	};
-
 	useEffect(() => {
-		LoadAllQuizzes();
-		console.log(accessToken);
-		console.log('preparing all quizzes:');
-		console.log(myQuizzes);
-	}, [accessToken, numNewQuizzes]);
+		if (!busyGettingAccessToken) {
+			LoadAllQuizzes();
+		}
+	}, [busyGettingAccessToken]);
 
 	const onEmojiClick = (event, emojiObject) => {
 		const list = [...inputList];
@@ -350,121 +352,131 @@ const CreatorDashboard = () => {
 	};
 
 	return (
-		<UserDashboard>
-			<QuizPageHeading>welcome, QuizMaker</QuizPageHeading>
-			<UserDashboardContent>
-				<MyProfile>
-					<h3>My Profile</h3>
-					<QuizTitleSection>
-						<FormLabel>Email:</FormLabel>
-						<span>{}</span>
-					</QuizTitleSection>
+		<>
+			{busyGettingAccessToken ? (
+				<LoadingPage />
+			) : (
+				<UserDashboard>
+					<QuizPageHeading>welcome, QuizMaker</QuizPageHeading>
+					<UserDashboardContent>
+						<MyProfile>
+							<h3>My Profile</h3>
+							<QuizTitleSection>
+								<FormLabel>Email:</FormLabel>
+								<span>{}</span>
+							</QuizTitleSection>
 
-					<h3>My Quizzes</h3>
-					{myQuizzes &&
-						myQuizzes.map((x, i) => {
-							return (
-								<MyQuizBoxes>
-									<p>{myQuizzes[i].name}</p>
-								</MyQuizBoxes>
-							);
-						})}
-				</MyProfile>
+							<h3>My Quizzes</h3>
+							{myQuizzes &&
+								myQuizzes.map((x, i) => {
+									return (
+										<MyQuizBoxes>
+											<p>{myQuizzes[i].name}</p>
+										</MyQuizBoxes>
+									);
+								})}
+						</MyProfile>
 
-				<QuizForm>
-					<h3>Create a quiz</h3>
-					<QuizTitleSection>
-						<FormLabel>Question:</FormLabel>
-						<TextInput
-							type="text"
-							name="quizName"
-							autoCapitalize="off"
-							autoComplete="off"
-							autoCorrect="off"
-							value={quizName}
-							onChange={e => setQuizName(e.target.value)}
-						/>
-					</QuizTitleSection>
-					<QuizPrivacySelector>
-						<FormLabel>Results Privacy:</FormLabel>
-						<SelectWrapper>
-							<Select onChange={e => handlePrivacySet(e)}>
-								<option value="Public">Public</option>
-								<option value="Private">Private</option>
-							</Select>
-						</SelectWrapper>
-					</QuizPrivacySelector>
-					<div className="question-section"></div>
-					<Options>
-						<QuizItemHeader>Item</QuizItemHeader>
-						<QuizEmojiHeader>Emoji</QuizEmojiHeader>
-					</Options>
-					{emojiSelectorClicked && (
-						<EmojiPicker>
-							<Picker onEmojiClick={onEmojiClick} />
-						</EmojiPicker>
-					)}
-					<ItemsContainer>
-						{inputList.map((x, i) => {
-							return (
-								<Options>
-									<ItemInput type="itemText" name="item" onChange={e => handleInputChange(e, i)} />
-									<EmojiInput
-										type="itemText"
-										name="item"
-										value={inputList[i].emoji}
-										onChange={() => null}
-										onClick={() => {
-											handleEmojiInputClick(i);
-										}}
-									/>
-									{inputList.length !== 1 ? (
-										<IconButton
-											disableRipple
-											style={{ backgroundColor: 'transparent' }}
-											onClick={() => {
-												handleRemoveClick(i);
-											}}
-											aria-label="delete"
-										>
-											<ClearIcon />
-										</IconButton>
-									) : (
-										<IconButton
-											disabled
-											style={{ backgroundColor: 'transparent' }}
-											onClick={() => {
-												handleRemoveClick();
-											}}
-											aria-label="delete"
-										>
-											<ClearIcon />
-										</IconButton>
-									)}{' '}
-								</Options>
-							);
-						})}
-					</ItemsContainer>
-					<FormOptionsSection>
-						<AddItemButton
-							onClick={() => {
-								handleAddItemField();
-							}}
-						>
-							Add Item
-						</AddItemButton>
-						<CreateButton
-							onClick={() => {
-								handleOnCreate();
-							}}
-						>
-							Create
-						</CreateButton>
-					</FormOptionsSection>
-				</QuizForm>
-			</UserDashboardContent>
-			<Footer />
-		</UserDashboard>
+						<QuizForm>
+							<h3>Create a quiz</h3>
+							<QuizTitleSection>
+								<FormLabel>Question:</FormLabel>
+								<TextInput
+									type="text"
+									name="quizName"
+									autoCapitalize="off"
+									autoComplete="off"
+									autoCorrect="off"
+									value={quizName}
+									onChange={e => setQuizName(e.target.value)}
+								/>
+							</QuizTitleSection>
+							<QuizPrivacySelector>
+								<FormLabel>Results Privacy:</FormLabel>
+								<SelectWrapper>
+									<Select onChange={e => handlePrivacySet(e)}>
+										<option value="Public">Public</option>
+										<option value="Private">Private</option>
+									</Select>
+								</SelectWrapper>
+							</QuizPrivacySelector>
+							<div className="question-section"></div>
+							<Options>
+								<QuizItemHeader>Item</QuizItemHeader>
+								<QuizEmojiHeader>Emoji</QuizEmojiHeader>
+							</Options>
+							{emojiSelectorClicked && (
+								<EmojiPicker>
+									<Picker onEmojiClick={onEmojiClick} />
+								</EmojiPicker>
+							)}
+							<ItemsContainer>
+								{inputList.map((x, i) => {
+									return (
+										<Options>
+											<ItemInput
+												type="itemText"
+												name="item"
+												onChange={e => handleInputChange(e, i)}
+											/>
+											<EmojiInput
+												type="itemText"
+												name="item"
+												value={inputList[i].emoji}
+												onChange={() => null}
+												onClick={() => {
+													handleEmojiInputClick(i);
+												}}
+											/>
+											{inputList.length !== 1 ? (
+												<IconButton
+													disableRipple
+													style={{ backgroundColor: 'transparent' }}
+													onClick={() => {
+														handleRemoveClick(i);
+													}}
+													aria-label="delete"
+												>
+													<ClearIcon />
+												</IconButton>
+											) : (
+												<IconButton
+													disabled
+													style={{ backgroundColor: 'transparent' }}
+													onClick={() => {
+														handleRemoveClick();
+													}}
+													aria-label="delete"
+												>
+													<ClearIcon />
+												</IconButton>
+											)}{' '}
+										</Options>
+									);
+								})}
+							</ItemsContainer>
+							<FormOptionsSection>
+								<AddItemButton
+									onClick={() => {
+										handleAddItemField();
+									}}
+								>
+									Add Item
+								</AddItemButton>
+								<CreateButton
+									onClick={() => {
+										handleOnCreate();
+									}}
+								>
+									Create
+								</CreateButton>
+							</FormOptionsSection>
+						</QuizForm>
+					</UserDashboardContent>
+					<Footer />
+				</UserDashboard>
+			)}
+		</>
 	);
 };
 
