@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Quiz from './Quiz';
 import Loader from '../../Loader/Loader';
-import matchUp from '../../../data/mockMatchUp';
 import styled from 'styled-components';
 import theme from '../../Theme/theme';
 
@@ -84,9 +83,6 @@ const QuizInfo = (props) => {
 	}else{
 		<div>welcome</div>
 	}
-
-	
-
 };
 
 export default QuizInfo;
