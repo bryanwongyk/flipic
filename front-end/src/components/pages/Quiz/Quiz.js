@@ -1,7 +1,7 @@
 import StyledDeck from '../../Deck/StyledDeck';
 import styled from 'styled-components';
 import theme from '../../Theme/theme';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ProgressBar from '../../ProgressBar/ProgressBar';
 import TutorialOverlay from '../../TutorialOverlay/TutorialOverlay';
 import InformationButton from '../../Button/InformationButton/InformationButton';
@@ -35,7 +35,7 @@ const InformationBtnWrapper = styled.div`
 	z-index: 5;
 `;
 
-const Quiz = ({ quizInfo, frontPair, backPair, setFront, setBack, isDemo }) => {
+const Quiz = ({ quizInfo, frontPair, backPair, setFront, setBack }) => {
 	const [progress, updateProgress] = useState(0);
 	const [tutorialShown, updateTutorialShown] = useState(false);
 

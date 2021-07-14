@@ -17,7 +17,7 @@ function App() {
 	const routes = (
 		<Switch>
 			<Route path="/" exact component={LandingPage} />
-			<Route path="/quiz" component={QuizInfo} />
+			<Route path="/quiz/:quizId" render={(props) => <QuizInfo quizId={props}/>} />
 			<Route path="/dashboard" component={CreatorDashboard} />
 			<Redirect to="/" />
 		</Switch>

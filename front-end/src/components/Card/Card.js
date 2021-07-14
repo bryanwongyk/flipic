@@ -1,6 +1,5 @@
 import { animated, to as interpolate } from "react-spring";
 import styled from "styled-components";
-import theme from "../Theme/theme";
 import HalfCard from "./HalfCard";
 
 const StyledCard = styled.div`
@@ -14,7 +13,7 @@ const Card = (props) => {
     const x = props.x
     const y = props.y
 
-    if (props.i == props.frontIndex) {
+    if (props.i === props.frontIndex) {
         console.log(props.i);
         // console.log(props.frontPair);
         return (
@@ -31,7 +30,7 @@ const Card = (props) => {
                 </animated.div>
             </animated.div>
         );
-    }else if (props.i == props.backIndex) {
+    }else if (props.i === props.backIndex) {
         // console.log(props.i);
         // console.log(props.backPair);
         return (

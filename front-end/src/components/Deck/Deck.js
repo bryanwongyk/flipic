@@ -13,8 +13,8 @@ const to = i => ({
 	bgColor: theme.color.background.secondary,
 	lWidth: '50%',
 	rWidth: '50%',
-  lShow: 'initial',
-  rShow: 'initial',
+	lShow: 'initial',
+	rShow: 'initial',
 });
 const from = i => ({
 	x: 0,
@@ -24,8 +24,8 @@ const from = i => ({
 	bgColor: theme.color.background.secondary,
 	lWidth: '50%',
 	rWidth: '50%',
-  lShow: 'initial',
-  rShow: 'initial',
+	lShow: 'initial',
+	rShow: 'initial',
 });
 
 const trans = (r, s) => `perspective(1500px) rotateX(30deg) rotateY(${r / 10}deg) rotateZ(${r}deg) scale(${s})`;
@@ -63,17 +63,19 @@ const Deck = ({ num_choices, frontPair, backPair, quizId, updateProgress, setFro
 			});
 	};
 
-  const getMatchUp = () => {
-    fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz-matchup/60ec04f3284909517f15152b')
-          .then(response => response.json())
-          .then(data => {
-        // console.log(data);
-            setBack(data)
-          })
-          .catch((error) => {
-            console.error('Error:', error);
-          });
-  }
+	// console.log(matchUpEndpoint);
+
+	const getMatchUp = () => {
+		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz-matchup/' + quizId)
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+				setBack(data);
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+	};
 
 	// Create a gesture, we're interested in down-state, delta (current-pos - click-pos), direction and velocity
 	const bind = useDrag(({ args: [index], down, movement: [mx], direction: [xDir], velocity }) => {
@@ -100,8 +102,8 @@ const Deck = ({ num_choices, frontPair, backPair, quizId, updateProgress, setFro
 			let bgColor; // change card background color
 			let lWidth; // change the width of the left half card
 			let rWidth; // change the width of the right half card
-      let lShow; // change the display of the left half card
-      let rShow; // change the display of the right half card
+			let lShow; // change the display of the left half card
+			let rShow; // change the display of the right half card
 			let payload;
 
 			// animate swiping based on the gesture
@@ -110,8 +112,8 @@ const Deck = ({ num_choices, frontPair, backPair, quizId, updateProgress, setFro
 				rot = mx / 100 + (isGone ? dir * 10 * velocity : 0);
 				lWidth = '0%';
 				rWidth = '100%';
-        lShow = 'none';
-        rShow = 'initial';
+				lShow = 'none';
+				rShow = 'initial';
 				payload = {
 					quizId: quizId,
 					itemId: frontPair.matchup[1].id,
@@ -122,8 +124,8 @@ const Deck = ({ num_choices, frontPair, backPair, quizId, updateProgress, setFro
 				rot = mx / 100 + (isGone ? dir * 10 * velocity : 0);
 				lWidth = '100%';
 				rWidth = '0%';
-        lShow = 'initial';
-        rShow = 'none';
+				lShow = 'initial';
+				rShow = 'none';
 				payload = {
 					quizId: quizId,
 					itemId: frontPair.matchup[0].id,
@@ -134,16 +136,16 @@ const Deck = ({ num_choices, frontPair, backPair, quizId, updateProgress, setFro
 				rot = 0;
 				lWidth = '50%';
 				rWidth = '50%';
-        lShow = 'initial';
-        rShow = 'initial';
+				lShow = 'initial';
+				rShow = 'initial';
 			}
 
 			updateProgress(gone.size / num_choices);
 			if (!down && isGone) {
 				updateFrontIndex(frontIndex - 1);
 				updateBackIndex(backIndex - 1);
-        setFront(backPair);
-        getMatchUp();
+				setFront(backPair);
+				getMatchUp();
 			}
 
 			return {
@@ -152,8 +154,8 @@ const Deck = ({ num_choices, frontPair, backPair, quizId, updateProgress, setFro
 				bgColor,
 				lWidth,
 				rWidth,
-        lShow,
-        rShow,
+				lShow,
+				rShow,
 				scale,
 				delay: undefined,
 				config: { friction: 100, tension: down ? 800 : isGone ? 200 : 500 },
@@ -166,27 +168,25 @@ const Deck = ({ num_choices, frontPair, backPair, quizId, updateProgress, setFro
 	});
 
 	return props.map(({ x, y, rot, scale, bgColor, lWidth, rWidth, lShow, rShow }, i) => (
-		<>
-			<Card
-				key={i}
-				i={i}
-				x={x}
-				y={y}
-				bind={bind}
-				trans={trans}
-				rot={rot}
-				scale={scale}
-				bgColor={bgColor}
-				lWidth={lWidth}
-				rWidth={rWidth}
-        lShow={lShow}
-        rShow={rShow}
-				frontIndex={frontIndex}
-				backIndex={backIndex}
-				frontPair={frontPair}
-				backPair={backPair}
-			/>
-		</>
+		<Card
+			key={i}
+			i={i}
+			x={x}
+			y={y}
+			bind={bind}
+			trans={trans}
+			rot={rot}
+			scale={scale}
+			bgColor={bgColor}
+			lWidth={lWidth}
+			rWidth={rWidth}
+			lShow={lShow}
+			rShow={rShow}
+			frontIndex={frontIndex}
+			backIndex={backIndex}
+			frontPair={frontPair}
+			backPair={backPair}
+		/>
 	));
 };
 
