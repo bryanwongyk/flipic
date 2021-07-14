@@ -51,7 +51,6 @@ async function create(quizParam, userId) {
     // create quiz object
     var quiz = {
         name: quizParam["name"],
-        hash: "711112333",
         items : itemlist,
         userId : userId
     }

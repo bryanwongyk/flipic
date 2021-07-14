@@ -7,8 +7,11 @@ import Layout from './components/Navigation/Layout/Layout';
 import { useAuth0 } from '@auth0/auth0-react';
 import LoadingPage from './components/pages/LoadingPage/LoadingPage';
 
+import useUserMetadata from './hooks/useUserMetadata';
+
 function App() {
-	const { isLoading } = useAuth0();
+	const { user, isAuthenticated, isLoading } = useAuth0();
+	const { accessToken } = useUserMetadata();
 
 	if (isLoading) {
 		return <LoadingPage />;
