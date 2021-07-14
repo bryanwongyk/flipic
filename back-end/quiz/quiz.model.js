@@ -29,7 +29,6 @@ module.exports = mongoose.model('Item', itemSchema);
 const quizSchema = new Schema({
     name: { type: String, unique: true, required: true },
     userId: { type: String, required: true },
-    hash: { type: String, required: true },
     items: { type: [itemSchema], default: [{ name: 'default name', icon: 'default icon', numSuccess: 0 }]},
     createdDate: { type: Date, default: Date.now }
 });
