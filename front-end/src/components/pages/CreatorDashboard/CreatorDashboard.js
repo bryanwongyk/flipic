@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
@@ -9,6 +9,7 @@ import Picker from 'emoji-picker-react';
 import bp from '../../Theme/breakpoints';
 import theme from '../../Theme/theme';
 import Footer from '../../Navigation/Footer/Footer';
+import useUserMetadata from '../../../hooks/useUserMetadata';
 
 const EmojiPicker = styled.div`
 	z-index: 10;
@@ -58,13 +59,13 @@ const FormLabel = styled.div`
 const QuizItemHeader = styled.div`
 	vertical-align: right;
 	display: flex;
-	width: 55%;
+	width: 75%;
 `;
 
 const QuizEmojiHeader = styled.div`
 	vertical-align: right;
 	display: flex;
-	width: 45%;
+	width: 25%;
 `;
 
 const QuizPageHeading = styled.h1`
@@ -123,7 +124,7 @@ const FormOptionsSection = styled.div`
 `;
 
 const TextInput = styled.input`
-	vertical-align: middle;
+	-webkit-user-select: text;
 	border-radius: 20px;
 	width: 60%;
 	border: solid #fff;
@@ -167,9 +168,9 @@ const Select = styled.select`
 `;
 
 const ItemInput = styled.input`
-	vertical-align: middle;
+	-webkit-user-select: text;
 	border-radius: 20px;
-	width: 60%;
+	width: 80%;
 	border: solid #fff;
 	border-width: 0px;
 	height: 30px;
@@ -179,10 +180,10 @@ const ItemInput = styled.input`
 `;
 
 const EmojiInput = styled.input`
-	vertical-align: middle;
+	-webkit-user-select: text;
 	text-align: center;
 	border-radius: 20px;
-	width: 40%;
+	width: 20%;
 	border: solid #fff;
 	border-width: 0px;
 	height: 30px;
@@ -193,7 +194,7 @@ const EmojiInput = styled.input`
 `;
 
 const URLInput = styled.input`
-	vertical-align: middle;
+	-webkit-user-select: text;
 	border-radius: 20px;
 	width: 100%;
 	border: solid #fff;
@@ -229,32 +230,43 @@ const CopyURLButton = styled.button`
 	background-color: #ffffff;
 `;
 
-const useStyles = makeStyles(theme => ({
-	root: {
-		'& > *': {
-			margin: theme.spacing(1),
-		},
-	},
-	button: {
-		margin: theme.spacing(1),
-	},
-}));
-
 const CreatorDashboard = () => {
-	const classes = useStyles();
-	const [inputList, setInputList] = useState([{ item: '', emoji: '\u{1F601}', emojiUni: '' }]);
+	const { accessToken } = useUserMetadata();
+	const [inputList, setInputList] = useState([{ item: '', emoji: '\u{1F601}' }]);
 	const [quizName, setQuizName] = useState('');
-	const [quizPrivacy, setQuizPrivacy] = useState('');
-	const [quizURL, setQuizURL] = useState('');
+	const [quizPrivacy, setQuizPrivacy] = useState('Public');
 	const [numItems, setNumItems] = useState(0);
 	const [currentEmojiSelectionField, setCurrentEmojiSelectionField] = useState(0);
 	const [emojiSelectorClicked, setEmojiSelectorClicked] = useState(null);
+	const [quizData, setQuizData] = useState(null);
+	const [myQuizzes, setMyQuizzes] = useState(null);
+
+	const LoadAllQuizzes = () => {
+		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz-all', {
+			method: 'GET',
+			headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + accessToken },
+		})
+			.then(response => response.json())
+			.then(payload => {
+				console.log('GOT QUIZ Success:', payload);
+				setMyQuizzes(payload.data);
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+	};
+
+	useEffect(() => {
+		LoadAllQuizzes();
+		console.log(accessToken);
+		console.log('preparing all quizzes:');
+		console.log(myQuizzes);
+	}, [accessToken]);
 
 	const onEmojiClick = (event, emojiObject) => {
 		const list = [...inputList];
 		console.log(emojiObject.emoji);
 		list[currentEmojiSelectionField].emoji = emojiObject.emoji;
-		list[currentEmojiSelectionField].emojiUni = emojiObject.unified;
 		setInputList(list);
 		setEmojiSelectorClicked(false);
 	};
@@ -277,11 +289,6 @@ const CreatorDashboard = () => {
 		setInputList(list);
 	};
 
-	const handleQuizNameChange = e => {
-		const title = e.target.value;
-		setQuizName(quizName.slice(0, 0) + title);
-	};
-
 	const handlePrivacySet = e => {
 		const privacySetting = e.target.value;
 		console.log(privacySetting);
@@ -290,17 +297,42 @@ const CreatorDashboard = () => {
 
 	const handleAddItemField = () => {
 		setNumItems(numItems + 1);
-		setInputList([...inputList, { item: '', emoji: '\u{1F601}', emojiUni: '' }]);
+		setInputList([...inputList, { item: '', emoji: '\u{1F601}' }]);
 	};
 
-	const handleAddQuestionField = () => {
-		return null;
+	const POSTQuizData = () => {
+		console.log(accessToken);
+
+		console.log(quizData);
+		console.log(JSON.stringify(quizData));
+
+		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + accessToken },
+			body: JSON.stringify(quizData),
+		})
+			.then(response => response.json())
+			.then(payload => {
+				console.log('Success:', payload);
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
 	};
 
 	const handleOnCreate = () => {
 		console.log(quizName);
 		console.log(quizPrivacy);
 		console.log([quizName].concat([quizPrivacy]).concat(inputList));
+		let data = {
+			name: quizName,
+			quizCreator: 'grady',
+			privacyType: quizPrivacy,
+			items: inputList,
+		};
+		console.log(data);
+		setQuizData(data);
+		POSTQuizData();
 	};
 
 	return (
@@ -311,27 +343,28 @@ const CreatorDashboard = () => {
 					<h3>My Profile</h3>
 					<QuizTitleSection>
 						<FormLabel>Email:</FormLabel>
-						<TextInput type="text" name="title" onchange={text => setQuizName(text)} />
-					</QuizTitleSection>
-
-					<QuizTitleSection>
-						<FormLabel>Account Created:</FormLabel>
-						<TextInput type="text" name="title" onchange={text => setQuizName(text)} />
-					</QuizTitleSection>
-
-					<QuizTitleSection>
-						<FormLabel>Field 3:</FormLabel>
-						<TextInput type="text" name="title" onchange={text => setQuizName(text)} />
+						<span>Email:</span>
 					</QuizTitleSection>
 
 					<h3>My Quizzes</h3>
+					{myQuizzes.map((x, i) => {
+						return <Options></Options>;
+					})}
 				</MyProfile>
 
 				<QuizForm>
 					<h3>Create a quiz</h3>
 					<QuizTitleSection>
 						<FormLabel>Question:</FormLabel>
-						<TextInput type="text" name="quizName" onChange={e => handleQuizNameChange(e)} />
+						<TextInput
+							type="text"
+							name="quizName"
+							autoCapitalize="off"
+							autoComplete="off"
+							autoCorrect="off"
+							value={quizName}
+							onChange={e => setQuizName(e.target.value)}
+						/>
 					</QuizTitleSection>
 					<QuizPrivacySelector>
 						<FormLabel>Results Privacy:</FormLabel>
@@ -393,19 +426,14 @@ const CreatorDashboard = () => {
 							);
 						})}
 					</ItemsContainer>
-					<AddItemButton
-						onClick={() => {
-							handleAddItemField();
-						}}
-					>
-						Add Item
-					</AddItemButton>
 					<FormOptionsSection>
-						<QuizTitleSection>
-							<FormLabel>Quiz URL:</FormLabel>
-							<URLInput type="text" name="url" onchange={text => setQuizURL(text)} />
-						</QuizTitleSection>
-
+						<AddItemButton
+							onClick={() => {
+								handleAddItemField();
+							}}
+						>
+							Add Item
+						</AddItemButton>
 						<CreateButton
 							onClick={() => {
 								handleOnCreate();
