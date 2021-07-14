@@ -1,7 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import Quiz from './Quiz';
-// import quizInfo from '../../../data/mockQuizData';
+import Loader from '../../Loader/Loader';
 import matchUp from '../../../data/mockMatchUp';
+import styled from 'styled-components';
+import theme from '../../Theme/theme';
+
+const StyledPara = styled.p`
+	margin-top: 24px;
+	font-weight: bold;
+	text-align: center;
+`;
+
+const StyledLoader = styled.div`
+	width: 100vw;
+	height: 100vh;
+	background-color: ${theme.color.background.primary};
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+`;
 
 const QuizInfo = (props) => {
 	const quizId = props.quizId.match.params.quizId;
@@ -23,18 +41,30 @@ const QuizInfo = (props) => {
 
 	const [frontPair, setFront] = useState(matchUp[0]);
 	const [backPair, setBack] = useState(matchUp[1]);
+	const [welcomed, setWelcomed] = useState(true);
 
-	if (quizInfo !== null && frontPair !== null && backPair !== null) {
-		console.log(quizInfo);
-		return <Quiz 
-			quizInfo={quizInfo} 
-			frontPair={frontPair} 
-			backPair={backPair} 
-			setFront={setFront} 
-			setBack={setBack} />;
+	if (welcomed) {
+		if (quizInfo !== null && frontPair !== null && backPair !== null) {
+			console.log(quizInfo);
+			return <Quiz 
+				quizInfo={quizInfo} 
+				frontPair={frontPair} 
+				backPair={backPair} 
+				setFront={setFront} 
+				setBack={setBack} />;
+		}else{
+			return (
+				<StyledLoader>
+					<Loader />
+					<StyledPara>Loading...</StyledPara>
+				</StyledLoader>
+			);
+		}
 	}else{
-		return <div>rendering</div>
+		<div>welcome</div>
 	}
+
+	
 
 };
 
