@@ -243,10 +243,12 @@ const MyQuizBoxes = styled.div`
 
 const CreatorDashboard = () => {
 	const { accessToken } = useUserMetadata();
+	const { UserMetadata } = useUserMetadata();
 	const [inputList, setInputList] = useState([{ item: '', emoji: '\u{1F601}' }]);
 	const [quizName, setQuizName] = useState('');
 	const [quizPrivacy, setQuizPrivacy] = useState('Public');
 	const [numItems, setNumItems] = useState(0);
+	const [numNewQuizzes, setNumNewQuizzes] = useState(0);
 	const [currentEmojiSelectionField, setCurrentEmojiSelectionField] = useState(0);
 	const [emojiSelectorClicked, setEmojiSelectorClicked] = useState(null);
 	const [quizData, setQuizData] = useState(null);
@@ -272,7 +274,7 @@ const CreatorDashboard = () => {
 		console.log(accessToken);
 		console.log('preparing all quizzes:');
 		console.log(myQuizzes);
-	}, [accessToken]);
+	}, [accessToken, numNewQuizzes]);
 
 	const onEmojiClick = (event, emojiObject) => {
 		const list = [...inputList];
@@ -344,6 +346,7 @@ const CreatorDashboard = () => {
 		console.log(data);
 		setQuizData(data);
 		POSTQuizData();
+		setNumNewQuizzes(numNewQuizzes + 1);
 	};
 
 	return (
@@ -354,7 +357,7 @@ const CreatorDashboard = () => {
 					<h3>My Profile</h3>
 					<QuizTitleSection>
 						<FormLabel>Email:</FormLabel>
-						<span>Email:</span>
+						<span>{}</span>
 					</QuizTitleSection>
 
 					<h3>My Quizzes</h3>
