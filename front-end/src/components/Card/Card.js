@@ -1,6 +1,7 @@
 import { animated, to as interpolate } from "react-spring";
 import styled from "styled-components";
 import theme from "../Theme/theme";
+import HalfCard from "./HalfCard";
 
 const StyledCard = styled.div`
     display: flex;
@@ -9,30 +10,62 @@ const StyledCard = styled.div`
     width: 100%;
 `
 
-const StyledHalfCard = styled.div`
-    background-color: ${props => (props.pos === -1) ? theme.color.accent : theme.color.primary};
-    height: 96%;
-    border-radius: ${props => (props.pos === -1) ? '10px 0px 0px 10px' : '0px 10px 10px 0px'};
-    margin: ${props => (props.pos === -1) ? '5px 2.5px 5px 5px' : '5px 5px 5px 2.5px'};
-`
-
 const Card = (props) => {
     const x = props.x
     const y = props.y
-	return (
-        <animated.div key={props.i} style={{ x, y }}>
-            <animated.div {...props.bind(props.i)} style={{ transform: interpolate([props.rot, props.scale], props.trans) , backgroundColor: props.bgColor}}>
-                <StyledCard>
-                    <animated.div style={{width: props.lWidth}} >
-                        <StyledHalfCard pos={-1}/>
-                    </animated.div>
-                    <animated.div style={{width: props.rWidth}} >
-                        <StyledHalfCard pos={1}/>
-                    </animated.div>
-                </StyledCard>
+
+    if (props.i == props.frontIndex) {
+        console.log(props.i);
+        // console.log(props.frontPair);
+        return (
+            <animated.div key={props.i} style={{ x, y }}>
+                <animated.div {...props.bind(props.i)} style={{ transform: interpolate([props.rot, props.scale], props.trans) , backgroundColor: props.bgColor}}>
+                    <StyledCard>
+                        <animated.div style={{width: props.lWidth}} >
+                            <HalfCard pos={-1} data={props.frontPair.matchup[0]} show={props.lShow}/>
+                        </animated.div>
+                        <animated.div style={{width: props.rWidth}} >
+                            <HalfCard pos={1}  data={props.frontPair.matchup[1]} show={props.rShow}/>
+                        </animated.div>
+                    </StyledCard>
+                </animated.div>
             </animated.div>
-        </animated.div>
-	);
+        );
+    }else if (props.i == props.backIndex) {
+        // console.log(props.i);
+        // console.log(props.backPair);
+        return (
+            <animated.div key={props.i} style={{ x, y }}>
+                <animated.div {...props.bind(props.i)} style={{ transform: interpolate([props.rot, props.scale], props.trans) , backgroundColor: props.bgColor}}>
+                    <StyledCard>
+                        <animated.div style={{width: props.lWidth}} >
+                            <HalfCard pos={-1} data={props.backPair.matchup[0]} show={props.lShow}/>
+                        </animated.div>
+                        <animated.div style={{width: props.rWidth}} >
+                            <HalfCard pos={1} data={props.backPair.matchup[1]} show={props.rShow}/>
+                        </animated.div>
+                    </StyledCard>
+                </animated.div>
+            </animated.div>
+        );
+    }else{
+        return (
+            <animated.div key={props.i} style={{ x, y }}>
+                <animated.div {...props.bind(props.i)} style={{ transform: interpolate([props.rot, props.scale], props.trans) , backgroundColor: props.bgColor}}>
+                    <StyledCard>
+                        <animated.div style={{width: props.lWidth}} >
+                            <HalfCard pos={-1} data={null} show={props.lShow}/>
+                        </animated.div>
+                        <animated.div style={{width: props.rWidth}} >
+                            <HalfCard pos={1} data={null} show={props.rShow}/>
+                        </animated.div>
+                    </StyledCard>
+                </animated.div>
+            </animated.div>
+        );
+    }
+
+	
 };
 
 export default Card;
