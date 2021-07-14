@@ -30,7 +30,7 @@ const from = i => ({
 
 const trans = (r, s) => `perspective(1500px) rotateX(30deg) rotateY(${r / 10}deg) rotateZ(${r}deg) scale(${s})`;
 
-const Deck = ({ num_choices, frontPair, backPair, quizId, updateProgress, setFront, setBack }) => {
+const Deck = ({ num_choices, frontPair, backPair, quizId, updateProgress, setFront, setBack, setDone }) => {
 	const [gone] = useState(() => new Set()); // The set flags all the cards that are picked
 
 	const [frontIndex, updateFrontIndex] = useState(num_choices - 1);
@@ -40,11 +40,6 @@ const Deck = ({ num_choices, frontPair, backPair, quizId, updateProgress, setFro
 		...to(i),
 		from: from(i),
 	}));
-
-	// console.log(frontPair.matchup[0].name);
-	// console.log(frontPair.matchup[1].name);
-	// console.log(frontIndex);
-	// console.log(backIndex);
 
 	const sendChoice = payload => {
 		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz-vote', {
@@ -56,20 +51,18 @@ const Deck = ({ num_choices, frontPair, backPair, quizId, updateProgress, setFro
 				})
 				.then(response => response.json())
 				.then(payload => {
-					console.log('Success:', payload);
+					// console.log('Success:', payload);
 				})
 				.catch(error => {
 					console.error('Error:', error);
 				});
 	};
 
-	// console.log(matchUpEndpoint);
-
 	const getMatchUp = () => {
 		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz-matchup/' + quizId)
 			.then(response => response.json())
 			.then(data => {
-				console.log(data);
+				// console.log(data);
 				setBack(data);
 			})
 			.catch(error => {
@@ -163,7 +156,7 @@ const Deck = ({ num_choices, frontPair, backPair, quizId, updateProgress, setFro
 		});
 
 		if (!down && gone.size === num_choices) {
-			// end of quiz
+			setDone(true);
 		}
 	});
 

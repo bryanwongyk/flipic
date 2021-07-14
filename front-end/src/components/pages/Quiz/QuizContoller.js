@@ -22,7 +22,7 @@ const StyledLoader = styled.div`
 	align-items: center;
 `;
 
-const QuizInfo = (props) => {
+const QuizContoller = (props) => {
 	const quizId = props.quizId.match.params.quizId;
 	const [quizInfo, getQuizInfo] = useState(null);
 
@@ -30,6 +30,7 @@ const QuizInfo = (props) => {
 		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz/' + quizId)
 	      .then(response => response.json())
 	      .then(data => {
+			console.log(data);
 			getQuizInfo(data);
 	      })
 	      .catch((error) => {
@@ -68,32 +69,66 @@ const QuizInfo = (props) => {
 		setWelcomed(true);
 	}
 
-	// console.log(welcomed)
+	const [quizDone, setDone] = useState(false);
+	const [quizResult, getQuizResult] = useState(null);
 
+	useEffect(() => {
+		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz-results/' + quizId)
+	      .then(response => response.json())
+	      .then(data => {
+			// console.log(data);
+			getQuizResult(data);
+	      })
+	      .catch((error) => {
+	        console.error('Error:', error);
+	      });
+	}, [quizDone]);
+
+
+
+	if (!quizDone) {
+		if (quizInfo !== null && frontPair !== null && backPair !== null ) {
+			return (
+				<>
+					<Quiz 
+						quizInfo={quizInfo} 
+						frontPair={frontPair} 
+						backPair={backPair} 
+						setFront={setFront} 
+						setBack={setBack} 
+						setDone={setDone}
+					/>
+					{welcomed ? null : <GetStartedOverlay handleWelcomed={handleWelcomed} author={'quizMakerhasaverylongname'}/>}
+				</>
+			);
+		} else {
+			return (
+				<>
+					<StyledLoader>
+						<Loader />
+						<StyledPara>Loading...</StyledPara>
+					</StyledLoader>
+				</>
+			);
+		};
+	}else{
+		if (quizResult === null){
+			return (
+				<>
+					<StyledLoader>
+						<Loader />
+						<StyledPara>Loading Quiz Results...</StyledPara>
+					</StyledLoader>
+				</>
+			);
+		} else {
+			console.log(quizResult.data);
+			return (
+				<p>quiz done</p>
+			);
+		}
+	}
 	
-	if (quizInfo !== null && frontPair !== null && backPair !== null) {
-		return (
-			<>
-				<Quiz 
-					quizInfo={quizInfo} 
-					frontPair={frontPair} 
-					backPair={backPair} 
-					setFront={setFront} 
-					setBack={setBack} 
-				/>
-				{welcomed ? null : <GetStartedOverlay handleWelcomed={handleWelcomed} author={'quizMakerhasaverylongname'}/>}
-			</>
-		);
-	} else {
-		return (
-			<>
-				<StyledLoader>
-					<Loader />
-					<StyledPara>Loading...</StyledPara>
-				</StyledLoader>
-			</>
-		);
-	};
 };
 
-export default QuizInfo;
+export default QuizContoller;
