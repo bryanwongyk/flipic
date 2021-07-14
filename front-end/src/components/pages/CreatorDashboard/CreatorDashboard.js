@@ -307,15 +307,28 @@ const CreatorDashboard = () => {
 	const [emojiSelectorClicked, setEmojiSelectorClicked] = useState(null);
 	const [quizData, setQuizData] = useState(null);
 	const [myQuizzes, setMyQuizzes] = useState(null);
-	const [open, setOpen] = React.useState(false);
+	const [openDel, setOpenDel] = React.useState(false);
+	const [openVer, setOpenVer] = React.useState(false);
 	const theme = useTheme();
 
-	const handleDialogClickOpen = () => {
-		setOpen(true);
+	const handleDialogClickOpen = key => {
+		if (key === 'Deleter') {
+			setOpenDel(true);
+		}
+
+		if (key === 'Validator') {
+			setOpenVer(true);
+		}
 	};
 
-	const handleDialogClose = () => {
-		setOpen(false);
+	const handleDialogClose = key => {
+		if (key === 'Deleter') {
+			setOpenDel(false);
+		}
+
+		if (key === 'Validator') {
+			setOpenVer(false);
+		}
 	};
 	const LoadAllQuizzes = () => {
 		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz-all', {
@@ -335,7 +348,7 @@ const CreatorDashboard = () => {
 		if (!busyGettingAccessToken) {
 			LoadAllQuizzes();
 		}
-	}, [busyGettingAccessToken]);
+	}, [busyGettingAccessToken, numNewQuizzes]);
 
 	const onEmojiClick = (event, emojiObject) => {
 		const list = [...inputList];
@@ -374,9 +387,27 @@ const CreatorDashboard = () => {
 		setInputList([...inputList, { item: '', emoji: '\u{1F601}' }]);
 	};
 
-	const POSTQuizData = () => {
-		console.log(accessToken);
+	const ValidateFields = () => {
+		if (quizName === '') {
+			return 1;
+		}
 
+		for (let i = 0; i < inputList.length; i++) {
+			if (inputList[i].item === '') {
+				return 1;
+			}
+		}
+
+		return 0;
+	};
+
+	const ClearAllFields = () => {
+		setQuizName('');
+		setInputList([{ item: '', emoji: '\u{1F601}' }]);
+	};
+
+	const POSTQuizDataAndUpdate = () => {
+		console.log(accessToken);
 		console.log(quizData);
 		console.log(JSON.stringify(quizData));
 
@@ -388,6 +419,8 @@ const CreatorDashboard = () => {
 			.then(response => response.json())
 			.then(payload => {
 				console.log('Success:', payload);
+				setNumNewQuizzes(numNewQuizzes + 1);
+				ClearAllFields();
 			})
 			.catch(error => {
 				console.error('Error:', error);
@@ -411,19 +444,22 @@ const CreatorDashboard = () => {
 	};
 
 	const handleOnCreate = () => {
-		console.log(quizName);
-		console.log(quizPrivacy);
-		console.log([quizName].concat([quizPrivacy]).concat(inputList));
-		let data = {
-			name: quizName,
-			quizCreator: user.nickname,
-			privacyType: quizPrivacy,
-			items: inputList,
-		};
-		console.log(data);
-		setQuizData(data);
-		POSTQuizData();
-		setNumNewQuizzes(numNewQuizzes + 1);
+		if (ValidateFields() === 1) {
+			handleDialogClickOpen('Validator');
+		} else {
+			console.log(quizName);
+			console.log(quizPrivacy);
+			console.log([quizName].concat([quizPrivacy]).concat(inputList));
+			let data = {
+				name: quizName,
+				quizCreator: user.nickname,
+				privacyType: quizPrivacy,
+				items: inputList,
+			};
+			console.log(data);
+			setQuizData(data);
+			POSTQuizDataAndUpdate();
+		}
 	};
 
 	return (
@@ -464,7 +500,7 @@ const CreatorDashboard = () => {
 														width: '1%',
 													}}
 													onClick={() => {
-														handleDialogClickOpen();
+														handleDialogClickOpen('Deleter');
 													}}
 													aria-label="delete"
 												>
@@ -472,16 +508,16 @@ const CreatorDashboard = () => {
 												</IconButton>
 												<MyQuizBoxes>
 													<Dialog
-														open={open}
+														open={openDel}
 														onClose={() => {
-															handleDialogClose();
+															handleDialogClose('Deleter');
 														}}
 														aria-labelledby="alert-dialog-title"
 														aria-describedby="alert-dialog-description"
 													>
 														<MuiDialogTitle id="alert-dialog-title">
 															<span style={{ color: '#000' }}>
-																You are about to delete quiz
+																Do you want to delete this quiz?
 															</span>
 														</MuiDialogTitle>
 														<DialogContent>
@@ -492,7 +528,7 @@ const CreatorDashboard = () => {
 														<DialogActions>
 															<Button
 																onClick={() => {
-																	handleDialogClose();
+																	handleDialogClose('Deleter');
 																}}
 																color="primary"
 															>
@@ -501,7 +537,7 @@ const CreatorDashboard = () => {
 															<Button
 																onClick={() => {
 																	HandleDeleteQuiz(myQuizzes[i].id);
-																	handleDialogClose();
+																	handleDialogClose('Deleter');
 																}}
 																color="primary"
 																autoFocus
@@ -558,6 +594,7 @@ const CreatorDashboard = () => {
 											<ItemInput
 												type="itemText"
 												name="item"
+												value={inputList[i].item}
 												onChange={e => handleInputChange(e, i)}
 											/>
 											<EmojiInput
@@ -611,6 +648,33 @@ const CreatorDashboard = () => {
 								>
 									Create
 								</CreateButton>
+								<Dialog
+									open={openVer}
+									onClose={() => {
+										handleDialogClose('Validator');
+									}}
+									aria-labelledby="alert-dialog-title"
+									aria-describedby="alert-dialog-description"
+								>
+									<MuiDialogTitle id="alert-dialog-title">
+										<span style={{ color: '#000' }}>You have some incomplete fields!</span>
+									</MuiDialogTitle>
+									<DialogContent>
+										<DialogContentText id="alert-dialog-description">
+											Double check to make sure you have filled in everything.
+										</DialogContentText>
+									</DialogContent>
+									<DialogActions>
+										<Button
+											onClick={() => {
+												handleDialogClose('Validator');
+											}}
+											color="primary"
+										>
+											Ok
+										</Button>
+									</DialogActions>
+								</Dialog>
 							</FormOptionsSection>
 						</QuizForm>
 					</UserDashboardContent>
