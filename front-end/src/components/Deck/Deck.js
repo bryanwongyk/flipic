@@ -119,7 +119,7 @@ const Deck = ({ num_choices, frontPair, backPair, quizId, updateProgress, setFro
 					quizId: quizId,
 					itemId: frontPair.matchup[1].id,
 				};
-				// if (!down && isGone) sendChoice(payload);
+				if (!down && isGone) sendChoice(payload);
 			} else if (x < 0) {
 				bgColor = theme.color.accent;
 				rot = mx / 100 + (isGone ? dir * 10 * velocity : 0);
@@ -131,7 +131,7 @@ const Deck = ({ num_choices, frontPair, backPair, quizId, updateProgress, setFro
 					quizId: quizId,
 					itemId: frontPair.matchup[0].id,
 				};
-				// if (!down && isGone) sendChoice(payload);
+				if (!down && isGone) sendChoice(payload);
 			} else {
 				bgColor = theme.color.background.secondary;
 				rot = 0;
