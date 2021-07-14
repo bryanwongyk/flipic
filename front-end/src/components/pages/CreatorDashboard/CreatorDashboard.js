@@ -230,6 +230,17 @@ const CopyURLButton = styled.button`
 	background-color: #ffffff;
 `;
 
+const MyQuizBoxes = styled.div`
+	display: inline-block;
+	width: 20%;
+	height: 20%;
+	margin: 20px;
+	border: solid #fff;
+	border-width: 2px;
+	border-radius: 15px;
+	background-color: #fa885e;
+`;
+
 const CreatorDashboard = () => {
 	const { accessToken } = useUserMetadata();
 	const [inputList, setInputList] = useState([{ item: '', emoji: '\u{1F601}' }]);
@@ -347,9 +358,14 @@ const CreatorDashboard = () => {
 					</QuizTitleSection>
 
 					<h3>My Quizzes</h3>
-					{myQuizzes.map((x, i) => {
-						return <Options></Options>;
-					})}
+					{myQuizzes &&
+						myQuizzes.map((x, i) => {
+							return (
+								<MyQuizBoxes>
+									<p>{myQuizzes[i].name}</p>
+								</MyQuizBoxes>
+							);
+						})}
 				</MyProfile>
 
 				<QuizForm>
