@@ -4,12 +4,20 @@ import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import SendIcon from '@material-ui/icons/Send';
 import ClearIcon from '@material-ui/icons/Clear';
+import MoreVert from '@material-ui/icons/MoreVert';
 import styled from 'styled-components';
 import Picker from 'emoji-picker-react';
 import bp from '../../Theme/breakpoints';
 import theme from '../../Theme/theme';
 import Footer from '../../Navigation/Footer/Footer';
 import useUserMetadata from '../../../hooks/useUserMetadata';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import { useTheme } from '@material-ui/core/styles';
 
 const EmojiPicker = styled.div`
 	z-index: 10;
@@ -48,6 +56,11 @@ const MyProfile = styled.div`
 	@media ${bp.sm} {
 		width: 40%;
 	}
+`;
+
+const ProfileFormLabel = styled.div`
+	display: inline-block;
+	text-align: left;
 `;
 
 const FormLabel = styled.div`
@@ -98,7 +111,7 @@ const Options = styled.div`
 
 const ItemsContainer = styled.div`
 	overflow-y: scroll;
-	height: 50%;
+	height: 60%;
 `;
 
 const QuizURLSection = styled.div`
@@ -109,6 +122,12 @@ const QuizTitleSection = styled.div`
 	display: flex;
 	align-items: flex-end;
 	margin-bottom: 20px;
+`;
+
+const ProfileTitleSection = styled.div`
+	display: flex;
+	margin-bottom: 15px;
+	margin-top: 20px;
 `;
 
 const QuizPrivacySelector = styled.div`
@@ -231,19 +250,49 @@ const CopyURLButton = styled.button`
 `;
 
 const MyQuizBoxes = styled.div`
-	display: inline-block;
-	width: 20%;
-	height: 20%;
-	margin: 20px;
+	width: 100%;
+	height: 100%;
 	border: solid #fff;
 	border-width: 2px;
 	border-radius: 15px;
 	background-color: #fa885e;
+	box-shadow: 1px 2px 5px 0px #222;
+`;
+
+const QuizBoxContainer = styled.div`
+	display: inline-block;
+	width: 22%;
+	height: 28%;
+	margin: 20px;
+	position: relative;
+`;
+
+const MyQuizzesContainer = styled.div`
+	overflow-y: scroll;
+	height: 400px;
+`;
+
+const MyQuizTitleText = styled.p`
+	font-size: 14px;
+	margin: 10px;
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+`;
+
+const ProfileField = styled.p`
+	width: 100%;
+	text-align: left;
+	margin-left: 10px;
+`;
+
+const ProfileFieldsContainer = styled.div`
+	margin-bottom: 20px;
 `;
 
 const CreatorDashboard = () => {
-	const { accessToken } = useUserMetadata();
-	const { UserMetadata } = useUserMetadata();
+	const { accessToken, user } = useUserMetadata();
 	const [inputList, setInputList] = useState([{ item: '', emoji: '\u{1F601}' }]);
 	const [quizName, setQuizName] = useState('');
 	const [quizPrivacy, setQuizPrivacy] = useState('Public');
@@ -253,7 +302,16 @@ const CreatorDashboard = () => {
 	const [emojiSelectorClicked, setEmojiSelectorClicked] = useState(null);
 	const [quizData, setQuizData] = useState(null);
 	const [myQuizzes, setMyQuizzes] = useState(null);
+	const [open, setOpen] = React.useState(false);
+	const theme = useTheme();
 
+	const handleDialogClickOpen = () => {
+		setOpen(true);
+	};
+
+	const handleDialogClose = () => {
+		setOpen(false);
+	};
 	const LoadAllQuizzes = () => {
 		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz-all', {
 			method: 'GET',
@@ -333,13 +391,29 @@ const CreatorDashboard = () => {
 			});
 	};
 
+	const HandleDeleteQuiz = quizId => {
+		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz/' + quizId, {
+			method: 'DELETE',
+			headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + accessToken },
+		})
+			.then(response => response.json())
+			.then(payload => {
+				console.log('Delete QUIZ Success:', payload);
+				setMyQuizzes(payload.data);
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+		setNumNewQuizzes(numNewQuizzes - 1);
+	};
+
 	const handleOnCreate = () => {
 		console.log(quizName);
 		console.log(quizPrivacy);
 		console.log([quizName].concat([quizPrivacy]).concat(inputList));
 		let data = {
 			name: quizName,
-			quizCreator: 'grady',
+			quizCreator: user.nickname,
 			privacyType: quizPrivacy,
 			items: inputList,
 		};
@@ -355,20 +429,84 @@ const CreatorDashboard = () => {
 			<UserDashboardContent>
 				<MyProfile>
 					<h3>My Profile</h3>
-					<QuizTitleSection>
-						<FormLabel>Email:</FormLabel>
-						<span>{}</span>
-					</QuizTitleSection>
+					<ProfileFieldsContainer>
+						<ProfileTitleSection>
+							<ProfileFormLabel>User: </ProfileFormLabel>
+							<ProfileField>{user.nickname}</ProfileField>
+						</ProfileTitleSection>
+						<ProfileTitleSection>
+							<ProfileFormLabel>Email: </ProfileFormLabel>
+							<ProfileField>{user.email}</ProfileField>
+						</ProfileTitleSection>
+					</ProfileFieldsContainer>
 
 					<h3>My Quizzes</h3>
-					{myQuizzes &&
-						myQuizzes.map((x, i) => {
-							return (
-								<MyQuizBoxes>
-									<p>{myQuizzes[i].name}</p>
-								</MyQuizBoxes>
-							);
-						})}
+					<MyQuizzesContainer>
+						{myQuizzes &&
+							myQuizzes.map((x, i) => {
+								return (
+									<QuizBoxContainer>
+										<IconButton
+											disableRipple
+											style={{
+												backgroundColor: 'transparent',
+												position: 'absolute',
+												top: '10%',
+												left: '65%',
+												height: '1%',
+												width: '1%',
+											}}
+											onClick={() => {
+												handleDialogClickOpen();
+											}}
+											aria-label="delete"
+										>
+											<MoreVert />
+										</IconButton>
+										<MyQuizBoxes>
+											<Dialog
+												open={open}
+												onClose={() => {
+													handleDialogClose();
+												}}
+												aria-labelledby="alert-dialog-title"
+												aria-describedby="alert-dialog-description"
+											>
+												<MuiDialogTitle id="alert-dialog-title">
+													<span style={{ color: '#000' }}>You are about to delete quiz</span>
+												</MuiDialogTitle>
+												<DialogContent>
+													<DialogContentText id="alert-dialog-description">
+														This action cannot be undone. Are you sure?
+													</DialogContentText>
+												</DialogContent>
+												<DialogActions>
+													<Button
+														onClick={() => {
+															handleDialogClose();
+														}}
+														color="primary"
+													>
+														No
+													</Button>
+													<Button
+														onClick={() => {
+															HandleDeleteQuiz(myQuizzes[i].id);
+															handleDialogClose();
+														}}
+														color="primary"
+														autoFocus
+													>
+														Yes
+													</Button>
+												</DialogActions>
+											</Dialog>
+										</MyQuizBoxes>
+										<MyQuizTitleText>{myQuizzes[i].name}</MyQuizTitleText>
+									</QuizBoxContainer>
+								);
+							})}
+					</MyQuizzesContainer>
 				</MyProfile>
 
 				<QuizForm>

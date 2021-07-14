@@ -26,7 +26,7 @@ const useUserMetadata = () => {
 				});
 
 				const { user_metadata } = await metadataResponse.json();
-
+				console.log('GETTING USER METADATA');
 				setUserMetadata(user_metadata);
 			} catch (e) {
 				console.log(e.message);
@@ -35,7 +35,7 @@ const useUserMetadata = () => {
 
 		getUserMetadata();
 	}, []);
-	return { userMetadata, accessToken };
+	return { userMetadata, accessToken, user };
 };
 
 export default useUserMetadata;
