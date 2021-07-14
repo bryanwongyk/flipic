@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
@@ -230,20 +230,8 @@ const CopyURLButton = styled.button`
 	background-color: #ffffff;
 `;
 
-const useStyles = makeStyles(theme => ({
-	root: {
-		'& > *': {
-			margin: theme.spacing(1),
-		},
-	},
-	button: {
-		margin: theme.spacing(1),
-	},
-}));
-
 const CreatorDashboard = () => {
 	const { accessToken } = useUserMetadata();
-	const classes = useStyles();
 	const [inputList, setInputList] = useState([{ item: '', emoji: '\u{1F601}' }]);
 	const [quizName, setQuizName] = useState('');
 	const [quizPrivacy, setQuizPrivacy] = useState('Public');
@@ -251,6 +239,29 @@ const CreatorDashboard = () => {
 	const [currentEmojiSelectionField, setCurrentEmojiSelectionField] = useState(0);
 	const [emojiSelectorClicked, setEmojiSelectorClicked] = useState(null);
 	const [quizData, setQuizData] = useState(null);
+	const [myQuizzes, setMyQuizzes] = useState(null);
+
+	const LoadAllQuizzes = () => {
+		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz-all', {
+			method: 'GET',
+			headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + accessToken },
+		})
+			.then(response => response.json())
+			.then(payload => {
+				console.log('GOT QUIZ Success:', payload);
+				setMyQuizzes(payload.data);
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+	};
+
+	useEffect(() => {
+		LoadAllQuizzes();
+		console.log(accessToken);
+		console.log('preparing all quizzes:');
+		console.log(myQuizzes);
+	}, [accessToken]);
 
 	const onEmojiClick = (event, emojiObject) => {
 		const list = [...inputList];
@@ -289,12 +300,11 @@ const CreatorDashboard = () => {
 		setInputList([...inputList, { item: '', emoji: '\u{1F601}' }]);
 	};
 
-	const handleAddQuestionField = () => {
-		return null;
-	};
-
 	const POSTQuizData = () => {
 		console.log(accessToken);
+
+		console.log(quizData);
+		console.log(JSON.stringify(quizData));
 
 		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz', {
 			method: 'POST',
@@ -316,9 +326,11 @@ const CreatorDashboard = () => {
 		console.log([quizName].concat([quizPrivacy]).concat(inputList));
 		let data = {
 			name: quizName,
+			quizCreator: 'grady',
 			privacyType: quizPrivacy,
 			items: inputList,
 		};
+		console.log(data);
 		setQuizData(data);
 		POSTQuizData();
 	};
@@ -331,20 +343,13 @@ const CreatorDashboard = () => {
 					<h3>My Profile</h3>
 					<QuizTitleSection>
 						<FormLabel>Email:</FormLabel>
-						<TextInput type="text" name="email" onchange={text => setQuizName(text)} />
-					</QuizTitleSection>
-
-					<QuizTitleSection>
-						<FormLabel>Account Created:</FormLabel>
-						<TextInput type="text" name="account" onchange={text => setQuizName(text)} />
-					</QuizTitleSection>
-
-					<QuizTitleSection>
-						<FormLabel>Field 3:</FormLabel>
-						<TextInput type="text" name="field3" onchange={text => setQuizName(text)} />
+						<span>Email:</span>
 					</QuizTitleSection>
 
 					<h3>My Quizzes</h3>
+					{myQuizzes.map((x, i) => {
+						return <Options></Options>;
+					})}
 				</MyProfile>
 
 				<QuizForm>
@@ -421,14 +426,14 @@ const CreatorDashboard = () => {
 							);
 						})}
 					</ItemsContainer>
-					<AddItemButton
-						onClick={() => {
-							handleAddItemField();
-						}}
-					>
-						Add Item
-					</AddItemButton>
 					<FormOptionsSection>
+						<AddItemButton
+							onClick={() => {
+								handleAddItemField();
+							}}
+						>
+							Add Item
+						</AddItemButton>
 						<CreateButton
 							onClick={() => {
 								handleOnCreate();
