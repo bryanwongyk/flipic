@@ -5,6 +5,8 @@ import AddIcon from '@material-ui/icons/Add';
 import SendIcon from '@material-ui/icons/Send';
 import ClearIcon from '@material-ui/icons/Clear';
 import MoreVert from '@material-ui/icons/MoreVert';
+import Share from '@material-ui/icons/Share';
+import DeleteForever from '@material-ui/icons/DeleteForever';
 import styled from 'styled-components';
 import Picker from 'emoji-picker-react';
 import bp from '../../Theme/breakpoints';
@@ -19,6 +21,15 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import { useTheme } from '@material-ui/core/styles';
 import LoadingPage from '../LoadingPage/LoadingPage';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import PropTypes from 'prop-types';
+import { keys } from '@material-ui/core/styles/createBreakpoints';
+import Tooltip from '@material-ui/core/Tooltip';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 const EmojiPicker = styled.div`
 	z-index: 10;
@@ -153,7 +164,8 @@ const TextInput = styled.input`
 	color: #000000;
 	margin-top: 20px;
 	margin-left: 20px;
-	font-size: 18px;
+	font-size: 14px;
+	padding-left: 10px;
 `;
 
 const SelectWrapper = styled.div`
@@ -196,7 +208,8 @@ const ItemInput = styled.input`
 	height: 30px;
 	color: #000000;
 	margin-top: 20px;
-	font-size: 18px;
+	font-size: 14px;
+	padding-left: 10px;
 `;
 
 const EmojiInput = styled.input`
@@ -210,7 +223,7 @@ const EmojiInput = styled.input`
 	color: #000000;
 	margin-top: 20px;
 	margin-left: 20px;
-	font-size: 18px;
+	font-size: 25px;
 `;
 
 const URLInput = styled.input`
@@ -221,7 +234,7 @@ const URLInput = styled.input`
 	border-width: 0px;
 	height: 30px;
 	color: #000000;
-	font-size: 18px;
+	font-size: 14px;
 `;
 
 const AddItemButton = styled.button`
@@ -262,8 +275,8 @@ const MyQuizBoxes = styled.div`
 
 const QuizBoxContainer = styled.div`
 	display: inline-block;
-	width: 22%;
-	height: 28%;
+	width: 80px;
+	height: 100px;
 	margin: 20px;
 	position: relative;
 `;
@@ -283,9 +296,10 @@ const MyQuizTitleText = styled.p`
 `;
 
 const ProfileField = styled.p`
-	width: 100%;
+	width: 80%;
 	text-align: left;
 	margin-left: 10px;
+	word-wrap: break-word;
 `;
 
 const ProfileFieldsContainer = styled.div`
@@ -309,11 +323,96 @@ const CreatorDashboard = () => {
 	const [myQuizzes, setMyQuizzes] = useState(null);
 	const [openDel, setOpenDel] = React.useState(false);
 	const [openVer, setOpenVer] = React.useState(false);
+	const [openShare, setOpenShare] = React.useState(false);
+	const [openOptions, setOpenOptions] = React.useState(false);
+	const [currentMyQuizSelected, setCurrentMyQuizSelected] = useState(null);
+	const [newQuizCreated, setNewQuizCreated] = useState(null);
 	const theme = useTheme();
+	const [selectedSimpleDialogValue, setSelectedSimpleDialogValue] = React.useState('');
+	const [TooltipOpen, setTooltipOpen] = useState(false);
+
+	const SimpleDialog = props => {
+		const { onClose, selectedValue, open } = props;
+
+		const handleClose = () => {
+			setTooltipOpen(false);
+			onClose(selectedValue);
+		};
+
+		const handleListItemClick = value => {
+			if (value === 'Share Quiz') {
+				setTooltipOpen(true);
+				navigator.clipboard.writeText('localhost:4000/quiz/' + currentMyQuizSelected.id);
+			} else {
+				onClose(value);
+			}
+		};
+
+		return (
+			<Dialog hideBackdrop={true} onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
+				<MuiDialogTitle id="alert-dialog-title">
+					<span style={{ color: '#000' }}>Options:</span>
+				</MuiDialogTitle>
+				<List>
+					<ClickAwayListener onClickAway={handleTooltipClose}>
+						<div>
+							<Tooltip
+								PopperProps={{
+									disablePortal: true,
+								}}
+								onClose={handleTooltipClose}
+								open={TooltipOpen}
+								disableFocusListener
+								disableHoverListener
+								disableTouchListener
+								title="Copied!"
+							>
+								<ListItem autoFocus button onClick={() => handleListItemClick('Share Quiz')}>
+									<ListItemAvatar>
+										<Avatar>
+											<Share />
+										</Avatar>
+									</ListItemAvatar>
+									<ListItemText primary="Share Quiz" />
+								</ListItem>
+							</Tooltip>
+						</div>
+					</ClickAwayListener>
+					<ListItem autoFocus button onClick={() => handleListItemClick('Delete Quiz')}>
+						<ListItemAvatar>
+							<Avatar>
+								<DeleteForever />
+							</Avatar>
+						</ListItemAvatar>
+						<ListItemText primary="Delete Quiz" />
+					</ListItem>
+				</List>
+			</Dialog>
+		);
+	};
+
+	SimpleDialog.propTypes = {
+		onClose: PropTypes.func.isRequired,
+		open: PropTypes.bool.isRequired,
+		selectedValue: PropTypes.string.isRequired,
+	};
+
+	const handleSimpleDialogOpen = () => {
+		setOpenOptions(true);
+	};
+
+	const handleSimpleDialogClose = key => {
+		setSelectedSimpleDialogValue(keys);
+		setOpenOptions(false);
+		handleDialogClickOpen(key);
+	};
 
 	const handleDialogClickOpen = key => {
-		if (key === 'Deleter') {
+		if (key === 'Delete Quiz') {
 			setOpenDel(true);
+		}
+		if (key === 'Share Quiz') {
+			setOpenShare(true);
 		}
 
 		if (key === 'Validator') {
@@ -322,13 +421,24 @@ const CreatorDashboard = () => {
 	};
 
 	const handleDialogClose = key => {
-		if (key === 'Deleter') {
+		if (key === 'Delete Quiz') {
 			setOpenDel(false);
+		}
+		if (key === 'Share Quiz') {
+			setOpenShare(false);
 		}
 
 		if (key === 'Validator') {
 			setOpenVer(false);
 		}
+	};
+
+	const handleTooltipClose = () => {
+		setTooltipOpen(false);
+	};
+
+	const handleTooltipOpen = () => {
+		setTooltipOpen(true);
 	};
 	const LoadAllQuizzes = () => {
 		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz-all', {
@@ -443,6 +553,22 @@ const CreatorDashboard = () => {
 		setNumNewQuizzes(numNewQuizzes - 1);
 	};
 
+	const GetLatestQuizData = () => {
+		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz-all', {
+			method: 'GET',
+			headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + accessToken },
+		})
+			.then(response => response.json())
+			.then(payload => {
+				console.log('GETTING NEW ARRAY FOR NEWEST LINK:', payload);
+				setNewQuizCreated(payload.data.slice(-1).pop());
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+		setOpenShare(true);
+	};
+
 	const handleOnCreate = () => {
 		if (ValidateFields() === 1) {
 			handleDialogClickOpen('Validator');
@@ -459,6 +585,7 @@ const CreatorDashboard = () => {
 			console.log(data);
 			setQuizData(data);
 			POSTQuizDataAndUpdate();
+			GetLatestQuizData();
 		}
 	};
 
@@ -500,54 +627,64 @@ const CreatorDashboard = () => {
 														width: '1%',
 													}}
 													onClick={() => {
-														handleDialogClickOpen('Deleter');
+														setCurrentMyQuizSelected(myQuizzes[i]);
+														handleSimpleDialogOpen();
 													}}
 													aria-label="delete"
 												>
 													<MoreVert />
 												</IconButton>
-												<MyQuizBoxes>
-													<Dialog
-														open={openDel}
-														onClose={() => {
-															handleDialogClose('Deleter');
-														}}
-														aria-labelledby="alert-dialog-title"
-														aria-describedby="alert-dialog-description"
-													>
-														<MuiDialogTitle id="alert-dialog-title">
-															<span style={{ color: '#000' }}>
-																Do you want to delete this quiz?
-															</span>
-														</MuiDialogTitle>
-														<DialogContent>
-															<DialogContentText id="alert-dialog-description">
-																This action cannot be undone. Are you sure?
-															</DialogContentText>
-														</DialogContent>
-														<DialogActions>
-															<Button
-																onClick={() => {
-																	handleDialogClose('Deleter');
-																}}
-																color="primary"
-															>
-																No
-															</Button>
-															<Button
-																onClick={() => {
-																	HandleDeleteQuiz(myQuizzes[i].id);
-																	handleDialogClose('Deleter');
-																}}
-																color="primary"
-																autoFocus
-															>
-																Yes
-															</Button>
-														</DialogActions>
-													</Dialog>
-												</MyQuizBoxes>
+												<MyQuizBoxes></MyQuizBoxes>
 												<MyQuizTitleText>{myQuizzes[i].name}</MyQuizTitleText>
+												<div>
+													<SimpleDialog
+														selectedValue={selectedSimpleDialogValue}
+														open={openOptions}
+														onClose={handleSimpleDialogClose}
+													/>
+												</div>
+												<Dialog
+													hideBackdrop={true}
+													open={openDel}
+													onClose={() => {
+														handleDialogClose('Delete Quiz');
+													}}
+													aria-labelledby="alert-dialog-title"
+													aria-describedby="alert-dialog-description"
+												>
+													<MuiDialogTitle id="alert-dialog-title">
+														<span style={{ color: '#000' }}>
+															Do you want to delete this quiz?
+														</span>
+													</MuiDialogTitle>
+													<DialogContent>
+														<DialogContentText id="alert-dialog-description">
+															You are about to delete "
+															{currentMyQuizSelected ? currentMyQuizSelected.name : ''}".
+															This action cannot be undone. Are you sure?
+														</DialogContentText>
+													</DialogContent>
+													<DialogActions>
+														<Button
+															onClick={() => {
+																handleDialogClose('Delete Quiz');
+															}}
+															color="primary"
+														>
+															No
+														</Button>
+														<Button
+															onClick={() => {
+																HandleDeleteQuiz(currentMyQuizSelected.id);
+																handleDialogClose('Delete Quiz');
+															}}
+															color="primary"
+															autoFocus
+														>
+															Yes
+														</Button>
+													</DialogActions>
+												</Dialog>
 											</QuizBoxContainer>
 										);
 									})}
@@ -649,6 +786,47 @@ const CreatorDashboard = () => {
 									Create
 								</CreateButton>
 								<Dialog
+									hideBackdrop={true}
+									open={openShare}
+									onClose={() => {
+										handleDialogClose('Share Quiz');
+									}}
+									aria-labelledby="alert-dialog-title"
+									aria-describedby="alert-dialog-description"
+								>
+									<MuiDialogTitle id="alert-dialog-title">
+										<span style={{ color: '#000' }}>Congrats on making a new quiz!</span>
+									</MuiDialogTitle>
+									<DialogContent>
+										<DialogContentText id="alert-dialog-description">
+											Here is your quiz link: localhost:4000/quiz/
+											{newQuizCreated ? newQuizCreated.id : ''}
+										</DialogContentText>
+									</DialogContent>
+									<DialogActions>
+										<Button
+											onClick={() => {
+												handleDialogClose('Share Quiz');
+											}}
+											color="primary"
+										>
+											Close
+										</Button>
+										<Button
+											onClick={() => {
+												navigator.clipboard.writeText(
+													'localhost:4000/quiz/' + (newQuizCreated ? newQuizCreated.id : ''),
+												);
+												handleDialogClose('Share Quiz');
+											}}
+											color="primary"
+										>
+											Copy
+										</Button>
+									</DialogActions>
+								</Dialog>
+								<Dialog
+									hideBackdrop={true}
 									open={openVer}
 									onClose={() => {
 										handleDialogClose('Validator');

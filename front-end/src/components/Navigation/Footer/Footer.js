@@ -22,7 +22,11 @@ const FooterWrapper = styled.div`
 `;
 
 const FooterDiv = styled.div`
-	margin-right: 60px;
+	margin-right: 0;
+
+	@media ${bp.sm} {
+		margin-right: 60px;
+	}
 `;
 
 const StyledBrandLink = styled(Link)`
@@ -58,6 +62,16 @@ const StyledList = styled.ul`
 
 const StyledListItem = styled.li`
 	margin-bottom: 16px;
+`;
+
+const StyledAnchor = styled.a`
+	text-decoration: none;
+	color: ${theme.color.background.secondary};
+	transition: all 0.2s ease;
+
+	&:hover {
+		color: lightgrey;
+	}
 `;
 
 const StyledLink = styled(Link)`
@@ -96,20 +110,34 @@ const Footer = () => {
 					<StyledBrandLink>Flipic</StyledBrandLink>
 					<StyledPara>Created by</StyledPara>
 					<StyledList>
-						<StyledListItem>Alan Truong</StyledListItem>
-						<StyledListItem>Bryan Wong</StyledListItem>
-						<StyledListItem>Grady Tucker</StyledListItem>
-						<StyledListItem>Malo Hamon</StyledListItem>
-						<StyledListItem>Sam Lockton</StyledListItem>
-						<StyledListItem>Si (Julia) Cheng</StyledListItem>
+						<StyledListItem>
+							<StyledAnchor href="https://www.linkedin.com/in/alan-truong5/">Alan Truong</StyledAnchor>
+						</StyledListItem>
+						<StyledListItem>
+							<StyledAnchor href="https://www.linkedin.com/in/bryanwongyk/">Bryan Wong</StyledAnchor>
+						</StyledListItem>
+						<StyledListItem>
+							<StyledAnchor href="https://www.linkedin.com/in/grady-tucker-a86081183/">
+								Grady Tucker
+							</StyledAnchor>
+						</StyledListItem>
+						<StyledListItem>
+							<StyledAnchor href="https://www.linkedin.com/in/malo-h-44253b113/">Malo Hamon</StyledAnchor>
+						</StyledListItem>
+						<StyledListItem>
+							<StyledAnchor href="https://www.linkedin.com/in/locktonsam/">Sam Lockton</StyledAnchor>
+						</StyledListItem>
+						<StyledListItem>
+							<StyledAnchor href="https://www.linkedin.com/in/si-cheng-40440bb7/">
+								Si (Julia) Cheng
+							</StyledAnchor>
+						</StyledListItem>
 					</StyledList>
 				</FooterDiv>
 				<FooterDiv>
 					<LinksHeader>Links</LinksHeader>
 					<StyledList>
 						<StyledLink to="/">Home</StyledLink>
-						<StyledLink to="/demo">Demo</StyledLink>
-						<StyledLink>Login</StyledLink>
 					</StyledList>
 				</FooterDiv>
 			</FooterWrapper>
