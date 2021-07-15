@@ -277,9 +277,8 @@ const MyQuizBoxes = styled.div`
 
 const QuizBoxContainer = styled.div`
 	display: inline-block;
-	width: 80px;
-	height: 100px;
-	margin: 20px;
+	width: 96%;
+	margin: 20px 0px;
 	position: relative;
 `;
 
@@ -290,11 +289,8 @@ const MyQuizzesContainer = styled.div`
 
 const MyQuizTitleText = styled.p`
 	font-size: 14px;
-	margin: 10px;
+	margin: 10px 24px;
 	text-align: center;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
 `;
 
 const ProfileField = styled.p`
@@ -623,8 +619,8 @@ const CreatorDashboard = () => {
 													style={{
 														backgroundColor: 'transparent',
 														position: 'absolute',
-														top: '10%',
-														left: '65%',
+														top: '18%',
+														right: '2%',
 														height: '1%',
 														width: '1%',
 													}}
@@ -636,8 +632,9 @@ const CreatorDashboard = () => {
 												>
 													<MoreVert />
 												</IconButton>
-												<MyQuizBoxes></MyQuizBoxes>
-												<MyQuizTitleText>{myQuizzes[i].name}</MyQuizTitleText>
+												<MyQuizBoxes>
+													<MyQuizTitleText>{myQuizzes[i].name}</MyQuizTitleText>
+												</MyQuizBoxes>
 												<div>
 													<SimpleDialog
 														selectedValue={selectedSimpleDialogValue}
