@@ -11,6 +11,8 @@ import ViewResults from '../../../assets/svgs/view-results.svg';
 import bp from '../../Theme/breakpoints';
 import Footer from '../../Navigation/Footer/Footer';
 import SignupButton from '../../Auth/SignupButton/SignupButton';
+import { Link } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const PageWrapper = styled.div`
 	padding: 0 48px 64px 48px;
@@ -239,17 +241,12 @@ const ActionImg = styled.img`
 	}
 `;
 
-const CTAButton = styled(SignupButton)`
-	font-size: 1rem;
-	padding-left: 16px;
-	padding-right: 16px;
-
-	@media ${bp.sm} {
-		font-size: 1.5rem;
-	}
+const CTAButtonDashboard = styled(Link)`
+	text-decoration: none;
 `;
 
 const LandingPage = () => {
+	const { isAuthenticated } = useAuth0();
 	return (
 		<>
 			<PageWrapper>
@@ -335,7 +332,13 @@ const LandingPage = () => {
 				</HowSection>
 				<GlassmorphicWrapper>
 					<CTASectionHeader>Have a decision to make?</CTASectionHeader>
-					<CTAButton style={{ fontSize: '1.5rem', paddingLeft: '16px', paddingRight: '16px' }} />
+					{isAuthenticated ? (
+						<PrimaryButton>
+							<CTAButtonDashboard to="/dashboard">Go to dashboard</CTAButtonDashboard>
+						</PrimaryButton>
+					) : (
+						<SignupButton />
+					)}
 				</GlassmorphicWrapper>
 			</PageWrapper>
 			<Footer />

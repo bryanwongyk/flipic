@@ -97,6 +97,8 @@ const QuizPageHeading = styled.h1`
 	padding-top: 50px;
 	font-size: 72px;
 	color: #fff;
+	width: 80%;
+	margin: 0 auto;
 `;
 
 const UserDashboard = styled.div`
@@ -107,7 +109,7 @@ const UserDashboard = styled.div`
 const UserDashboardContent = styled.div`
 	display: block;
 	margin-bottom: 100px;
-	margin-top: 100px;
+	margin-top: 72px;
 	align-items: center;
 	flex-direction: column;
 	@media ${bp.sm} {
