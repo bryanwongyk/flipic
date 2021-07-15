@@ -1,5 +1,7 @@
-# flipic
+# Flipic
 Flipic is a survey web application that takes a fun card-swiping approach to simplify decision-making using binary choices.
+
+[![Flipic-pitch](http://img.youtube.com/vi/UbCWLUYKLtE/0.jpg)](http://www.youtube.com/watch?v=UbCWLUYKLtE "Video Title")
 
 # Set up
 
@@ -12,7 +14,7 @@ From command line
 ```
 cd flipic/front-end
 npm install
-npm start
+npm run start
 ```
 ***
 ### Mac/Linux
@@ -31,7 +33,7 @@ to
 Then
 ```
 npm install
-npm start
+npm run start
 ```
 ***
 ## Back End
