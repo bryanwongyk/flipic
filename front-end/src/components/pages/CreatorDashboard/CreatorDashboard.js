@@ -296,9 +296,10 @@ const MyQuizTitleText = styled.p`
 `;
 
 const ProfileField = styled.p`
-	width: 100%;
+	width: 80%;
 	text-align: left;
 	margin-left: 10px;
+	word-wrap: break-word;
 `;
 
 const ProfileFieldsContainer = styled.div`

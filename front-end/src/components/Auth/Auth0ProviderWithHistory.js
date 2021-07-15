@@ -11,7 +11,7 @@ const Auth0ProviderWithHistory = ({ children }) => {
 	const onRedirectCallback = appState => {
 		history.push(
 			(window.location.href =
-				'http://localhost:4000/dashboard' || appState?.returnTo || window.location.pathname),
+				window.location.origin + '/dashboard' || appState?.returnTo || window.location.pathname),
 		);
 	};
 
