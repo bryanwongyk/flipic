@@ -32,8 +32,8 @@ const HalfCard = (props) => {
         return (
             <StyledHalfCard pos={props.pos}>
                 <animated.div style={{textAlign: 'center', display: props.show}}>
-                    <StyledCardItemEmoji> {props.data.icon} </StyledCardItemEmoji>
-                    <StyledCardItemText> {props.data.name} </StyledCardItemText>
+                    <StyledCardItemEmoji> {props.data.emoji} </StyledCardItemEmoji>
+                    <StyledCardItemText> {props.data.item} </StyledCardItemText>
                 </animated.div>
             </StyledHalfCard>
         );

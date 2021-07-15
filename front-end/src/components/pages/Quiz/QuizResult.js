@@ -59,12 +59,12 @@ const StyledResultName = styled.p`
     font-weight: bold;
 `
 
-const StyledResultNum = styled.p`
-    font-size: 1.2em;
-    color: ${theme.color.background.secondary};
-    font-weight: bold;
-    margin-left: 1em;
-`
+// const StyledResultNum = styled.p`
+//     font-size: 1.2em;
+//     color: ${theme.color.background.secondary};
+//     font-weight: bold;
+//     margin-left: 1em;
+// `
 
 
 // fetch result and show result after 1.5s loading time
@@ -100,12 +100,12 @@ const QuizResult = ({quizId, didBefore}) => {
                         const percentage = item.numSuccess / total
                         return(
                             <StyledResultItem key={i}>
-                                <StyledResultIcon>{item.icon}</StyledResultIcon>
+                                <StyledResultIcon>{item.emoji}</StyledResultIcon>
                                 <StyledResultContent>
-                                    <StyledResultName>{item.name}</StyledResultName>
+                                    <StyledResultName>{item.item}</StyledResultName>
                                     <div style={{display: 'flex', marginTop: '1em'}}> 
                                         <ResultBar percentage={percentage} index={i}></ResultBar>
-                                        <StyledResultNum index={i}>{item.numSuccess}</StyledResultNum>
+                                        {/* <StyledResultNum index={i}>{item.numSuccess}</StyledResultNum> */}
                                     </div>
                                 </StyledResultContent>
                             </StyledResultItem>
