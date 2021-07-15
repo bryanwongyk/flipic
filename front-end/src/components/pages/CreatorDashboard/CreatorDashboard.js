@@ -45,11 +45,14 @@ const QuizForm = styled.div`
 	border-width: 2px;
 	border-radius: 15px;
 	margin-bottom: 40px;
-	margin-left: 20px;
 	text-align: left;
 	display: block;
+	margin-left: auto;
+	margin-right: auto;
 	@media ${bp.sm} {
 		width: 40%;
+		margin-left: 20px;
+		margin-right: 0;
 	}
 `;
 
@@ -64,9 +67,12 @@ const MyProfile = styled.div`
 	border-width: 2px;
 	border-radius: 15px;
 	margin-bottom: 40px;
-	margin-left: 20px;
+	margin-left: auto;
+	margin-right: auto;
 	@media ${bp.sm} {
 		width: 40%;
+		margin-left: 20px;
+		margin-right: 0;
 	}
 `;
 
@@ -277,7 +283,7 @@ const MyQuizBoxes = styled.div`
 const QuizBoxContainer = styled.div`
 	display: inline-block;
 	width: 96%;
-	margin: 20px 0px;
+	margin: 20px 0px 0px 0px;
 	position: relative;
 `;
 
