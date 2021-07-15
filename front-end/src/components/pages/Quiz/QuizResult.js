@@ -114,7 +114,10 @@ const QuizResult = ({ quizId, didBefore }) => {
 						<StyledResultWrapper>
 							<StyledResultHeader>Results</StyledResultHeader>
 							{result.data.map((item, i) => {
-								const percentage = item.numSuccess / total;
+                                let percentage = 0
+                                if (total !== 0) {
+                                    percentage = item.numSuccess / total;
+                                } 
 								return (
 									<StyledResultItem key={i}>
 										<StyledResultIcon>{item.emoji}</StyledResultIcon>
