@@ -30,11 +30,15 @@ const doc = {
     },
     definitions: {
         Item: {
-            name: "Item name",
-            icon: "Icon name"
+            item: "Item name",
+            emoji: "Icon name"
         },
         Quiz: {
             name: "Quiz Name",
+            quizCreator: "Quiz Creators Name",
+            privacyType: "Public",
+            createdBy : "Created By",
+            audienceSize: "5",
             items: [{
                 $ref: '#/definitions/Item'
             }]

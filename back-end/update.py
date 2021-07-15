@@ -1,14 +1,10 @@
+
 import subprocess
 import time
 
-git_pull = subprocess.run(["git", "pull"])
-print('git pulled')
-pm2_restart = subprocess.run(["sudo", "pm2", "restart", "all"])
-print("pm2 restarted")
-
 while True:
-	time.sleep(300)
-	git_pull = subprocess.run(["git", "pull"])
+	git_pull = subprocess.run(["sudo", "git", "pull"])
 	print('git pulled')
 	pm2_restart = subprocess.run(["sudo", "pm2", "restart", "all"])
 	print("pm2 restarted")
+	time.sleep(120)
