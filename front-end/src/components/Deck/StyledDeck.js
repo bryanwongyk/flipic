@@ -26,9 +26,9 @@ const DeckWrapper = styled.div`
 
   & > div {
     position: absolute;
-    top: -18vh;
+	top: -5vh;
     width: 100vw;
-    height: 100vh;
+    height: 80vh;
     will-change: transform;
     display: flex;
     align-items: center;
