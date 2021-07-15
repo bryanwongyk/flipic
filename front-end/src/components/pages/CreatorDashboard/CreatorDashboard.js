@@ -129,7 +129,7 @@ const Options = styled.div`
 `;
 
 const ItemsContainer = styled.div`
-	overflow-y: scroll;
+	overflow-y: auto;
 	height: 60%;
 `;
 
@@ -162,7 +162,6 @@ const FormOptionsSection = styled.div`
 `;
 
 const TextInput = styled.input`
-	-webkit-user-select: text;
 	border-radius: 20px;
 	width: 60%;
 	border: solid #fff;
@@ -173,6 +172,7 @@ const TextInput = styled.input`
 	margin-left: 20px;
 	font-size: 14px;
 	padding-left: 10px;
+	outline: none;
 `;
 
 const SelectWrapper = styled.div`
@@ -207,7 +207,6 @@ const Select = styled.select`
 `;
 
 const ItemInput = styled.input`
-	-webkit-user-select: text;
 	border-radius: 20px;
 	width: 80%;
 	border: solid #fff;
@@ -217,10 +216,10 @@ const ItemInput = styled.input`
 	margin-top: 20px;
 	font-size: 14px;
 	padding-left: 10px;
+	outline: none;
 `;
 
 const EmojiInput = styled.input`
-	-webkit-user-select: text;
 	text-align: center;
 	border-radius: 20px;
 	width: 20%;
@@ -231,10 +230,10 @@ const EmojiInput = styled.input`
 	margin-top: 20px;
 	margin-left: 20px;
 	font-size: 25px;
+	outline: none;
 `;
 
 const URLInput = styled.input`
-	-webkit-user-select: text;
 	border-radius: 20px;
 	width: 100%;
 	border: solid #fff;
@@ -288,7 +287,7 @@ const QuizBoxContainer = styled.div`
 `;
 
 const MyQuizzesContainer = styled.div`
-	overflow-y: scroll;
+	overflow-y: auto;
 	height: 400px;
 `;
 
