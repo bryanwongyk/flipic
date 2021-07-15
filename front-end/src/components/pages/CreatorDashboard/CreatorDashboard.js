@@ -256,6 +256,7 @@ const EmojiInput = styled.input`
 	margin-left: 20px;
 	font-size: 25px;
 	outline: none;
+	cursor: pointer;
 `;
 
 const URLInput = styled.input`
@@ -271,22 +272,55 @@ const URLInput = styled.input`
 const AddItemButton = styled.button`
 	font-size: 1em;
 	margin: 1em;
-	padding: 0.25em 1em;
+	padding: 0.5em 1em;
+	width: 8em;
 	border: 0px solid;
 	border-radius: 20px;
 	background-color: #ffffff;
 	font-family: 'sofia-pro-bold';
+	color: ${theme.color.text.primary};
+	:hover {
+		background-color: ${theme.color.accent};
+		color: ${theme.color.background.secondary};
+		transition: 0.4s;
+		cursor: pointer;
+	}
 `;
 
 const CreateButton = styled.button`
 	font-size: 1em;
 	margin: 1em;
-	padding: 0.25em 1em;
+	width: 8em;
+	padding: 0.5em 1em;
 	border: 0px solid;
 	border-radius: 20px;
 	background-color: #ffffff;
-	height: 30px;
 	font-family: 'sofia-pro-bold';
+	color: ${theme.color.text.primary};
+	:hover {
+		background-color: ${theme.color.accent};
+		color: ${theme.color.background.secondary};
+		transition: 0.4s;
+		cursor: pointer;
+	}
+`;
+
+const BackButton = styled.button`
+	font-size: 1em;
+	margin: 2vh auto 2vh 80vw;
+	width: 6em;
+	padding: 0.5em 0 0.5em 0;
+	border: 0px solid;
+	border-radius: 20px;
+	background-color: #ffffff;
+	font-family: 'sofia-pro-bold';
+	color: ${theme.color.text.primary};
+	:hover {
+		background-color: ${theme.color.accent};
+		color: ${theme.color.background.secondary};
+		transition: 0.4s;
+		cursor: pointer;
+	}
 `;
 
 const CopyURLButton = styled.button`
@@ -311,6 +345,11 @@ const QuizBoxContainer = styled.div`
 	width: 96%;
 	margin: 20px 0px 0px 0px;
 	position: relative;
+	& :hover {
+		background-color: ${theme.color.primary};
+		transition: 0.4s;
+		cursor: pointer;
+	}
 `;
 
 const MyQuizzesContainer = styled.div`
@@ -627,13 +666,13 @@ const CreatorDashboard = () => {
 		return (
 			<div>
 				{' '}
-				<CreateButton
+				<BackButton
 					onClick={() => {
 						setResultsRequested(false);
 					}}
 				>
-					{'< Back To Dashboard'}
-				</CreateButton>
+					{'< Back'}
+				</BackButton>
 				<QuizResult quizId={currentMyQuizSelected.id} didBefore={true} userName={user.nickname}/>
 			</div>
 		);
