@@ -30,6 +30,7 @@ import PropTypes from 'prop-types';
 import { keys } from '@material-ui/core/styles/createBreakpoints';
 import Tooltip from '@material-ui/core/Tooltip';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import QuizResult from '../Quiz/QuizResult';
 
 const EmojiPicker = styled.div`
 	z-index: 1;
@@ -360,9 +361,10 @@ const CreatorDashboard = () => {
 	const theme = useTheme();
 	const [selectedSimpleDialogValue, setSelectedSimpleDialogValue] = React.useState('');
 	const [TooltipOpen, setTooltipOpen] = useState(false);
-
+	const [resultsRequested, setResultsRequested] = useState(false);
 	useEffect(() => {
 		if (!busyGettingAccessToken) {
+			setResultsRequested(false);
 			LoadAllQuizzes();
 		}
 	}, [busyGettingAccessToken, numNewQuizzes]);
@@ -622,303 +624,314 @@ const CreatorDashboard = () => {
 		}
 	};
 
-	return (
-		<>
-			{busyGettingAccessToken ? (
-				<LoadingPage />
-			) : (
-				<UserDashboard>
-					<QuizPageHeading>welcome, {user.nickname}!</QuizPageHeading>
-					<UserDashboardContent>
-						<MyProfile>
-							<h3>My Profile</h3>
-							<ProfileFieldsContainer>
-								<ProfileTitleSection>
-									<ProfileFormLabel>User: </ProfileFormLabel>
-									<ProfileField>{user.nickname}</ProfileField>
-								</ProfileTitleSection>
-								<ProfileTitleSection>
-									<ProfileFormLabel>Email: </ProfileFormLabel>
-									<ProfileField>{user.email}</ProfileField>
-								</ProfileTitleSection>
-							</ProfileFieldsContainer>
+	if (resultsRequested) {
+		return <QuizResult quizId={currentMyQuizSelected.id} didBefore={true} />;
+	} else {
+		return (
+			<>
+				{busyGettingAccessToken ? (
+					<LoadingPage />
+				) : (
+					<UserDashboard>
+						<QuizPageHeading>welcome, {user.nickname}!</QuizPageHeading>
+						<UserDashboardContent>
+							<MyProfile>
+								<h3>My Profile</h3>
+								<ProfileFieldsContainer>
+									<ProfileTitleSection>
+										<ProfileFormLabel>User: </ProfileFormLabel>
+										<ProfileField>{user.nickname}</ProfileField>
+									</ProfileTitleSection>
+									<ProfileTitleSection>
+										<ProfileFormLabel>Email: </ProfileFormLabel>
+										<ProfileField>{user.email}</ProfileField>
+									</ProfileTitleSection>
+								</ProfileFieldsContainer>
 
-							<h3>My Quizzes</h3>
-							<MyQuizzesContainer>
-								{myQuizzes &&
-									myQuizzes.map((x, i) => {
-										return (
-											<QuizBoxContainer>
-												<IconButton
-													disableRipple
+								<h3>My Quizzes</h3>
+								<MyQuizzesContainer>
+									{myQuizzes &&
+										myQuizzes.map((x, i) => {
+											return (
+												<QuizBoxContainer>
+													<IconButton
+														disableRipple
+														style={{
+															backgroundColor: 'transparent',
+															position: 'absolute',
+															top: '18%',
+															right: '2%',
+															height: '1%',
+															width: '1%',
+														}}
+														onClick={() => {
+															setCurrentMyQuizSelected(myQuizzes[i]);
+															handleSimpleDialogOpen();
+														}}
+														aria-label="delete"
+													>
+														<MoreVert />
+													</IconButton>
+													<MyQuizBoxes
+														onClick={() => {
+															setCurrentMyQuizSelected(myQuizzes[i]);
+															setResultsRequested(true);
+														}}
+													>
+														<MyQuizTitleText>{myQuizzes[i].name}</MyQuizTitleText>
+													</MyQuizBoxes>
+													<div>
+														<SimpleDialog
+															selectedValue={selectedSimpleDialogValue}
+															open={openOptions}
+															onClose={handleSimpleDialogClose}
+														/>
+													</div>
+													<Dialog
+														hideBackdrop={true}
+														open={openDel}
+														onClose={() => {
+															handleDialogClose('Delete Quiz');
+														}}
+														aria-labelledby="alert-dialog-title"
+														aria-describedby="alert-dialog-description"
+													>
+														<MuiDialogTitle id="alert-dialog-title">
+															<span style={{ color: '#000' }}>
+																Do you want to delete this quiz?
+															</span>
+														</MuiDialogTitle>
+														<DialogContent>
+															<DialogContentText id="alert-dialog-description">
+																You are about to delete "
+																{currentMyQuizSelected
+																	? currentMyQuizSelected.name
+																	: ''}
+																". This action cannot be undone. Are you sure?
+															</DialogContentText>
+														</DialogContent>
+														<DialogActions>
+															<Button
+																onClick={() => {
+																	handleDialogClose('Delete Quiz');
+																}}
+																color="primary"
+															>
+																No
+															</Button>
+															<Button
+																onClick={() => {
+																	HandleDeleteQuiz(currentMyQuizSelected.id);
+																	LoadAllQuizzes();
+																	handleDialogClose('Delete Quiz');
+																}}
+																color="primary"
+																autoFocus
+															>
+																Yes
+															</Button>
+														</DialogActions>
+													</Dialog>
+												</QuizBoxContainer>
+											);
+										})}
+								</MyQuizzesContainer>
+							</MyProfile>
+
+							<QuizForm>
+								<h3>Create a quiz</h3>
+								<QuizTitleSection>
+									<FormLabel>Question:</FormLabel>
+									<TextInput
+										type="text"
+										name="quizName"
+										autoCapitalize="off"
+										autoComplete="off"
+										autoCorrect="off"
+										value={quizName}
+										onChange={e => setQuizName(e.target.value)}
+									/>
+								</QuizTitleSection>
+								<QuizPrivacySelector>
+									<FormLabel>Results Privacy:</FormLabel>
+									<SelectWrapper>
+										<Select onChange={e => handlePrivacySet(e)}>
+											<option value="Public">Public</option>
+											<option value="Private">Private</option>
+										</Select>
+									</SelectWrapper>
+								</QuizPrivacySelector>
+								<div className="question-section"></div>
+								<Options>
+									<QuizItemHeader>Item</QuizItemHeader>
+									<QuizEmojiHeader>Emoji</QuizEmojiHeader>
+								</Options>
+								{emojiSelectorClicked && (
+									<EmojiPickerBackdrop>
+										<EmojiPickerCloseButton>
+											<IconButton
+												disableRipple
+												style={{ backgroundColor: 'transparent' }}
+												onClick={() => {
+													setEmojiSelectorClicked(false);
+												}}
+												aria-label="delete"
+											>
+												<ClearIcon
 													style={{
-														backgroundColor: 'transparent',
+														fontSize: '14px',
 														position: 'absolute',
-														top: '18%',
-														right: '2%',
-														height: '1%',
-														width: '1%',
+														marginRight: '-2px',
+														marginBottom: '3px',
 													}}
+												/>
+											</IconButton>
+										</EmojiPickerCloseButton>
+										<EmojiPicker>
+											<Picker disableSearchBar={true} onEmojiClick={onEmojiClick} />
+										</EmojiPicker>
+									</EmojiPickerBackdrop>
+								)}
+								<ItemsContainer>
+									{inputList.map((x, i) => {
+										return (
+											<Options>
+												<ItemInput
+													type="itemText"
+													name="item"
+													value={inputList[i].item}
+													onChange={e => handleInputChange(e, i)}
+												/>
+												<EmojiInput
+													type="itemText"
+													name="item"
+													value={inputList[i].emoji}
+													onChange={() => null}
 													onClick={() => {
-														setCurrentMyQuizSelected(myQuizzes[i]);
-														handleSimpleDialogOpen();
+														handleEmojiInputClick(i);
 													}}
-													aria-label="delete"
-												>
-													<MoreVert />
-												</IconButton>
-												<MyQuizBoxes>
-													<MyQuizTitleText>{myQuizzes[i].name}</MyQuizTitleText>
-												</MyQuizBoxes>
-												<div>
-													<SimpleDialog
-														selectedValue={selectedSimpleDialogValue}
-														open={openOptions}
-														onClose={handleSimpleDialogClose}
-													/>
-												</div>
-												<Dialog
-													hideBackdrop={true}
-													open={openDel}
-													onClose={() => {
-														handleDialogClose('Delete Quiz');
-													}}
-													aria-labelledby="alert-dialog-title"
-													aria-describedby="alert-dialog-description"
-												>
-													<MuiDialogTitle id="alert-dialog-title">
-														<span style={{ color: '#000' }}>
-															Do you want to delete this quiz?
-														</span>
-													</MuiDialogTitle>
-													<DialogContent>
-														<DialogContentText id="alert-dialog-description">
-															You are about to delete "
-															{currentMyQuizSelected ? currentMyQuizSelected.name : ''}".
-															This action cannot be undone. Are you sure?
-														</DialogContentText>
-													</DialogContent>
-													<DialogActions>
-														<Button
-															onClick={() => {
-																handleDialogClose('Delete Quiz');
-															}}
-															color="primary"
-														>
-															No
-														</Button>
-														<Button
-															onClick={() => {
-																HandleDeleteQuiz(currentMyQuizSelected.id);
-																LoadAllQuizzes();
-																handleDialogClose('Delete Quiz');
-															}}
-															color="primary"
-															autoFocus
-														>
-															Yes
-														</Button>
-													</DialogActions>
-												</Dialog>
-											</QuizBoxContainer>
+												/>
+												{inputList.length !== 1 ? (
+													<IconButton
+														disableRipple
+														style={{ backgroundColor: 'transparent' }}
+														onClick={() => {
+															handleRemoveClick(i);
+														}}
+														aria-label="delete"
+													>
+														<ClearIcon />
+													</IconButton>
+												) : (
+													<IconButton
+														disabled
+														style={{ backgroundColor: 'transparent' }}
+														onClick={() => {
+															handleRemoveClick();
+														}}
+														aria-label="delete"
+													>
+														<ClearIcon />
+													</IconButton>
+												)}{' '}
+											</Options>
 										);
 									})}
-							</MyQuizzesContainer>
-						</MyProfile>
-
-						<QuizForm>
-							<h3>Create a quiz</h3>
-							<QuizTitleSection>
-								<FormLabel>Question:</FormLabel>
-								<TextInput
-									type="text"
-									name="quizName"
-									autoCapitalize="off"
-									autoComplete="off"
-									autoCorrect="off"
-									value={quizName}
-									onChange={e => setQuizName(e.target.value)}
-								/>
-							</QuizTitleSection>
-							<QuizPrivacySelector>
-								<FormLabel>Results Privacy:</FormLabel>
-								<SelectWrapper>
-									<Select onChange={e => handlePrivacySet(e)}>
-										<option value="Public">Public</option>
-										<option value="Private">Private</option>
-									</Select>
-								</SelectWrapper>
-							</QuizPrivacySelector>
-							<div className="question-section"></div>
-							<Options>
-								<QuizItemHeader>Item</QuizItemHeader>
-								<QuizEmojiHeader>Emoji</QuizEmojiHeader>
-							</Options>
-							{emojiSelectorClicked && (
-								<EmojiPickerBackdrop>
-									<EmojiPickerCloseButton>
-										<IconButton
-											disableRipple
-											style={{ backgroundColor: 'transparent' }}
-											onClick={() => {
-												setEmojiSelectorClicked(false);
-											}}
-											aria-label="delete"
-										>
-											<ClearIcon
-												style={{
-													fontSize: '14px',
-													position: 'absolute',
-													marginRight: '-2px',
-													marginBottom: '3px',
-												}}
-											/>
-										</IconButton>
-									</EmojiPickerCloseButton>
-									<EmojiPicker>
-										<Picker disableSearchBar={true} onEmojiClick={onEmojiClick} />
-									</EmojiPicker>
-								</EmojiPickerBackdrop>
-							)}
-							<ItemsContainer>
-								{inputList.map((x, i) => {
-									return (
-										<Options>
-											<ItemInput
-												type="itemText"
-												name="item"
-												value={inputList[i].item}
-												onChange={e => handleInputChange(e, i)}
-											/>
-											<EmojiInput
-												type="itemText"
-												name="item"
-												value={inputList[i].emoji}
-												onChange={() => null}
+								</ItemsContainer>
+								<FormOptionsSection>
+									<AddItemButton
+										onClick={() => {
+											handleAddItemField();
+										}}
+									>
+										Add Item
+									</AddItemButton>
+									<CreateButton
+										onClick={() => {
+											handleOnCreate();
+										}}
+									>
+										Create
+									</CreateButton>
+									<Dialog
+										hideBackdrop={true}
+										open={openShare}
+										onClose={() => {
+											handleDialogClose('Share Quiz');
+										}}
+										aria-labelledby="alert-dialog-title"
+										aria-describedby="alert-dialog-description"
+									>
+										<MuiDialogTitle id="alert-dialog-title">
+											<span style={{ color: '#000' }}>Congrats on making a new quiz!</span>
+										</MuiDialogTitle>
+										<DialogContent>
+											<DialogContentText id="alert-dialog-description">
+												Here is your quiz link: {window.location.origin}/quiz/
+												{newQuizCreated ? newQuizCreated.id : ''}
+											</DialogContentText>
+										</DialogContent>
+										<DialogActions>
+											<Button
 												onClick={() => {
-													handleEmojiInputClick(i);
+													handleDialogClose('Share Quiz');
 												}}
-											/>
-											{inputList.length !== 1 ? (
-												<IconButton
-													disableRipple
-													style={{ backgroundColor: 'transparent' }}
-													onClick={() => {
-														handleRemoveClick(i);
-													}}
-													aria-label="delete"
-												>
-													<ClearIcon />
-												</IconButton>
-											) : (
-												<IconButton
-													disabled
-													style={{ backgroundColor: 'transparent' }}
-													onClick={() => {
-														handleRemoveClick();
-													}}
-													aria-label="delete"
-												>
-													<ClearIcon />
-												</IconButton>
-											)}{' '}
-										</Options>
-									);
-								})}
-							</ItemsContainer>
-							<FormOptionsSection>
-								<AddItemButton
-									onClick={() => {
-										handleAddItemField();
-									}}
-								>
-									Add Item
-								</AddItemButton>
-								<CreateButton
-									onClick={() => {
-										handleOnCreate();
-									}}
-								>
-									Create
-								</CreateButton>
-								<Dialog
-									hideBackdrop={true}
-									open={openShare}
-									onClose={() => {
-										handleDialogClose('Share Quiz');
-									}}
-									aria-labelledby="alert-dialog-title"
-									aria-describedby="alert-dialog-description"
-								>
-									<MuiDialogTitle id="alert-dialog-title">
-										<span style={{ color: '#000' }}>Congrats on making a new quiz!</span>
-									</MuiDialogTitle>
-									<DialogContent>
-										<DialogContentText id="alert-dialog-description">
-											Here is your quiz link: {window.location.origin}/quiz/
-											{newQuizCreated ? newQuizCreated.id : ''}
-										</DialogContentText>
-									</DialogContent>
-									<DialogActions>
-										<Button
-											onClick={() => {
-												handleDialogClose('Share Quiz');
-											}}
-											color="primary"
-										>
-											Close
-										</Button>
-										<Button
-											onClick={() => {
-												navigator.clipboard.writeText(
-													window.location.origin +
-														'/quiz/' +
-														(newQuizCreated ? newQuizCreated.id : ''),
-												);
-												handleDialogClose('Share Quiz');
-											}}
-											color="primary"
-										>
-											Copy
-										</Button>
-									</DialogActions>
-								</Dialog>
-								<Dialog
-									hideBackdrop={true}
-									open={openVer}
-									onClose={() => {
-										handleDialogClose('Validator');
-									}}
-									aria-labelledby="alert-dialog-title"
-									aria-describedby="alert-dialog-description"
-								>
-									<MuiDialogTitle id="alert-dialog-title">
-										<span style={{ color: '#000' }}>You have some incomplete fields!</span>
-									</MuiDialogTitle>
-									<DialogContent>
-										<DialogContentText id="alert-dialog-description">
-											Double check to make sure you have filled in everything.
-										</DialogContentText>
-									</DialogContent>
-									<DialogActions>
-										<Button
-											onClick={() => {
-												handleDialogClose('Validator');
-											}}
-											color="primary"
-										>
-											Ok
-										</Button>
-									</DialogActions>
-								</Dialog>
-							</FormOptionsSection>
-						</QuizForm>
-					</UserDashboardContent>
-					<Footer />
-				</UserDashboard>
-			)}
-		</>
-	);
+												color="primary"
+											>
+												Close
+											</Button>
+											<Button
+												onClick={() => {
+													navigator.clipboard.writeText(
+														window.location.origin +
+															'/quiz/' +
+															(newQuizCreated ? newQuizCreated.id : ''),
+													);
+													handleDialogClose('Share Quiz');
+												}}
+												color="primary"
+											>
+												Copy
+											</Button>
+										</DialogActions>
+									</Dialog>
+									<Dialog
+										hideBackdrop={true}
+										open={openVer}
+										onClose={() => {
+											handleDialogClose('Validator');
+										}}
+										aria-labelledby="alert-dialog-title"
+										aria-describedby="alert-dialog-description"
+									>
+										<MuiDialogTitle id="alert-dialog-title">
+											<span style={{ color: '#000' }}>You have some incomplete fields!</span>
+										</MuiDialogTitle>
+										<DialogContent>
+											<DialogContentText id="alert-dialog-description">
+												Double check to make sure you have filled in everything.
+											</DialogContentText>
+										</DialogContent>
+										<DialogActions>
+											<Button
+												onClick={() => {
+													handleDialogClose('Validator');
+												}}
+												color="primary"
+											>
+												Ok
+											</Button>
+										</DialogActions>
+									</Dialog>
+								</FormOptionsSection>
+							</QuizForm>
+						</UserDashboardContent>
+						<Footer />
+					</UserDashboard>
+				)}
+			</>
+		);
+	}
 };
 
 export default CreatorDashboard;
