@@ -623,7 +623,7 @@ const CreatorDashboard = () => {
 				<LoadingPage />
 			) : (
 				<UserDashboard>
-					<QuizPageHeading>welcome, QuizMaker</QuizPageHeading>
+					<QuizPageHeading>welcome, {user.nickname}!</QuizPageHeading>
 					<UserDashboardContent>
 						<MyProfile>
 							<h3>My Profile</h3>
@@ -705,6 +705,7 @@ const CreatorDashboard = () => {
 														<Button
 															onClick={() => {
 																HandleDeleteQuiz(currentMyQuizSelected.id);
+																LoadAllQuizzes();
 																handleDialogClose('Delete Quiz');
 															}}
 															color="primary"
