@@ -660,7 +660,7 @@ const CreatorDashboard = () => {
 									</ProfileTitleSection>
 								</ProfileFieldsContainer>
 
-								<h3>My Quizzes</h3>
+								<h3>My Surveys</h3>
 								<MyQuizzesContainer>
 									{myQuizzes &&
 										myQuizzes.map((x, i) => {
@@ -751,7 +751,7 @@ const CreatorDashboard = () => {
 							</MyProfile>
 
 							<QuizForm>
-								<h3>Create a quiz</h3>
+								<h3>Create a Survey</h3>
 								<QuizTitleSection>
 									<FormLabel>Question:</FormLabel>
 									<TextInput
@@ -875,11 +875,13 @@ const CreatorDashboard = () => {
 										aria-describedby="alert-dialog-description"
 									>
 										<MuiDialogTitle id="alert-dialog-title">
-											<span style={{ color: '#000' }}>Congrats on making a new quiz!</span>
+											<span style={{ color: '#000' }}>
+												Congratulations on making a new survey!
+											</span>
 										</MuiDialogTitle>
 										<DialogContent>
 											<DialogContentText id="alert-dialog-description">
-												Here is your quiz link: {window.location.origin}/quiz/
+												Here is your survey link: {window.location.origin}/quiz/
 												{newQuizCreated ? newQuizCreated.id : ''}
 											</DialogContentText>
 										</DialogContent>
