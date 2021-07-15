@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Deck from './Deck';
 import theme from '../Theme/theme';
 
-const StyledDeck = ({num_choices, updateProgress, frontPair, backPair, quizId, setFront, setBack}) => {
+const StyledDeck = ({num_choices, updateProgress, frontPair, backPair, quizId, setFront, setBack, setDone}) => {
   return (
     <DeckWrapper>
       <Deck 
@@ -12,7 +12,8 @@ const StyledDeck = ({num_choices, updateProgress, frontPair, backPair, quizId, s
 		backPair={backPair}
 		updateProgress={updateProgress}
 		setFront={setFront} 
-		setBack={setBack}/>
+		setBack={setBack}
+		setDone={setDone}/>
     </DeckWrapper>
   );
 };
@@ -25,7 +26,7 @@ const DeckWrapper = styled.div`
 
   & > div {
     position: absolute;
-    top: -10vh;
+    top: -18vh;
     width: 100vw;
     height: 100vh;
     will-change: transform;
@@ -33,7 +34,7 @@ const DeckWrapper = styled.div`
     align-items: center;
     justify-content: center;
     touch-action: none;
-    overflow: auto
+    overflow: auto;
   }
 
 	& > div > div {

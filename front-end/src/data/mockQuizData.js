@@ -3,7 +3,7 @@ const quizInfo = {
       "_id": "60ec04f3284909517f15152b",
       "name": "Test Name",
       "num_choices" : 5,
-      "hash": "711112333",
+      "author": "quizMaker",
       "items": [
         {
           "_id": "60ec04f3284909517f15152c",
