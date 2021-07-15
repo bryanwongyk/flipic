@@ -84,48 +84,90 @@ const QuizResult = ({quizId, didBefore}) => {
 			});
 	}, [quizId]);
 
+    const [publicQuiz, setPublic] = useState(null);
+    useEffect(() => {
+		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz/' + quizId)
+			.then(response => response.json())
+			.then(data => {
+                const privacyType = data.data.privacyType;
+                if (privacyType === "Private"){
+                    setPublic(false);
+                }else{
+                    setPublic(true);
+                };
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+	}, []);
+
     setTimeout(() => setShowResult(true), 1500);
 
-    if (result !== null & showResult) {
-        let total = 0;
-        result.data.map((item) => {
-            total += item.numSuccess;
-        });
-
-        return (
-            <>
-                <StyledResultWrapper>
-                    <StyledResultHeader>Results</StyledResultHeader>
-                    {result.data.map((item, i)=>{
-                        const percentage = item.numSuccess / total
-                        return(
-                            <StyledResultItem key={i}>
-                                <StyledResultIcon>{item.emoji}</StyledResultIcon>
-                                <StyledResultContent>
-                                    <StyledResultName>{item.item}</StyledResultName>
-                                    <div style={{display: 'flex', marginTop: '1em'}}> 
-                                        <ResultBar percentage={percentage} index={i}></ResultBar>
-                                        {/* <StyledResultNum index={i}>{item.numSuccess}</StyledResultNum> */}
-                                    </div>
-                                </StyledResultContent>
-                            </StyledResultItem>
-                        );
-                    })}
-                </StyledResultWrapper>
-                <Footer />
-            </>
-        ); 
+    if (publicQuiz !== null) {
+        if (publicQuiz){
+            if (result !== null & showResult) {
+                let total = 0;
+                result.data.map((item) => {
+                    total += item.numSuccess;
+                });
+        
+                return (
+                    <>
+                        <StyledResultWrapper>
+                            <StyledResultHeader>Results</StyledResultHeader>
+                            {result.data.map((item, i)=>{
+                                const percentage = item.numSuccess / total
+                                return(
+                                    <StyledResultItem key={i}>
+                                        <StyledResultIcon>{item.emoji}</StyledResultIcon>
+                                        <StyledResultContent>
+                                            <StyledResultName>{item.item}</StyledResultName>
+                                            <div style={{display: 'flex', marginTop: '1em'}}> 
+                                                <ResultBar percentage={percentage} index={i}></ResultBar>
+                                                {/* <StyledResultNum index={i}>{item.numSuccess}</StyledResultNum> */}
+                                            </div>
+                                        </StyledResultContent>
+                                    </StyledResultItem>
+                                );
+                            })}
+                        </StyledResultWrapper>
+                        <Footer />
+                    </>
+                ); 
+                } else {
+                    return (
+                        <>
+                            <StyledLoader>
+                                <Loader />
+                                {didBefore? <></> : <StyledPara>Thank you for taking the quiz!</StyledPara>}
+                                <StyledPara>Loading quiz results...</StyledPara>
+                            </StyledLoader>
+                        </>
+                    );
+                };	
         } else {
             return (
                 <>
                     <StyledLoader>
-                        <Loader />
                         {didBefore? <></> : <StyledPara>Thank you for taking the quiz!</StyledPara>}
-                        <StyledPara>Loading quiz results...</StyledPara>
+                        <StyledPara>The result is not public...</StyledPara>
                     </StyledLoader>
                 </>
             );
-        };	
+        }
+    } else {
+        return (
+            <>
+                <StyledLoader>
+                    <Loader />
+                    <StyledPara>Loading...</StyledPara>
+                </StyledLoader>
+            </>
+        );
+    }
+    
+
+    
 };
 
 export default QuizResult;
