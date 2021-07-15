@@ -38,7 +38,7 @@ const QuizStageContoller = props => {
 		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz/' + quizId)
 			.then(response => response.json())
 			.then(data => {
-				console.log(data);
+				// console.log(data);
 				getQuizInfo(data);
 			})
 			.catch(error => {
@@ -115,7 +115,7 @@ const QuizStageContoller = props => {
 		const value = true;
 		const exdays = 30;
 		setCookie(cname, value, exdays);
-		return <QuizResult quizId={quizId} didBefore={false} />;
+		return <QuizResult quizId={quizId} didBefore={false} userName={null} />;
 	}
 };
 

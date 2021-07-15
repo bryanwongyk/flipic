@@ -634,7 +634,7 @@ const CreatorDashboard = () => {
 				>
 					{'< Back To Dashboard'}
 				</CreateButton>
-				<QuizResult quizId={currentMyQuizSelected.id} didBefore={true} />
+				<QuizResult quizId={currentMyQuizSelected.id} didBefore={true} userName={user.nickname}/>
 			</div>
 		);
 	} else {
