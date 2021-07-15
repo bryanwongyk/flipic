@@ -1,9 +1,10 @@
 import NavItemMobile from '../NavItemMobile/NavItemMobile';
 import theme from '../../../Theme/theme';
 import styled from 'styled-components';
-import PrimaryButton from '../../../Button/Primary/PrimaryButton.js';
 import Logo from '../../../../assets/svgs/logo.svg';
 import { Link } from 'react-router-dom';
+import AuthenticationButton from '../../../Auth/AuthenticationButton/AuthenticationButton';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const StyledNav = styled.nav`
 	background: ${theme.color.background.secondary};
@@ -29,6 +30,7 @@ const StyledLogoImg = styled.img`
 `;
 
 const MobileMenu = ({ toggleMobileMenu }) => {
+	const { isAuthenticated } = useAuth0();
 	return (
 		<StyledNav>
 			<Link to="/" onClick={toggleMobileMenu}>
@@ -37,11 +39,13 @@ const MobileMenu = ({ toggleMobileMenu }) => {
 			<NavItemMobile link="/" toggle={toggleMobileMenu} exact={true}>
 				Home
 			</NavItemMobile>
-			<NavItemMobile link="/" toggle={toggleMobileMenu} exact={true}>
-				Demo
-			</NavItemMobile>
+			{isAuthenticated ? (
+				<NavItemMobile link="/dashboard" toggle={toggleMobileMenu} exact={true}>
+					Dashboard
+				</NavItemMobile>
+			) : null}
 			<ButtonWrapper>
-				<PrimaryButton>Get Started</PrimaryButton>
+				<AuthenticationButton />
 			</ButtonWrapper>
 		</StyledNav>
 	);

@@ -7,21 +7,19 @@ const StyledLi = styled.li`
 `;
 
 const StyledNavLink = styled(Link)`
-	margin: 10px 0;
-	box-sizing: border-box;
-	display: block;
-	width: 100%;
-	color: ${theme.color.text};
 	text-decoration: none;
-	font-style: normal;
-	font-weight: 500;
-	font-size: 1.4em;
-	line-height: 2.5em;
+	color: ${theme.color.text};
+	margin-right: 60px;
+	transition: all 0.2s ease;
+
+	&:hover {
+		opacity: 0.7;
+	}
 `;
 
-const NavItem = ({ link, toggle, children }) => (
+const NavItem = ({ link, children }) => (
 	<StyledLi>
-		<StyledNavLink to={link} exact="true" onClick={() => (toggle ? toggle() : null)}>
+		<StyledNavLink to={link} exact="true">
 			{children}
 		</StyledNavLink>
 	</StyledLi>
