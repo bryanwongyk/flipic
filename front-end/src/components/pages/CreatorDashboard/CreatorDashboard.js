@@ -218,6 +218,7 @@ const Select = styled.select`
 	font-size: 14px;
 	border: solid #fff;
 	border-width: 0px;
+	font-family: 'sofia-pro-medium';
 
 	option {
 		color: black;
