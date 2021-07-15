@@ -32,8 +32,30 @@ import Tooltip from '@material-ui/core/Tooltip';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 const EmojiPicker = styled.div`
-	z-index: 10;
-	float: right;
+	z-index: 1;
+	float: left;
+	position: absolute;
+`;
+
+const EmojiPickerBackdrop = styled.div`
+	position: relative;
+	z-index: 2;
+	float: left;
+	width: 275px;
+	direction: rtl;
+`;
+
+const EmojiPickerCloseButton = styled.div`
+	position: absolute;
+	z-index: 2;
+	top: 10px;
+	right: 0;
+	background-color: #fff;
+	margin-top: -20px;
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	box-shadow: 1px 2px 2px 0px #222;
 `;
 
 const QuizForm = styled.div`
@@ -320,7 +342,7 @@ const CreatorDashboard = () => {
 	const [numItems, setNumItems] = useState(0);
 	const [numNewQuizzes, setNumNewQuizzes] = useState(0);
 	const [currentEmojiSelectionField, setCurrentEmojiSelectionField] = useState(0);
-	const [emojiSelectorClicked, setEmojiSelectorClicked] = useState(null);
+	const [emojiSelectorClicked, setEmojiSelectorClicked] = useState(false);
 	const [quizData, setQuizData] = useState(null);
 	const [myQuizzes, setMyQuizzes] = useState(null);
 	const [openDel, setOpenDel] = React.useState(false);
@@ -332,6 +354,12 @@ const CreatorDashboard = () => {
 	const theme = useTheme();
 	const [selectedSimpleDialogValue, setSelectedSimpleDialogValue] = React.useState('');
 	const [TooltipOpen, setTooltipOpen] = useState(false);
+
+	useEffect(() => {
+		if (!busyGettingAccessToken) {
+			LoadAllQuizzes();
+		}
+	}, [busyGettingAccessToken, numNewQuizzes]);
 
 	const SimpleDialog = props => {
 		const { onClose, selectedValue, open } = props;
@@ -456,11 +484,6 @@ const CreatorDashboard = () => {
 				console.error('Error:', error);
 			});
 	};
-	useEffect(() => {
-		if (!busyGettingAccessToken) {
-			LoadAllQuizzes();
-		}
-	}, [busyGettingAccessToken, numNewQuizzes]);
 
 	const onEmojiClick = (event, emojiObject) => {
 		const list = [...inputList];
@@ -518,7 +541,7 @@ const CreatorDashboard = () => {
 		setInputList([{ item: '', emoji: '\u{1F601}' }]);
 	};
 
-	const POSTQuizDataAndUpdate = () => {
+	const POSTQuizDataAndUpdate = data => {
 		console.log(accessToken);
 		console.log(quizData);
 		console.log(JSON.stringify(quizData));
@@ -526,7 +549,7 @@ const CreatorDashboard = () => {
 		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + accessToken },
-			body: JSON.stringify(quizData),
+			body: JSON.stringify(data),
 		})
 			.then(response => response.json())
 			.then(payload => {
@@ -585,9 +608,11 @@ const CreatorDashboard = () => {
 				items: inputList,
 			};
 			console.log(data);
-			setQuizData(data);
-			POSTQuizDataAndUpdate();
-			GetLatestQuizData();
+			//setQuizData(data);
+			if (data !== null) {
+				POSTQuizDataAndUpdate(data);
+				GetLatestQuizData();
+			}
 		}
 	};
 
@@ -723,9 +748,30 @@ const CreatorDashboard = () => {
 								<QuizEmojiHeader>Emoji</QuizEmojiHeader>
 							</Options>
 							{emojiSelectorClicked && (
-								<EmojiPicker>
-									<Picker onEmojiClick={onEmojiClick} />
-								</EmojiPicker>
+								<EmojiPickerBackdrop>
+									<EmojiPickerCloseButton>
+										<IconButton
+											disableRipple
+											style={{ backgroundColor: 'transparent' }}
+											onClick={() => {
+												setEmojiSelectorClicked(false);
+											}}
+											aria-label="delete"
+										>
+											<ClearIcon
+												style={{
+													fontSize: '14px',
+													position: 'absolute',
+													marginRight: '-2px',
+													marginBottom: '3px',
+												}}
+											/>
+										</IconButton>
+									</EmojiPickerCloseButton>
+									<EmojiPicker>
+										<Picker disableSearchBar={true} onEmojiClick={onEmojiClick} />
+									</EmojiPicker>
+								</EmojiPickerBackdrop>
 							)}
 							<ItemsContainer>
 								{inputList.map((x, i) => {
