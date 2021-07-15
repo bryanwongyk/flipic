@@ -625,8 +625,22 @@ const CreatorDashboard = () => {
 	};
 
 	if (resultsRequested) {
-		return <QuizResult quizId={currentMyQuizSelected.id} didBefore={true} />;
+		window.scrollTo(0, 0);
+		return (
+			<div>
+				{' '}
+				<CreateButton
+					onClick={() => {
+						setResultsRequested(false);
+					}}
+				>
+					{'< Back To Dashboard'}
+				</CreateButton>
+				<QuizResult quizId={currentMyQuizSelected.id} didBefore={true} />
+			</div>
+		);
 	} else {
+		window.scrollTo(0, 0);
 		return (
 			<>
 				{busyGettingAccessToken ? (
