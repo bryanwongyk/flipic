@@ -5,7 +5,7 @@ const StyledBarWrapper = styled.div`
     box-sizing: content-box;
     height: 1.5em; 
     left: 2.5%;
-    width: 60vw;
+    width: 70vw;
     background: ${theme.color.primary};
     border-radius: 25px;
 

@@ -1,9 +1,27 @@
 @font-face {
-  font-family: "sofia-pro";
-  src: local("sofia-pro"),
-    url(./fonts/Sofia/Sofia\ Pro\ Bold\ Az.otf) format("opentype");
-  /* other formats include: 'woff2', 'truetype, 'opentype',
+	font-family: 'sofia-pro-bold';
+	src: local('sofia-pro'), url(./fonts/Sofia/Sofia\ Pro\ Bold\ Az.otf) format('opentype');
+	/* other formats include: 'woff2', 'truetype, 'opentype',
                             'embedded-opentype', and 'svg' */
+}
+
+@font-face {
+	font-family: 'sofia-pro-black';
+	src: local('sofia-pro'), url(./fonts/Sofia/Sofia\ Pro\ Black\ Az.otf) format('opentype');
+	/* other formats include: 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
+}
+
+@font-face {
+	font-family: 'sofia-pro-medium';
+	src: local('sofia-pro'), url(./fonts/Sofia/Sofia\ Pro\ Medium\ Az.otf) format('opentype');
+	/* other formats include: 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
+}
+
+@font-face {
+	font-family: 'maison-neue';
+	src: local('maison-neue'), url(./fonts/Maison\ Neue/Maison\ Neue\ Mono.ttf) format('opentype');
 }
 
 * {
@@ -13,32 +31,41 @@
 }
 
 h1 {
-  font-weight: bold;
-  color: #fff;
-  font-size: 72px;
+	font-weight: bold;
+	color: #fff;
+	font-size: 72px;
+	font-family: 'sofia-pro-black';
 }
 
 h2 {
-  font-weight: bold;
-  color: #fff;
-  font-size: 48px;
+	font-weight: bold;
+	color: #fff;
+	font-size: 48px;
+	font-family: 'sofia-pro-bold';
 }
 
 h3 {
-  font-weight: bold;
-  color: #07234e;
-  font-size: 36px;
+	font-weight: bold;
+	color: #07234e;
+	font-size: 36px;
+	font-family: 'sofia-pro-bold';
+}
+
+footer p,
+footer ul {
+	font-family: 'maison-neue';
 }
 
 body {
 	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
-		'Droid Sans', 'Helvetica Neue', sans-serif;
+	font-family: 'sofia-pro-medium', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+		'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	padding: 0;
 	height: 100%;
 	width: 100%;
+	color: #07234e;
 }
 
 code {

@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import bp from '../../../Theme/breakpoints';
 import AuthenticationButton from '../../../Auth/AuthenticationButton/AuthenticationButton';
+import { useAuth0 } from '@auth0/auth0-react';
+import NavItem from '../NavItem/NavItem';
 
 const MenuNav = styled.nav`
 	font-weight: bold;
@@ -15,17 +17,12 @@ const MenuNav = styled.nav`
 	}
 `;
 
-const StyledLink = styled(Link)`
-	text-decoration: none;
-	color: black;
-	margin-right: 60px;
-`;
-
 const Menu = () => {
+	const { isAuthenticated } = useAuth0();
 	return (
 		<MenuNav>
-			<StyledLink to="/">Home</StyledLink>
-			<StyledLink to="/demo">Demo</StyledLink>
+			<NavItem link="/">Home</NavItem>
+			{isAuthenticated ? <NavItem link="/dashboard">Dashboard</NavItem> : null}
 			<AuthenticationButton>Get Started</AuthenticationButton>
 		</MenuNav>
 	);

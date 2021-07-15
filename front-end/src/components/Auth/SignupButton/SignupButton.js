@@ -12,7 +12,7 @@ const SignupButton = () => {
 				})
 			}
 		>
-			Sign Up
+			Sign up or login
 		</PrimaryButton>
 	);
 };

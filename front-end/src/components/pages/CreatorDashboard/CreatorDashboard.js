@@ -67,11 +67,14 @@ const QuizForm = styled.div`
 	border-width: 2px;
 	border-radius: 15px;
 	margin-bottom: 40px;
-	margin-left: 20px;
 	text-align: left;
 	display: block;
+	margin-left: auto;
+	margin-right: auto;
 	@media ${bp.sm} {
 		width: 40%;
+		margin-left: 20px;
+		margin-right: 0;
 	}
 `;
 
@@ -86,9 +89,12 @@ const MyProfile = styled.div`
 	border-width: 2px;
 	border-radius: 15px;
 	margin-bottom: 40px;
-	margin-left: 20px;
+	margin-left: auto;
+	margin-right: auto;
 	@media ${bp.sm} {
 		width: 40%;
+		margin-left: 20px;
+		margin-right: 0;
 	}
 `;
 
@@ -117,8 +123,9 @@ const QuizEmojiHeader = styled.div`
 
 const QuizPageHeading = styled.h1`
 	padding-top: 50px;
-	font-size: 72px;
 	color: #fff;
+	width: 80%;
+	margin: 0 auto;
 `;
 
 const UserDashboard = styled.div`
@@ -129,7 +136,7 @@ const UserDashboard = styled.div`
 const UserDashboardContent = styled.div`
 	display: block;
 	margin-bottom: 100px;
-	margin-top: 100px;
+	margin-top: 72px;
 	align-items: center;
 	flex-direction: column;
 	@media ${bp.sm} {
@@ -297,9 +304,8 @@ const MyQuizBoxes = styled.div`
 
 const QuizBoxContainer = styled.div`
 	display: inline-block;
-	width: 80px;
-	height: 100px;
-	margin: 20px;
+	width: 96%;
+	margin: 20px 0px 0px 0px;
 	position: relative;
 `;
 
@@ -310,17 +316,15 @@ const MyQuizzesContainer = styled.div`
 
 const MyQuizTitleText = styled.p`
 	font-size: 14px;
-	margin: 10px;
+	margin: 10px 24px;
 	text-align: center;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
 `;
 
 const ProfileField = styled.p`
-	width: 100%;
+	width: 80%;
 	text-align: left;
 	margin-left: 10px;
+	word-wrap: break-word;
 `;
 
 const ProfileFieldsContainer = styled.div`
@@ -369,7 +373,7 @@ const CreatorDashboard = () => {
 		const handleListItemClick = value => {
 			if (value === 'Share Quiz') {
 				setTooltipOpen(true);
-				navigator.clipboard.writeText('localhost:4000/quiz/' + currentMyQuizSelected.id);
+				navigator.clipboard.writeText(window.location.origin + '/quiz/' + currentMyQuizSelected.id);
 			} else {
 				onClose(value);
 			}
@@ -645,8 +649,8 @@ const CreatorDashboard = () => {
 													style={{
 														backgroundColor: 'transparent',
 														position: 'absolute',
-														top: '10%',
-														left: '65%',
+														top: '18%',
+														right: '2%',
 														height: '1%',
 														width: '1%',
 													}}
@@ -658,8 +662,9 @@ const CreatorDashboard = () => {
 												>
 													<MoreVert />
 												</IconButton>
-												<MyQuizBoxes></MyQuizBoxes>
-												<MyQuizTitleText>{myQuizzes[i].name}</MyQuizTitleText>
+												<MyQuizBoxes>
+													<MyQuizTitleText>{myQuizzes[i].name}</MyQuizTitleText>
+												</MyQuizBoxes>
 												<div>
 													<SimpleDialog
 														selectedValue={selectedSimpleDialogValue}
@@ -844,7 +849,7 @@ const CreatorDashboard = () => {
 									</MuiDialogTitle>
 									<DialogContent>
 										<DialogContentText id="alert-dialog-description">
-											Here is your quiz link: localhost:4000/quiz/
+											Here is your quiz link: {window.location.origin}/quiz/
 											{newQuizCreated ? newQuizCreated.id : ''}
 										</DialogContentText>
 									</DialogContent>
@@ -860,7 +865,9 @@ const CreatorDashboard = () => {
 										<Button
 											onClick={() => {
 												navigator.clipboard.writeText(
-													'localhost:4000/quiz/' + (newQuizCreated ? newQuizCreated.id : ''),
+													window.location.origin +
+														'/quiz/' +
+														(newQuizCreated ? newQuizCreated.id : ''),
 												);
 												handleDialogClose('Share Quiz');
 											}}
