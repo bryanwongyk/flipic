@@ -1,12 +1,11 @@
 import { Route, Switch, Redirect } from 'react-router-dom';
 import LandingPage from './components/pages/LandingPage/LandingPage';
 // import Quiz from './components/pages/Quiz/Quiz';
-import QuizContoller from './components/pages/Quiz/QuizContoller';
+import QuizContoller from './components/pages/Quiz/QuizController';
 import CreatorDashboard from './components/pages/CreatorDashboard/CreatorDashboard';
 import Layout from './components/Navigation/Layout/Layout';
 import { useAuth0 } from '@auth0/auth0-react';
 import LoadingPage from './components/pages/LoadingPage/LoadingPage';
-
 import useUserMetadata from './hooks/useUserMetadata';
 
 function App() {
@@ -14,7 +13,7 @@ function App() {
 	const { accessToken } = useUserMetadata();
 
 	if (isLoading) {
-		return <LoadingPage />;
+		return <Layout><LoadingPage /></Layout>;
 	}
 
 	const routes = (
