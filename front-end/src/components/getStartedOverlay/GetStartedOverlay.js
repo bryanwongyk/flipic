@@ -52,7 +52,7 @@ const GetStartedOverlay = ({ handleWelcomed, author }) => {
 			</BackdropWrapper>
 			<GetStartedLayer>
 				<GetStartedContentWrapper>
-					<GetStartedHeader>{author + '\'s quiz'}</GetStartedHeader>
+					<GetStartedHeader>{author + '\'s survey'}</GetStartedHeader>
                     <PrimaryButton onClick={handleWelcomed} style={{margin: '2em auto 0 auto', fontSize: '1.2em', padding: '1em 2em'}}>Get Started</PrimaryButton>
 				</GetStartedContentWrapper>     
 			</GetStartedLayer>

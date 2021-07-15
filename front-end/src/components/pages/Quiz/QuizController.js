@@ -26,7 +26,7 @@ const QuizContoller = props => {
 
 	if (didBefore) {
 		return (
-			<QuizResult quizId={quizId} didBefore={true} />
+			<QuizResult quizId={quizId} didBefore={true} userName={null}/>
 		);
 	} else {
 		return (

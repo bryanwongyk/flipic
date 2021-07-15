@@ -66,9 +66,10 @@ const StyledResultName = styled.p`
 // `
 
 // fetch result and show result after 1.5s loading time
-const QuizResult = ({ quizId, didBefore }) => {
+const QuizResult = ({ quizId, didBefore, userName }) => {
 	const [result, getQuizResult] = useState(null);
 	const [showResult, setShowResult] = useState(false);
+    const [creator, setCreator] = useState(null);
 
 	useEffect(() => {
 		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz-results/' + quizId)
@@ -90,6 +91,7 @@ const QuizResult = ({ quizId, didBefore }) => {
 				const privacyType = data.data.privacyType;
 				if (privacyType === 'Private') {
 					setPublic(false);
+                    setCreator(data.data.quizCreator);
 				} else {
 					setPublic(true);
 				}
@@ -99,10 +101,12 @@ const QuizResult = ({ quizId, didBefore }) => {
 			});
 	}, []);
 
+    // console.log(userName);
+
 	setTimeout(() => setShowResult(true), 1500);
 
 	if (publicQuiz !== null) {
-		if (publicQuiz) {
+		if (publicQuiz || userName === creator) {
 			if ((result !== null) & showResult) {
 				let total = 0;
 				result.data.map(item => {
@@ -140,8 +144,8 @@ const QuizResult = ({ quizId, didBefore }) => {
 					<>
 						<StyledLoader>
 							<Loader />
-							{didBefore ? <></> : <StyledPara>Thank you for taking the quiz!</StyledPara>}
-							<StyledPara>Loading quiz results...</StyledPara>
+							{didBefore ? <></> : <StyledPara>Thank you for taking the survey!</StyledPara>}
+							<StyledPara>Loading survey results...</StyledPara>
 						</StyledLoader>
 					</>
 				);
@@ -150,7 +154,7 @@ const QuizResult = ({ quizId, didBefore }) => {
 			return (
 				<>
 					<StyledLoader>
-						{didBefore ? <></> : <StyledPara>Thank you for taking the quiz!</StyledPara>}
+						{didBefore ? <></> : <StyledPara>Thank you for taking the survey!</StyledPara>}
 						<StyledPara>The result is not public...</StyledPara>
 					</StyledLoader>
 				</>
