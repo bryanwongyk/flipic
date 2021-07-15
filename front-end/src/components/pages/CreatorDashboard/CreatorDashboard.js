@@ -95,7 +95,6 @@ const QuizEmojiHeader = styled.div`
 
 const QuizPageHeading = styled.h1`
 	padding-top: 50px;
-	font-size: 72px;
 	color: #fff;
 	width: 80%;
 	margin: 0 auto;
@@ -340,7 +339,7 @@ const CreatorDashboard = () => {
 		const handleListItemClick = value => {
 			if (value === 'Share Quiz') {
 				setTooltipOpen(true);
-				navigator.clipboard.writeText('localhost:4000/quiz/' + currentMyQuizSelected.id);
+				navigator.clipboard.writeText(window.location.origin + '/quiz/' + currentMyQuizSelected.id);
 			} else {
 				onClose(value);
 			}
@@ -798,7 +797,7 @@ const CreatorDashboard = () => {
 									</MuiDialogTitle>
 									<DialogContent>
 										<DialogContentText id="alert-dialog-description">
-											Here is your quiz link: localhost:4000/quiz/
+											Here is your quiz link: {window.location.origin}/quiz/
 											{newQuizCreated ? newQuizCreated.id : ''}
 										</DialogContentText>
 									</DialogContent>
@@ -814,7 +813,9 @@ const CreatorDashboard = () => {
 										<Button
 											onClick={() => {
 												navigator.clipboard.writeText(
-													'localhost:4000/quiz/' + (newQuizCreated ? newQuizCreated.id : ''),
+													window.location.origin +
+														'/quiz/' +
+														(newQuizCreated ? newQuizCreated.id : ''),
 												);
 												handleDialogClose('Share Quiz');
 											}}
