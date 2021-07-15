@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(cors());
+app.options('*', cors())
 
 var jwt = require('express-jwt');
 var jwks = require('jwks-rsa');
@@ -38,7 +39,6 @@ app.get('/quiz-all', jwtCheck, function(req, res, next) {
     next()
 });
 
-app.options('*', cors())
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger_output.json')
 

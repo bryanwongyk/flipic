@@ -2,6 +2,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('_helpers/db');
+const { mkactivity } = require('../users/users.controller');
 const Quiz = db.Quiz;
 const Item = db.Item;
 
@@ -41,9 +42,9 @@ async function create(quizParam, userId) {
     itemlist = []
     for (let i = 0; i < quizParam.items.length; i++) {
         var item = {
-            "name" : quizParam.items[i]["name"],
+            item : quizParam.items[i]["item"],
             numSuccess : 0,
-            icon: quizParam.items[i]["icon"]
+            emoji: quizParam.items[i]["emoji"]
         }
         itemlist.push(item) 
     }
@@ -51,6 +52,8 @@ async function create(quizParam, userId) {
     // create quiz object
     var quiz = {
         name: quizParam["name"],
+        quizCreator: quizParam["quizCreator"],
+        privacyType: quizParam["privacyType"],
         items : itemlist,
         userId : userId
     }
@@ -85,11 +88,16 @@ async function _delete(id) {
 
 async function getMatchup(quizId){
     var quiz  =  await Quiz.findById(quizId)
+    
     var matchup = []
-    for(var i=0;i<2;i++){
-        var rndIdx = Math.floor(Math.random() * quiz.items.length);
-        matchup.push(quiz.items[rndIdx])
+    while (matchup.length != 2 || matchup[0].id === matchup[1].id){
+        matchup = []
+        for(var i=0;i<2;i++){
+            var rndIdx = Math.floor(Math.random() * quiz.items.length);
+            matchup.push(quiz.items[rndIdx])
+        }
     }
+    
     return matchup
 }
 

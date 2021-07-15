@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const itemSchema = new Schema({
-    name: { type: String },//, required: true },
-    icon: { type: String },// required: true },
+    item: { type: String },//, required: true },
+    emoji: { type: String },// required: true },
     numSuccess: { type: Number }//, required: true },
 });
 
@@ -29,6 +29,9 @@ module.exports = mongoose.model('Item', itemSchema);
 const quizSchema = new Schema({
     name: { type: String, unique: true, required: true },
     userId: { type: String, required: true },
+    quizCreator: { type: String, required: true },
+    privacyType: { type: String, required: true },
+    audienceSize: { type: Number },
     items: { type: [itemSchema], default: [{ name: 'default name', icon: 'default icon', numSuccess: 0 }]},
     createdDate: { type: Date, default: Date.now }
 });

@@ -229,9 +229,21 @@
           "type": "string",
           "example": "Quiz Name"
         },
-        "hash": {
+        "quizCreator": {
           "type": "string",
-          "example": "Quiz Hash"
+          "example": "Quiz Creators Name"
+        },
+        "privacyType": {
+          "type": "string",
+          "example": "Public"
+        },
+        "createdBy": {
+          "type": "string",
+          "example": "Created By"
+        },
+        "audienceSize": {
+          "type": "string",
+          "example": "5"
         },
         "items": {
           "type": "array",

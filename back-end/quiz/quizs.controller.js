@@ -6,7 +6,7 @@ const Quiz = db.Quiz;
 const Item  = db.Item;
 
 
-router.post('/quiz', (req, res, next) => {
+router.post('/quiz', async (req, res, next) => {
     /* 	#swagger.tags = ['Quiz']
         #swagger.description = 'Endpoint to create a quiz' */
 
@@ -17,14 +17,13 @@ router.post('/quiz', (req, res, next) => {
             schema: { $ref: "#/definitions/Quiz" }
     } */
     var userId = req.user.sub
-    quizService.create(req.body, userId)
+    await quizService.create(req.body, userId)
 
     res.status(201).json({
         data: [],
         message: 'success'
     })
 })
-
 
 
 router.get('/quiz/:id', async (req, res, next) => {
@@ -38,6 +37,8 @@ router.get('/quiz/:id', async (req, res, next) => {
         message: 'success'
     })
 })
+
+
 router.get('/quiz-results/:id', async (req, res, next) => {
     /* 	#swagger.tags = ['Quiz']
         #swagger.description = 'Endpoint to get a quizs results' */

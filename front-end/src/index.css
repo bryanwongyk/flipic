@@ -28,6 +28,9 @@
 	margin: 0;
 	box-sizing: border-box;
 	user-select: none;
+	-webkit-user-select:none;
+	-moz-user-select:-moz-none;
+	-ms-user-select:none;
 }
 
 h1 {
