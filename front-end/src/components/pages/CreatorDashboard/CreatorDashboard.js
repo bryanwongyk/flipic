@@ -195,6 +195,7 @@ const TextInput = styled.input`
 	margin-left: 20px;
 	font-size: 14px;
 	padding-left: 10px;
+	font-family: 'sofia-pro-medium';
 `;
 
 const SelectWrapper = styled.div`
@@ -239,6 +240,7 @@ const ItemInput = styled.input`
 	margin-top: 20px;
 	font-size: 14px;
 	padding-left: 10px;
+	font-family: 'sofia-pro-medium';
 `;
 
 const EmojiInput = styled.input`
@@ -273,6 +275,7 @@ const AddItemButton = styled.button`
 	border: 0px solid;
 	border-radius: 20px;
 	background-color: #ffffff;
+	font-family: 'sofia-pro-bold';
 `;
 
 const CreateButton = styled.button`
@@ -283,6 +286,7 @@ const CreateButton = styled.button`
 	border-radius: 20px;
 	background-color: #ffffff;
 	height: 30px;
+	font-family: 'sofia-pro-bold';
 `;
 
 const CopyURLButton = styled.button`
