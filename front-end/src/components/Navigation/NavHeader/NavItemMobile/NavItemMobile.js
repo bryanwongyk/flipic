@@ -29,7 +29,7 @@ const StyledNavLink = styled(Link)`
 
 const NavItemMobile = ({ link, toggle, children }) => (
 	<StyledLi>
-		<StyledNavLink to={link} exact="true" onClick={() => (toggle ? toggle : null)}>
+		<StyledNavLink to={link} exact="true" onClick={toggle}>
 			{children}
 		</StyledNavLink>
 	</StyledLi>
