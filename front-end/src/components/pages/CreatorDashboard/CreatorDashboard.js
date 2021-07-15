@@ -515,7 +515,7 @@ const CreatorDashboard = () => {
 		setInputList([{ item: '', emoji: '\u{1F601}' }]);
 	};
 
-	const POSTQuizDataAndUpdate = () => {
+	const POSTQuizDataAndUpdate = data => {
 		console.log(accessToken);
 		console.log(quizData);
 		console.log(JSON.stringify(quizData));
@@ -523,7 +523,7 @@ const CreatorDashboard = () => {
 		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + accessToken },
-			body: JSON.stringify(quizData),
+			body: JSON.stringify(data),
 		})
 			.then(response => response.json())
 			.then(payload => {
@@ -582,9 +582,11 @@ const CreatorDashboard = () => {
 				items: inputList,
 			};
 			console.log(data);
-			setQuizData(data);
-			POSTQuizDataAndUpdate();
-			GetLatestQuizData();
+			//setQuizData(data);
+			if (data !== null) {
+				POSTQuizDataAndUpdate(data);
+				GetLatestQuizData();
+			}
 		}
 	};
 
