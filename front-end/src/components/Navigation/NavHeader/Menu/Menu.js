@@ -21,7 +21,7 @@ const Menu = () => {
 	const { isAuthenticated } = useAuth0();
 	return (
 		<MenuNav>
-			<NavItem to="/">Home</NavItem>
+			<NavItem link="/">Home</NavItem>
 			{isAuthenticated ? <NavItem link="/dashboard">Dashboard</NavItem> : null}
 			<AuthenticationButton>Get Started</AuthenticationButton>
 		</MenuNav>
