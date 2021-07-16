@@ -1,6 +1,9 @@
 # Flipic
 Flipic is a survey web application that takes a fun card-swiping approach to simplify decision-making using binary choices.
 
+<br/>
+
+### Pitch video link:
 [![Flipic-pitch](http://img.youtube.com/vi/UbCWLUYKLtE/0.jpg)](http://www.youtube.com/watch?v=UbCWLUYKLtE "Video Title")
 
 # Set up
