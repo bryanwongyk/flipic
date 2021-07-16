@@ -196,6 +196,7 @@ const TextInput = styled.input`
 	font-size: 14px;
 	padding-left: 10px;
 	outline: none;
+	font-family: 'sofia-pro-medium';
 `;
 
 const SelectWrapper = styled.div`
@@ -586,7 +587,7 @@ const CreatorDashboard = () => {
 		setInputList([{ item: '', emoji: '\u{1F601}' }]);
 	};
 
-	const POSTQuizDataAndUpdate = data => {
+	const POSTQuizDataAndUpdate = quizData => {
 		console.log(accessToken);
 		console.log(quizData);
 		console.log(JSON.stringify(quizData));
@@ -594,13 +595,17 @@ const CreatorDashboard = () => {
 		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + accessToken },
-			body: JSON.stringify(data),
+			body: JSON.stringify(quizData),
 		})
-			.then(response => response.json())
+			.then(response => {
+				response.json();
+				console.log('response:' + response);
+			})
 			.then(payload => {
 				console.log('Success:', payload);
 				setNumNewQuizzes(numNewQuizzes + 1);
 				ClearAllFields();
+				GetLatestQuizData();
 			})
 			.catch(error => {
 				console.error('Error:', error);
@@ -650,13 +655,13 @@ const CreatorDashboard = () => {
 				name: quizName,
 				quizCreator: user.nickname,
 				privacyType: quizPrivacy,
+				audienceSize: '100',
 				items: inputList,
 			};
 			console.log(data);
 			//setQuizData(data);
 			if (data !== null) {
 				POSTQuizDataAndUpdate(data);
-				GetLatestQuizData();
 			}
 		}
 	};
