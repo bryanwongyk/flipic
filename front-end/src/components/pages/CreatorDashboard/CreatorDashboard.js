@@ -673,11 +673,10 @@ const CreatorDashboard = () => {
 				>
 					{'< Back'}
 				</BackButton>
-				<QuizResult quizId={currentMyQuizSelected.id} didBefore={true} userName={user.nickname}/>
+				<QuizResult quizId={currentMyQuizSelected.id} didBefore={true} userName={user.nickname} />
 			</div>
 		);
 	} else {
-		window.scrollTo(0, 0);
 		return (
 			<>
 				{busyGettingAccessToken ? (
