@@ -35,7 +35,7 @@ const QuizStageContoller = props => {
 	const quizId = props.quizId;
 	const [quizInfo, getQuizInfo] = useState(null);
 	useEffect(() => {
-		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz/' + quizId)
+		fetch('https://www.flipic.net/api/quiz/' + quizId)
 			.then(response => response.json())
 			.then(data => {
 				// console.log(data);
@@ -49,7 +49,7 @@ const QuizStageContoller = props => {
 	const [frontPair, setFront] = useState(null);
 	const [backPair, setBack] = useState(null);
 	useEffect(() => {
-		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz-matchup/' + quizId)
+		fetch('https://www.flipic.net/api/quiz-matchup/' + quizId)
 			.then(response => response.json())
 			.then(data => {
 				// console.log(data);
@@ -61,7 +61,7 @@ const QuizStageContoller = props => {
 	}, [quizId]);
 
 	useEffect(() => {
-		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz-matchup/' + quizId)
+		fetch('https://www.flipic.net/api/quiz-matchup/' + quizId)
 			.then(response => response.json())
 			.then(data => {
 				// console.log(data);

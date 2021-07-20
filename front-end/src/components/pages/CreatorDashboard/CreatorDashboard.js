@@ -517,7 +517,7 @@ const CreatorDashboard = () => {
 		setTooltipOpen(true);
 	};
 	const LoadAllQuizzes = () => {
-		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz-all', {
+		fetch('https://www.flipic.net/api/quiz-all', {
 			method: 'GET',
 			headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + accessToken },
 		})
@@ -592,7 +592,7 @@ const CreatorDashboard = () => {
 		console.log(quizData);
 		console.log(JSON.stringify(quizData));
 
-		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz', {
+		fetch('https://www.flipic.net/api/quiz', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + accessToken },
 			body: JSON.stringify(quizData),
@@ -613,7 +613,7 @@ const CreatorDashboard = () => {
 	};
 
 	const HandleDeleteQuiz = quizId => {
-		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz/' + quizId, {
+		fetch('https://www.flipic.net/api/quiz/' + quizId, {
 			method: 'DELETE',
 			headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + accessToken },
 		})
@@ -629,7 +629,7 @@ const CreatorDashboard = () => {
 	};
 
 	const GetLatestQuizData = () => {
-		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com/api/quiz-all', {
+		fetch('https://www.flipic.net/api/quiz-all', {
 			method: 'GET',
 			headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + accessToken },
 		})

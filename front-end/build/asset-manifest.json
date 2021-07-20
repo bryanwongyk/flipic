@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/static/css/main.850b1b7c.chunk.css",
+    "main.js": "/static/js/main.7cf801f6.chunk.js",
+    "main.js.map": "/static/js/main.7cf801f6.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.6c535e5b.js",
+    "runtime-main.js.map": "/static/js/runtime-main.6c535e5b.js.map",
+    "static/js/2.8464489e.chunk.js": "/static/js/2.8464489e.chunk.js",
+    "static/js/2.8464489e.chunk.js.map": "/static/js/2.8464489e.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.850b1b7c.chunk.css.map": "/static/css/main.850b1b7c.chunk.css.map",
+    "static/js/2.8464489e.chunk.js.LICENSE.txt": "/static/js/2.8464489e.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/static/media/Sofia Pro Medium Az.9c1561c4.otf",
+    "static/media/about.c5aacf32.svg": "/static/media/about.c5aacf32.svg",
+    "static/media/card-stack.e0d8f229.svg": "/static/media/card-stack.e0d8f229.svg",
+    "static/media/create.863735ab.svg": "/static/media/create.863735ab.svg",
+    "static/media/logo.06261b39.svg": "/static/media/logo.06261b39.svg",
+    "static/media/share.cc144862.svg": "/static/media/share.cc144862.svg",
+    "static/media/survey.336dbfe8.svg": "/static/media/survey.336dbfe8.svg",
+    "static/media/tutorial-1.543f562b.svg": "/static/media/tutorial-1.543f562b.svg",
+    "static/media/tutorial-2.40dfae30.svg": "/static/media/tutorial-2.40dfae30.svg",
+    "static/media/tutorial-3.d1ff6ffb.svg": "/static/media/tutorial-3.d1ff6ffb.svg",
+    "static/media/view-results.63225f61.svg": "/static/media/view-results.63225f61.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6c535e5b.js",
+    "static/js/2.8464489e.chunk.js",
+    "static/css/main.850b1b7c.chunk.css",
+    "static/js/main.7cf801f6.chunk.js"
+  ]
+}

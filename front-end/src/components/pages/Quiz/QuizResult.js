@@ -72,7 +72,7 @@ const QuizResult = ({ quizId, didBefore, userName }) => {
     const [creator, setCreator] = useState(null);
 
 	useEffect(() => {
-		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz-results/' + quizId)
+		fetch('https://www.flipic.net/api/quiz-results/' + quizId)
 			.then(response => response.json())
 			.then(data => {
 				// console.log(data);
@@ -85,7 +85,7 @@ const QuizResult = ({ quizId, didBefore, userName }) => {
 
 	const [publicQuiz, setPublic] = useState(null);
 	useEffect(() => {
-		fetch('http://ec2-54-252-205-131.ap-southeast-2.compute.amazonaws.com//api/quiz/' + quizId)
+		fetch('https://www.flipic.net/api/quiz/' + quizId)
 			.then(response => response.json())
 			.then(data => {
 				const privacyType = data.data.privacyType;
